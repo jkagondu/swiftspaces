@@ -1,0 +1,124 @@
+generator client {
+  provider = "prisma-client-js"
+  engineType = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ----------------------------------------------------------------------------
+// ENUMS
+// ----------------------------------------------------------------------------
+
+enum Role {
+  ADMIN
+  AGENT
+  CUSTOMER
+}
+
+enum AgentStatus {
+  PENDING
+  ACTIVE
+  SUSPENDED
+}
+
+enum PropertyType {
+  HOUSE
+  APARTMENT
+  BEDSITTER
+  SINGLE_ROOM
+  AIRBNB
+  LAND
+}
+
+enum PropertyStatus {
+  FOR_SALE
+  FOR_RENT
+  SHORT_TERM
+  SOLD
+  RENTED
+}
+
+// ----------------------------------------------------------------------------
+// MODELS
+// ----------------------------------------------------------------------------
+
+model User {
+  id            String      @id @default(uuid())
+  email         String      @unique
+  passwordHash  String
+  
+  // RBAC Role
+  role          Role        @default(CUSTOMER)
+  
+  // Agent-specific fields
+  agencyName    String?
+  phoneNumber   String?
+  agentStatus   AgentStatus @default(PENDING) // Used by admins to approve/suspend
+  
+  // Billing & Subscription
+  subscriptionPlan String      @default("FREE_TRIAL") // e.g., FREE_TRIAL, PREMIUM, PRO
+  trialEndsAt   DateTime?      // When the free trial expires
+  
+  // Relationships
+  properties    Property[]  @relation("AgentProperties")
+  reviews       Review[]    @relation("AgentReviews")
+  
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+}
+
+model Review {
+  id          String   @id @default(uuid())
+  customerName String
+  rating      Int      @default(5) // 1 to 5
+  comment     String   @db.Text
+  
+  // Link to the agent
+  agentId     String
+  agent       User     @relation("AgentReviews", fields: [agentId], references: [id], onDelete: Cascade)
+  
+  createdAt   DateTime @default(now())
+}
+
+model Property {
+  id            String         @id @default(uuid())
+  title         String
+  description   String
+  location      String
+  latitude      Float?
+  longitude     Float?
+  price         String         
+  images        String[]       // Array of URLs for multiple property photos
+  
+  type          PropertyType
+  status        PropertyStatus @default(FOR_RENT)
+  
+  beds          Int            @default(0)
+  baths         Int            @default(0)
+  
+  // Foreign Key linking to the Agent who posted this
+  agentId       String
+  agent         User           @relation("AgentProperties", fields: [agentId], references: [id], onDelete: Cascade)
+  
+  // Inquiries made on this property
+  inquiries     Inquiry[]
+  
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model Inquiry {
+  id            String      @id @default(uuid())
+  customerName  String
+  customerEmail String
+  customerPhone String?
+  message       String      @db.Text
+  
+  // Foreign Key linking to the Property
+  propertyId    String
+  property      Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  
+  createdAt     DateTime    @default(now())
+}
