@@ -85,7 +85,7 @@ export default function SavedPropertiesPage() {
           </div>
         ) : (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "2rem" }}>
-            {saved.map((property) => (
+            {saved.map((property: any) => (
               <div
                 key={property.id}
                 className="card property-card animate-fade-in"

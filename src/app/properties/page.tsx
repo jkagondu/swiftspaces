@@ -226,7 +226,7 @@ export default function PropertiesPage() {
                 </div>
               ))
             ) : filteredProperties.length > 0 ? (
-              filteredProperties.map(property => (
+              filteredProperties.map((property: any) => (
                 <Link href={`/properties/${property.id}`} key={property.id} className="animate-fade-in card" style={{ 
                   display: 'flex', flexDirection: 'column', textDecoration: 'none', color: 'inherit', transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)', cursor: 'pointer',
                   background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '16px', overflow: 'hidden',

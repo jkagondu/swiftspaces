@@ -64,18 +64,7 @@ export default async function AgentsDirectoryPage() {
               background: 'var(--color-surface)',
               border: '1px solid var(--color-border)', borderRadius: '16px',
               boxShadow: 'var(--shadow-md)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = 'translateY(-4px)';
-              e.currentTarget.style.borderColor = 'var(--color-primary-light)';
-              e.currentTarget.style.boxShadow = 'var(--shadow-lg)';
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.borderColor = 'var(--color-border)';
-              e.currentTarget.style.boxShadow = 'var(--shadow-md)';
-            }}
-            >
+            }}>
               <div style={{ width: '90px', height: '90px', borderRadius: '50%', background: 'var(--color-surface-secondary)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.25rem', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
                 {agent.agencyName ? agent.agencyName.charAt(0) : "A"}
               </div>

@@ -64,7 +64,7 @@ export default function AdminDashboard() {
 
       if (res.ok) {
         // Optimistically update the UI
-        setAgents(prev => prev.map(agent => 
+        setAgents(prev => prev.map((agent: any) => 
           agent.id === agentId ? { ...agent, agentStatus: newStatus } : agent
         ));
       } else {
@@ -262,7 +262,7 @@ export default function AdminDashboard() {
                     </tr>
                   </thead>
                   <tbody>
-                    {agents.map((agent) => (
+                    {agents.map((agent: any) => (
                       <tr key={agent.id} style={{ borderBottom: '1px solid #334155', transition: 'background-color 0.2s' }}>
                         <td style={{ padding: '1rem 1.5rem' }}>
                           <div style={{ fontWeight: 600, color: 'white', marginBottom: '0.25rem' }}>{agent.agencyName || "Agent"}</div>

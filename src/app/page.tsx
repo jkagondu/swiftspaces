@@ -81,7 +81,7 @@ export default async function Home() {
           </div>
         ) : (
           <div className="property-grid">
-            {featuredProperties.map((property) => (
+            {featuredProperties.map((property: any) => (
               <Link href={`/properties/${property.id}`} key={property.id} className="card property-card animate-fade-in" style={{ textDecoration: 'none', color: 'inherit', transition: 'transform 0.2s', cursor: 'pointer' }}>
                 <div className="property-image">
                   <Image 

@@ -83,7 +83,7 @@ export default function ManagerDashboard() {
         body: JSON.stringify({ propertyId, status: newStatus }),
       });
       if (res.ok) {
-        setMyListings(prev => prev.map(p => p.id === propertyId ? { ...p, status: newStatus } : p));
+        setMyListings(prev => prev.map((p: any) => p.id === propertyId ? { ...p, status: newStatus } : p));
       } else {
         alert("Failed to update status");
       }
@@ -121,7 +121,7 @@ export default function ManagerDashboard() {
     }
 
     try {
-      const uploadPromises = Array.from(files).map(async (file) => {
+      const uploadPromises = Array.from(files).map(async (file: any) => {
         const formData = new FormData();
         formData.append("file", file);
         formData.append("upload_preset", uploadPreset);
