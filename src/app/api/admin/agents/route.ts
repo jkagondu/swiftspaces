@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { AgentStatus } from '@prisma/client';
+// Removed AgentStatus import to fix build
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../../auth/[...nextauth]/route';
 
@@ -52,7 +52,7 @@ export async function PUT(request: Request) {
     const updatedAgent = await prisma.user.update({
       where: { id: agentId },
       data: {
-        agentStatus: newStatus as AgentStatus
+        agentStatus: newStatus as any
       }
     });
 

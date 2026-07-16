@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { PropertyType, PropertyStatus } from '@prisma/client';
+// Removed prisma enums to fix vercel build
 
 // GET: Fetch all properties (with optional filtering)
 export async function GET(request: Request) {
@@ -15,7 +15,7 @@ export async function GET(request: Request) {
       query.location = { contains: location, mode: 'insensitive' };
     }
     if (typeParam && typeParam !== 'all') {
-      query.type = typeParam as PropertyType;
+      query.type = typeParam as any;
     }
 
     const properties = await prisma.property.findMany({
@@ -72,8 +72,8 @@ export async function POST(request: Request) {
         description: description || "",
         location,
         price,
-        type: type as PropertyType,
-        status: status as PropertyStatus,
+        type: type as any,
+        status: status as any,
         beds: parseInt(beds) || 0,
         baths: parseInt(baths) || 0,
         latitude,
