@@ -57,7 +57,7 @@ export default async function AgentsDirectoryPage() {
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
-          {agents.map((agent) => (
+          {agents.map((agent: any) => (
             <Link href={`/agents/${agent.id}`} key={agent.id} className="animate-fade-in card" style={{ 
               textDecoration: 'none', color: 'inherit', padding: '2.5rem 2rem', textAlign: 'center', 
               transition: 'all 0.3s ease', display: 'flex', flexDirection: 'column', alignItems: 'center',
