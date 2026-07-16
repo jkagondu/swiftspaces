@@ -7,15 +7,15 @@ export async function GET(request: Request) {
   try {
     const { searchParams } = new URL(request.url);
     const location = searchParams.get('location');
-    const type = searchParams.get('type') as PropertyType | null;
+    const typeParam = searchParams.get('type');
 
     // Build the query dynamically
     const query: any = {};
     if (location) {
       query.location = { contains: location, mode: 'insensitive' };
     }
-    if (type && type !== 'all') {
-      query.type = type;
+    if (typeParam && typeParam !== 'all') {
+      query.type = typeParam as PropertyType;
     }
 
     const properties = await prisma.property.findMany({

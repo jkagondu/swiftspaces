@@ -92,7 +92,7 @@ export default async function AgentProfilePage({ params }: { params: Promise<{ i
           </div>
         ) : (
           <div className="property-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2rem' }}>
-            {agent.properties.map((property) => (
+            {agent.properties.map((property: any) => (
               <Link href={`/properties/${property.id}`} key={property.id} className="card property-card animate-fade-in" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', flexDirection: 'column' }}>
                 <div style={{ position: 'relative', height: '200px' }}>
                   <Image 
@@ -140,7 +140,7 @@ export default async function AgentProfilePage({ params }: { params: Promise<{ i
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                {agent.reviews.map(review => (
+                {agent.reviews.map((review: any) => (
                   <div key={review.id} style={{ padding: '1.5rem', backgroundColor: 'white', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                       <span style={{ fontWeight: 600 }}>{review.customerName}</span>
