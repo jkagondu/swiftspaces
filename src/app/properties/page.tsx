@@ -9,7 +9,8 @@ import AllPropertiesMap from "@/components/AllPropertiesMap";
 export default function PropertiesPage() {
   const [locationQuery, setLocationQuery] = useState("");
   const [propertyType, setPropertyType] = useState("all");
-  const [priceRange, setPriceRange] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
   const [beds, setBeds] = useState("");
   const [viewMode, setViewMode] = useState("list");
   const [properties, setProperties] = useState<any[]>([]);
@@ -104,10 +105,14 @@ export default function PropertiesPage() {
     const matchesType = propertyType === "all" || prop.type.toLowerCase() === propertyType.replace('-', '_');
     
     let matchesPrice = true;
-    if (priceRange) {
-      if (priceRange === "under_10m") matchesPrice = !prop.price.includes("15") && !prop.price.includes("20") && !prop.price.includes("25") && !prop.price.includes("65");
-      else if (priceRange === "10m_20m") matchesPrice = prop.price.includes("15") || prop.price.includes("12") || prop.price.includes("18");
-      else if (priceRange === "over_20m") matchesPrice = prop.price.includes("25") || prop.price.includes("30") || prop.price.includes("50") || prop.price.includes("65");
+    if (minPrice || maxPrice) {
+      // Extract numeric value from the price string (e.g., "Ksh 40,000 / month" -> 40000)
+      const numericPriceMatch = prop.price.match(/\d+(?:,\d+)*(?:\.\d+)?/);
+      if (numericPriceMatch) {
+        const numericPrice = parseFloat(numericPriceMatch[0].replace(/,/g, ''));
+        if (minPrice && numericPrice < parseFloat(minPrice)) matchesPrice = false;
+        if (maxPrice && numericPrice > parseFloat(maxPrice)) matchesPrice = false;
+      }
     }
     
     let matchesBeds = true;
@@ -188,12 +193,20 @@ export default function PropertiesPage() {
                 <option value="airbnb" style={{ color: 'black' }}>Airbnb</option>
                 <option value="land" style={{ color: 'black' }}>Land</option>
               </select>
-              <select value={priceRange} onChange={(e) => setPriceRange(e.target.value)} style={{ flex: '1 1 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', cursor: 'pointer', background: 'rgba(255,255,255,0.1)', color: 'white' }}>
-                <option value="" style={{ color: 'black' }}>Any Price</option>
-                <option value="under_10m" style={{ color: 'black' }}>Under KES 10M</option>
-                <option value="10m_20m" style={{ color: 'black' }}>KES 10M - 20M</option>
-                <option value="over_20m" style={{ color: 'black' }}>Over KES 20M</option>
-              </select>
+              <input 
+                type="number" 
+                placeholder="Min Price (KES)" 
+                value={minPrice}
+                onChange={(e) => setMinPrice(e.target.value)}
+                style={{ flex: '1 1 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+              />
+              <input 
+                type="number" 
+                placeholder="Max Price (KES)" 
+                value={maxPrice}
+                onChange={(e) => setMaxPrice(e.target.value)}
+                style={{ flex: '1 1 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+              />
               <button 
                 onClick={handleFindNearMe}
                 style={{ padding: '0.75rem 1rem', borderRadius: '10px', background: isNearbyMode ? 'var(--color-primary)' : 'transparent', color: isNearbyMode ? 'white' : 'var(--color-primary)', border: '1px solid var(--color-primary)', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s' }}
