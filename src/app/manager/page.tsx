@@ -49,7 +49,7 @@ export default function ManagerDashboard() {
   const fetchInquiries = async () => {
     setIsLoadingInquiries(true);
     try {
-      const res = await fetch("/api/inquiries");
+      const res = await fetch(`/api/inquiries?t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
         setInquiries(data);
@@ -64,7 +64,7 @@ export default function ManagerDashboard() {
   const fetchMyListings = async () => {
     setIsLoadingListings(true);
     try {
-      const res = await fetch("/api/agent/properties");
+      const res = await fetch(`/api/agent/properties?t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         const data = await res.json();
         setMyListings(data);
