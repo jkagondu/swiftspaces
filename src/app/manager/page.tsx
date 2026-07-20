@@ -15,7 +15,7 @@ export default function ManagerDashboard() {
     title: "",
     location: "",
     price: "",
-    type: "two-bedroom",
+    type: "apartment",
     status: "FOR_RENT",
     description: "",
     beds: "",
@@ -198,7 +198,7 @@ export default function ManagerDashboard() {
 
       setSuccessMessage(editingPropertyId ? "Property updated successfully!" : "Property published successfully to the live site!");
       setFormData({
-        title: "", location: "", price: "", type: "two-bedroom", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: ""
+        title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: ""
       });
       setUploadedImageUrls([]);
       setEditingPropertyId(null);
@@ -252,7 +252,7 @@ export default function ManagerDashboard() {
             onClick={() => {
               setActiveTab("add_property");
               setEditingPropertyId(null);
-              setFormData({ title: "", location: "", price: "", type: "two-bedroom", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "" });
+              setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "" });
               setUploadedImageUrls([]);
             }}
             style={{
@@ -502,13 +502,12 @@ export default function ManagerDashboard() {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Property Type</label>
                     <select name="type" value={formData.type} onChange={handleInputChange} style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none', backgroundColor: 'white' }}>
-                      <option value="single-room">Single Room</option>
+                      <option value="single_room">Single Room</option>
                       <option value="bedsitter">Bedsitter</option>
-                      <option value="one-bedroom">1 Bedroom</option>
-                      <option value="two-bedroom">2 Bedroom</option>
-                      <option value="airbnb">Airbnb / Short Stay</option>
-                      <option value="house">House</option>
                       <option value="apartment">Apartment</option>
+                      <option value="house">House</option>
+                      <option value="airbnb">Airbnb / Short Stay</option>
+                      <option value="land">Land</option>
                     </select>
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -534,7 +533,7 @@ export default function ManagerDashboard() {
                   {editingPropertyId && (
                     <button type="button" onClick={() => {
                       setEditingPropertyId(null);
-                      setFormData({ title: "", location: "", price: "", type: "two-bedroom", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "" });
+                      setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "" });
                       setUploadedImageUrls([]);
                       setActiveTab("my_listings");
                     }} className="btn btn-outline" style={{ padding: '0.75rem 2rem', marginLeft: '1rem' }}>
@@ -670,7 +669,7 @@ export default function ManagerDashboard() {
                               title: property.title || "",
                               location: property.location || "",
                               price: property.price || "",
-                              type: property.type?.toLowerCase().replace('_', '-') || "two-bedroom",
+                              type: property.type?.toLowerCase() || "apartment",
                               status: property.status || "FOR_RENT",
                               description: property.description || "",
                               beds: property.beds?.toString() || "",
