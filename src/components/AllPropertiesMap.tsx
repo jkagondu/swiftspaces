@@ -35,6 +35,30 @@ export default function AllPropertiesMap({ properties, externalHoveredId, userLo
 
   const [viewState, setViewState] = useState(initialViewState);
 
+  // Apply deterministic jitter to prevent exact overlapping of markers
+  const jitteredProperties = useMemo(() => {
+    return properties.map(p => {
+      if (!p.latitude || !p.longitude) return p;
+      // Simple hash based on ID
+      const hash = p.id ? p.id.split('').reduce((acc: number, char: string) => acc + char.charCodeAt(0), 0) : Math.random() * 1000;
+      const offsetLat = ((hash % 100) - 50) * 0.00015;
+      const offsetLng = (((hash * 13) % 100) - 50) * 0.00015;
+      return {
+        ...p,
+        displayLat: p.latitude + offsetLat,
+        displayLng: p.longitude + offsetLng
+      };
+    });
+  }, [properties]);
+
+  const getMarkerColor = (status: string, isSelected: boolean, isHovered: boolean) => {
+    if (isSelected || isHovered) return 'var(--color-navy)';
+    if (status === 'FOR_SALE') return '#10b981'; // Green
+    if (status === 'SHORT_TERM' || status === 'AIRBNB') return '#f59e0b'; // Orange
+    if (status === 'SOLD' || status === 'RENTED') return '#9ca3af'; // Gray
+    return 'var(--color-primary)'; // Default Blue
+  };
+
   // Automatically fly to user location when they click "Near Me"
   useEffect(() => {
     if (userLocation && mapRef.current) {
@@ -61,8 +85,8 @@ export default function AllPropertiesMap({ properties, externalHoveredId, userLo
         <FullscreenControl position="top-right" />
         <NavigationControl position="bottom-right" />
         
-        {properties.map(property => {
-          if (!property.latitude || !property.longitude) return null;
+        {jitteredProperties.map(property => {
+          if (!property.displayLat || !property.displayLng) return null;
           
           const isSelected = popupInfo?.id === property.id;
           const isHovered = activeHoveredId === property.id;
@@ -70,13 +94,13 @@ export default function AllPropertiesMap({ properties, externalHoveredId, userLo
           return (
             <Marker 
               key={property.id} 
-              longitude={property.longitude} 
-              latitude={property.latitude}
+              longitude={property.displayLng} 
+              latitude={property.displayLat}
               onClick={e => {
                 e.originalEvent.stopPropagation();
                 setPopupInfo(property);
                 mapRef.current?.flyTo({
-                  center: [property.longitude, property.latitude],
+                  center: [property.displayLng, property.displayLat],
                   zoom: 14,
                   duration: 1000
                 });
@@ -86,7 +110,7 @@ export default function AllPropertiesMap({ properties, externalHoveredId, userLo
                 onMouseEnter={() => setLocalHoveredId(property.id)}
                 onMouseLeave={() => setLocalHoveredId(null)}
                 style={{ 
-                  background: isSelected ? 'var(--color-navy)' : (isHovered ? 'var(--color-navy)' : 'var(--color-primary)'), 
+                  background: getMarkerColor(property.status, isSelected, isHovered), 
                   color: 'white', 
                   padding: isSelected || isHovered ? '0.35rem 0.6rem' : '0.25rem 0.5rem', 
                   borderRadius: '12px', 
