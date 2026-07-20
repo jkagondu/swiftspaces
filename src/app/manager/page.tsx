@@ -20,6 +20,8 @@ export default function ManagerDashboard() {
     description: "",
     beds: "",
     baths: "",
+    latitude: "",
+    longitude: "",
   });
   
   const [editingPropertyId, setEditingPropertyId] = useState<string | null>(null);
@@ -96,8 +98,8 @@ export default function ManagerDashboard() {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>Loading...</div>;
   }
 
-  // Prevent posting if not approved
-  const isApproved = (session?.user as any)?.agentStatus === "ACTIVE";
+  // Prevent posting if not approved (Admins are always approved)
+  const isApproved = (session?.user as any)?.agentStatus === "ACTIVE" || (session?.user as any)?.role === "ADMIN";
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -149,6 +151,26 @@ export default function ManagerDashboard() {
     }
   };
 
+  const handleGetLocation = () => {
+    if (!navigator.geolocation) {
+      alert("Geolocation is not supported by your browser.");
+      return;
+    }
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setFormData(prev => ({
+          ...prev,
+          latitude: position.coords.latitude.toString(),
+          longitude: position.coords.longitude.toString()
+        }));
+      },
+      (error) => {
+        console.error(error);
+        alert("Unable to retrieve your location. Please check browser permissions.");
+      }
+    );
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -176,7 +198,7 @@ export default function ManagerDashboard() {
 
       setSuccessMessage(editingPropertyId ? "Property updated successfully!" : "Property published successfully to the live site!");
       setFormData({
-        title: "", location: "", price: "", type: "two-bedroom", status: "FOR_RENT", description: "", beds: "", baths: ""
+        title: "", location: "", price: "", type: "two-bedroom", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: ""
       });
       setUploadedImageUrls([]);
       setEditingPropertyId(null);
@@ -230,7 +252,7 @@ export default function ManagerDashboard() {
             onClick={() => {
               setActiveTab("add_property");
               setEditingPropertyId(null);
-              setFormData({ title: "", location: "", price: "", type: "two-bedroom", status: "FOR_RENT", description: "", beds: "", baths: "" });
+              setFormData({ title: "", location: "", price: "", type: "two-bedroom", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "" });
               setUploadedImageUrls([]);
             }}
             style={{
@@ -289,8 +311,8 @@ export default function ManagerDashboard() {
             </div>
             <div>
               <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{(session?.user as any)?.agencyName || "Agent"}</div>
-              <div style={{ fontSize: '0.75rem', color: (session?.user as any)?.agentStatus === "ACTIVE" ? '#10b981' : '#f59e0b' }}>
-                Status: {(session?.user as any)?.agentStatus}
+              <div style={{ fontSize: '0.75rem', color: ((session?.user as any)?.agentStatus === "ACTIVE" || (session?.user as any)?.role === "ADMIN") ? '#10b981' : '#f59e0b' }}>
+                Status: {(session?.user as any)?.role === "ADMIN" ? "ACTIVE (ADMIN)" : (session?.user as any)?.agentStatus}
               </div>
             </div>
           </div>
@@ -459,6 +481,22 @@ export default function ManagerDashboard() {
                   </div>
                 </div>
 
+                {/* Grid for Coordinates (Optional) */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Exact Coordinates (Optional)</label>
+                    <button type="button" onClick={handleGetLocation} className="btn btn-outline" style={{ padding: '0.25rem 0.75rem', fontSize: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                      Get My Location
+                    </button>
+                  </div>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                    <input name="latitude" value={formData.latitude} onChange={handleInputChange} type="text" placeholder="Latitude (e.g. -1.2921)" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    <input name="longitude" value={formData.longitude} onChange={handleInputChange} type="text" placeholder="Longitude (e.g. 36.8219)" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>If left blank, coordinates will be automatically guessed based on your Location/Address.</div>
+                </div>
+
                 {/* Grid for Type & Status */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -496,7 +534,7 @@ export default function ManagerDashboard() {
                   {editingPropertyId && (
                     <button type="button" onClick={() => {
                       setEditingPropertyId(null);
-                      setFormData({ title: "", location: "", price: "", type: "two-bedroom", status: "FOR_RENT", description: "", beds: "", baths: "" });
+                      setFormData({ title: "", location: "", price: "", type: "two-bedroom", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "" });
                       setUploadedImageUrls([]);
                       setActiveTab("my_listings");
                     }} className="btn btn-outline" style={{ padding: '0.75rem 2rem', marginLeft: '1rem' }}>
@@ -637,6 +675,8 @@ export default function ManagerDashboard() {
                               description: property.description || "",
                               beds: property.beds?.toString() || "",
                               baths: property.baths?.toString() || "",
+                              latitude: property.latitude?.toString() || "",
+                              longitude: property.longitude?.toString() || "",
                             });
                             setUploadedImageUrls(property.images || []);
                             setActiveTab("add_property");

@@ -39,7 +39,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, description, location, price, type, status, beds, baths, agentId, images } = body;
+    const { title, description, location, price, type, status, beds, baths, agentId, images, latitude: providedLat, longitude: providedLng } = body;
 
     // Validation
     if (!title || !location || !price || !agentId) {
@@ -47,11 +47,12 @@ export async function POST(request: Request) {
     }
 
     // Geocoding: Convert location string to lat/lng
-    let latitude = null;
-    let longitude = null;
+    let latitude = providedLat ? parseFloat(providedLat) : null;
+    let longitude = providedLng ? parseFloat(providedLng) : null;
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
     
-    if (location && mapboxToken) {
+    // Only use Mapbox geocoding if explicit coordinates are not provided
+    if (location && mapboxToken && (!latitude || !longitude)) {
       try {
         const geoRes = await fetch(`https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(location)}.json?access_token=${mapboxToken}&limit=1`);
         if (geoRes.ok) {
