@@ -47,8 +47,8 @@ export async function POST(request: Request) {
     }
 
     // Geocoding: Convert location string to lat/lng
-    let latitude = providedLat ? parseFloat(providedLat) : null;
-    let longitude = providedLng ? parseFloat(providedLng) : null;
+    let latitude = (providedLat && providedLat.toString().trim() !== "") ? parseFloat(providedLat) : null;
+    let longitude = (providedLng && providedLng.toString().trim() !== "") ? parseFloat(providedLng) : null;
     const mapboxToken = process.env.NEXT_PUBLIC_MAPBOX_TOKEN;
     
     // Only use Mapbox geocoding if explicit coordinates are not provided
