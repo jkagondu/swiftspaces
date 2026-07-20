@@ -94,6 +94,24 @@ export default function ManagerDashboard() {
     }
   };
 
+  const handleDeleteProperty = async (propertyId: string) => {
+    if (!window.confirm("Are you sure you want to delete this property? This action cannot be undone.")) return;
+    
+    try {
+      const res = await fetch(`/api/properties/${propertyId}`, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        setMyListings(prev => prev.filter((p: any) => p.id !== propertyId));
+      } else {
+        alert("Failed to delete property");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("Error deleting property");
+    }
+  };
+
   if (status === "loading" || status === "unauthenticated") {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>Loading...</div>;
   }
@@ -688,6 +706,9 @@ export default function ManagerDashboard() {
                               Mark as Taken
                             </button>
                           )}
+                          <button onClick={() => handleDeleteProperty(property.id)} className="btn btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', borderColor: '#ef4444', color: '#ef4444' }}>
+                            Delete
+                          </button>
                         </div>
                       </div>
                     </div>

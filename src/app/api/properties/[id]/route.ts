@@ -51,3 +51,19 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
     return NextResponse.json({ error: "Failed to update property" }, { status: 500 });
   }
 }
+
+export async function DELETE(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  try {
+    const { id } = await params;
+    
+    await prisma.property.delete({
+      where: { id }
+    });
+
+    return NextResponse.json({ message: "Property deleted successfully" });
+  } catch (error) {
+    console.error("Failed to delete property:", error);
+    return NextResponse.json({ error: "Failed to delete property" }, { status: 500 });
+  }
+}
+
