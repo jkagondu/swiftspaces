@@ -183,7 +183,7 @@ export default function AdminDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '3rem', overflowY: 'auto' }}>
+      <main className="dashboard-main" style={{ flex: 1, overflowY: 'auto' }}>
         
         {activeTab === "overview" && (
           <div className="animate-fade-in">
@@ -265,7 +265,7 @@ export default function AdminDashboard() {
               <h1 style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.02em' }}>Agent Management</h1>
             </div>
 
-            <div style={{ backgroundColor: '#1e293b', borderRadius: 'var(--radius-lg)', border: '1px solid #334155', overflow: 'hidden' }}>
+            <div className="table-container" style={{ backgroundColor: '#1e293b', borderRadius: 'var(--radius-lg)', border: '1px solid #334155', overflow: 'hidden' }}>
               {isLoading ? (
                 <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>Loading agents from database...</div>
               ) : agents.length === 0 ? (

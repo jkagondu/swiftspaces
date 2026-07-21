@@ -360,7 +360,7 @@ export default function ManagerDashboard() {
       </aside>
 
       {/* Main Content */}
-      <main style={{ flex: 1, padding: '3rem', overflowY: 'auto' }}>
+      <main className="dashboard-main" style={{ flex: 1, overflowY: 'auto' }}>
         
         {activeTab === "overview" && (
           <div className="animate-fade-in">
@@ -382,7 +382,7 @@ export default function ManagerDashboard() {
             </div>
 
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Recent Inquiries</h2>
-            <div className="card" style={{ overflow: 'hidden' }}>
+            <div className="card table-container" style={{ overflow: 'hidden' }}>
               <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                 <thead>
                   <tr style={{ backgroundColor: 'var(--color-surface-secondary)', borderBottom: '1px solid var(--color-border)' }}>
