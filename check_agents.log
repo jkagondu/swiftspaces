@@ -1,0 +1,41 @@
+All users: [
+  {
+    id: '51575174-daa8-4ad2-8563-2cfaad737cec',
+    email: 'testagent@example.com',
+    passwordHash: '$2b$10$TiYCATNzgzZAu2aHwa2QVuDSiLTOLtIOxwueM1/Sqps7HQSMvgDV.',
+    role: 'AGENT',
+    agencyName: 'Elite Homes Kenya',
+    phoneNumber: '+254 700 000 000',
+    agentStatus: 'PENDING',
+    subscriptionPlan: 'FREE_TRIAL',
+    trialEndsAt: null,
+    createdAt: 2026-07-07T18:30:41.646Z,
+    updatedAt: 2026-07-07T18:30:41.646Z
+  },
+  {
+    id: 'eb1495c0-9ae9-4b6b-95ed-c6135b9bae4f',
+    email: 'admin@swiftspaces.com',
+    passwordHash: '$2b$10$MrAT0CDeievcvOm86G9Sg.4u6inYPCl62Qns3pP/xt2freaA9lazW',
+    role: 'ADMIN',
+    agencyName: 'System Admin',
+    phoneNumber: null,
+    agentStatus: 'PENDING',
+    subscriptionPlan: 'FREE_TRIAL',
+    trialEndsAt: null,
+    createdAt: 2026-07-15T14:17:10.131Z,
+    updatedAt: 2026-07-15T14:17:10.131Z
+  },
+  {
+    id: '9cbc12c3-99b9-49b7-a3e0-02d5c7b54c44',
+    email: 'agent@example.com',
+    passwordHash: '$2b$10$Rn18Bkm/RaHOfWLdADxin.ivAay0VyV4w8FOkiWNMz8T4P1R9CCZu',
+    role: 'AGENT',
+    agencyName: 'Swift Real Estate',
+    phoneNumber: null,
+    agentStatus: 'ACTIVE',
+    subscriptionPlan: 'FREE_TRIAL',
+    trialEndsAt: null,
+    createdAt: 2026-07-15T14:17:13.616Z,
+    updatedAt: 2026-07-15T14:17:13.616Z
+  }
+]

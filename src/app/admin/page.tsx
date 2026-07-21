@@ -9,6 +9,7 @@ export default function AdminDashboard() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [agents, setAgents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
@@ -88,8 +89,27 @@ export default function AdminDashboard() {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#0f172a', color: '#f8fafc' }}>
+      {/* Mobile Menu Button */}
+      <button 
+        className="mobile-menu-btn"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+        aria-label="Toggle Menu"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      {/* Overlay */}
+      <div 
+        className={`sidebar-overlay ${isSidebarOpen ? 'open' : ''}`} 
+        onClick={() => setIsSidebarOpen(false)}
+      ></div>
+
       {/* Sidebar - Dark Theme for Super Admin */}
-      <aside style={{ width: '280px', backgroundColor: '#1e293b', borderRight: '1px solid #334155', display: 'flex', flexDirection: 'column' }}>
+      <aside className={`sidebar-container ${isSidebarOpen ? 'open' : ''}`} style={{ width: '280px', backgroundColor: '#1e293b', borderRight: '1px solid #334155', display: 'flex', flexDirection: 'column', height: '100vh', overflowY: 'auto' }}>
         <div style={{ padding: '1.5rem', borderBottom: '1px solid #334155' }}>
           <div className="logo" style={{ color: 'white' }}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -104,7 +124,7 @@ export default function AdminDashboard() {
         
         <nav style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', flex: 1 }}>
           <button 
-            onClick={() => setActiveTab("overview")}
+            onClick={() => { setActiveTab("overview"); setIsSidebarOpen(false); }}
             style={{
               padding: '0.75rem 1rem',
               borderRadius: 'var(--radius-md)',
@@ -122,7 +142,7 @@ export default function AdminDashboard() {
             System Overview
           </button>
           <button 
-            onClick={() => setActiveTab("agents")}
+            onClick={() => { setActiveTab("agents"); setIsSidebarOpen(false); }}
             style={{
               padding: '0.75rem 1rem',
               borderRadius: 'var(--radius-md)',
