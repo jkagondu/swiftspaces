@@ -13,6 +13,10 @@ export default function AdminDashboard() {
   const [agents, setAgents] = useState<any[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
+  
+  // Property management state
+  const [properties, setProperties] = useState<any[]>([]);
+  const [isLoadingProps, setIsLoadingProps] = useState(false);
 
   // Strict Authentication & Authorization Check
   useEffect(() => {
@@ -31,6 +35,7 @@ export default function AdminDashboard() {
     if (status === "authenticated") {
       fetchAgents();
       fetchStats();
+      fetchProperties();
     }
   }, [status]);
 
@@ -58,6 +63,35 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error("Failed to fetch stats", error);
+    }
+  };
+
+  const fetchProperties = async () => {
+    setIsLoadingProps(true);
+    try {
+      const res = await fetch("/api/properties");
+      if (res.ok) {
+        const data = await res.json();
+        setProperties(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch properties", error);
+    } finally {
+      setIsLoadingProps(false);
+    }
+  };
+
+  const handleDeleteProperty = async (id: string) => {
+    if (!confirm("Are you sure you want to delete this property? This cannot be undone.")) return;
+    
+    try {
+      const res = await fetch(`/api/properties/${id}`, { method: "DELETE" });
+      if (res.ok) {
+        setProperties(properties.filter(p => p.id !== id));
+        fetchStats(); // Update stats
+      }
+    } catch (error) {
+      console.error("Failed to delete property", error);
     }
   };
 
@@ -172,6 +206,25 @@ export default function AdminDashboard() {
                 {pendingAgents}
               </span>
             )}
+          </button>
+          
+          <button 
+            onClick={() => { setActiveTab("properties"); setIsSidebarOpen(false); }}
+            style={{
+              padding: '0.75rem 1rem',
+              borderRadius: 'var(--radius-md)',
+              textAlign: 'left',
+              backgroundColor: activeTab === "properties" ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
+              color: activeTab === "properties" ? 'var(--color-primary)' : '#cbd5e1',
+              fontWeight: activeTab === "properties" ? 600 : 400,
+              border: 'none',
+              transition: 'all 0.2s ease',
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '0.75rem'
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+            Manage Properties
           </button>
         </nav>
 
@@ -312,6 +365,67 @@ export default function AdminDashboard() {
                             {agent.agentStatus === "PENDING" && (
                               <button onClick={() => handleUpdateStatus(agent.id, "SUSPENDED")} style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', backgroundColor: 'transparent', color: '#94a3b8', border: '1px solid #475569' }}>Reject</button>
                             )}
+                          </div>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        )}
+
+        {activeTab === "properties" && (
+          <div className="animate-fade-in">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+              <h1 style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.02em' }}>Listing Moderation</h1>
+            </div>
+
+            <div className="table-container" style={{ backgroundColor: '#1e293b', borderRadius: 'var(--radius-lg)', border: '1px solid #334155', overflowX: 'auto' }}>
+              {isLoadingProps ? (
+                <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>Loading properties from database...</div>
+              ) : properties.length === 0 ? (
+                <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No properties found on the platform yet.</div>
+              ) : (
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '800px' }}>
+                  <thead>
+                    <tr style={{ backgroundColor: '#0f172a', borderBottom: '1px solid #334155' }}>
+                      <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8' }}>Property Details</th>
+                      <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8' }}>Agent</th>
+                      <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8' }}>Price & Type</th>
+                      <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8' }}>Status</th>
+                      <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8', textAlign: 'right' }}>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {properties.map((property: any) => (
+                      <tr key={property.id} style={{ borderBottom: '1px solid #334155', transition: 'background-color 0.2s' }}>
+                        <td style={{ padding: '1rem 1.5rem' }}>
+                          <div style={{ fontWeight: 600, color: 'white', marginBottom: '0.25rem' }}>{property.title}</div>
+                          <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{property.location}</div>
+                        </td>
+                        <td style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: '#cbd5e1' }}>
+                          {property.agent?.agencyName || "Unknown"}
+                          <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{property.agent?.email}</div>
+                        </td>
+                        <td style={{ padding: '1rem 1.5rem', fontSize: '0.875rem', color: '#cbd5e1' }}>
+                          <div style={{ color: 'var(--color-primary)', fontWeight: 600 }}>{property.price}</div>
+                          <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'capitalize' }}>{property.type}</div>
+                        </td>
+                        <td style={{ padding: '1rem 1.5rem' }}>
+                           <span style={{ display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'white', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+                             {property.status.replace('_', ' ')}
+                           </span>
+                        </td>
+                        <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
+                          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                            <Link href={`/properties/${property.id}`} target="_blank" className="btn btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem', backgroundColor: 'transparent', color: '#cbd5e1', borderColor: '#475569' }}>
+                              View
+                            </Link>
+                            <button onClick={() => handleDeleteProperty(property.id)} className="btn btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', borderColor: 'rgba(239, 68, 68, 0.3)' }}>
+                              Delete
+                            </button>
                           </div>
                         </td>
                       </tr>
