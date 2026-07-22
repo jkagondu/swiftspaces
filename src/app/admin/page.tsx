@@ -14,12 +14,18 @@ export default function AdminDashboard() {
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
 
-  // Authentication Check (Allow only if logged in, ideally we'd check role === 'ADMIN' too)
+  // Strict Authentication & Authorization Check
   useEffect(() => {
     if (status === "unauthenticated") {
       router.push("/login");
+    } else if (status === "authenticated") {
+      const user = session?.user as any;
+      if (user?.role !== "ADMIN") {
+        // Redirect non-admins away from the admin portal
+        router.push("/manager");
+      }
     }
-  }, [status, router]);
+  }, [status, router, session]);
 
   useEffect(() => {
     if (status === "authenticated") {
