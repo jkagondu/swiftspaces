@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, password, agencyName, phoneNumber } = body;
+    const { email, password, agencyName, phoneNumber, role } = body;
 
     // 1. Validate input
     if (!email || !password || !agencyName) {
@@ -21,18 +21,34 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "An account with this email already exists" }, { status: 409 });
     }
 
+    // If requested role is ADMIN, ensure no other admin exists
+    let assignedRole = "AGENT";
+    let assignedStatus = "PENDING";
+    
+    if (role === "ADMIN") {
+      const adminCount = await prisma.user.count({
+        where: { role: "ADMIN" }
+      });
+      
+      if (adminCount > 0) {
+        return NextResponse.json({ error: "An admin account already exists. Only one admin is allowed." }, { status: 403 });
+      }
+      assignedRole = "ADMIN";
+      assignedStatus = "ACTIVE";
+    }
+
     // Hash the password securely
     const passwordHash = await bcrypt.hash(password, 10);
 
-    // 3. Create the Agent in the database
+    // 3. Create the Agent/Admin in the database
     const newAgent = await prisma.user.create({
       data: {
         email,
         passwordHash,
-        role: "AGENT",
+        role: assignedRole as any,
         agencyName,
         phoneNumber,
-        agentStatus: "PENDING" // Requires admin approval
+        agentStatus: assignedStatus as any
       },
       select: {
         id: true,
