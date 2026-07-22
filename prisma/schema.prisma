@@ -60,6 +60,10 @@ model User {
   // Billing & Subscription
   subscriptionPlan String      @default("FREE_TRIAL") // e.g., FREE_TRIAL, PREMIUM, PRO
   trialEndsAt   DateTime?      // When the free trial expires
+
+  // Password Reset
+  resetToken    String?
+  resetTokenExpiry DateTime?
   
   // Relationships
   properties    Property[]  @relation("AgentProperties")
