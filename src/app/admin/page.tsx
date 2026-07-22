@@ -265,13 +265,13 @@ export default function AdminDashboard() {
               <h1 style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.02em' }}>Agent Management</h1>
             </div>
 
-            <div className="table-container" style={{ backgroundColor: '#1e293b', borderRadius: 'var(--radius-lg)', border: '1px solid #334155', overflow: 'hidden' }}>
+            <div className="table-container" style={{ backgroundColor: '#1e293b', borderRadius: 'var(--radius-lg)', border: '1px solid #334155', overflowX: 'auto' }}>
               {isLoading ? (
                 <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>Loading agents from database...</div>
               ) : agents.length === 0 ? (
                 <div style={{ padding: '3rem', textAlign: 'center', color: '#94a3b8' }}>No agents found on the platform yet.</div>
               ) : (
-                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '800px' }}>
                   <thead>
                     <tr style={{ backgroundColor: '#0f172a', borderBottom: '1px solid #334155' }}>
                       <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8' }}>Agency / Contact</th>

@@ -382,8 +382,8 @@ export default function ManagerDashboard() {
             </div>
 
             <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Recent Inquiries</h2>
-            <div className="card table-container" style={{ overflow: 'hidden' }}>
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+            <div className="card table-container" style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', minWidth: '600px' }}>
                 <thead>
                   <tr style={{ backgroundColor: 'var(--color-surface-secondary)', borderBottom: '1px solid var(--color-border)' }}>
                     <th style={{ padding: '1rem', fontWeight: 600, fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Customer Name</th>
@@ -687,7 +687,7 @@ export default function ManagerDashboard() {
               ) : (
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                   {myListings.map((property: any) => (
-                    <div key={property.id} style={{ display: 'flex', gap: '1.5rem', padding: '1.5rem', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', backgroundColor: 'white' }}>
+                    <div key={property.id} style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', padding: '1.5rem', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', backgroundColor: 'white' }}>
                       <div style={{ width: '150px', height: '100px', borderRadius: 'var(--radius-sm)', overflow: 'hidden', flexShrink: 0, position: 'relative' }}>
                         {/* eslint-disable-next-line @next/next/no-img-element */}
                         <img src={property.images && property.images.length > 0 ? property.images[0] : "/prop-modern.png"} alt={property.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -701,7 +701,7 @@ export default function ManagerDashboard() {
                           <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.location}</div>
                           <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary)', marginTop: '0.25rem' }}>{property.price}</div>
                         </div>
-                        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1rem' }}>
                           <button onClick={() => {
                             setEditingPropertyId(property.id);
                             setFormData({
