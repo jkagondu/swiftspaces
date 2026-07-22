@@ -29,8 +29,11 @@ export default function LoginPage() {
         setError(res.error);
       } else {
         const session = await getSession();
-        if ((session?.user as any)?.role === "ADMIN") {
+        const role = (session?.user as any)?.role;
+        if (role === "ADMIN") {
           router.push("/admin");
+        } else if (role === "CUSTOMER") {
+          router.push("/saved");
         } else {
           router.push("/manager");
         }

@@ -5,9 +5,11 @@ import Link from "next/link";
 import Image from "next/image";
 import Logo from "@/components/Logo";
 import { useSavedProperties } from "@/components/SavePropertyButton";
+import { useSession, signOut } from "next-auth/react";
 
 export default function SavedPropertiesPage() {
   const { saved, clearAll, toggleSave } = useSavedProperties();
+  const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -27,6 +29,23 @@ export default function SavedPropertiesPage() {
             <Link href="/properties" className="nav-link">Properties</Link>
             <Link href="/agents" className="nav-link">Agents</Link>
             <Link href="/saved" className="nav-link" style={{ color: "var(--color-primary)", fontWeight: 600 }}>Saved</Link>
+          </div>
+          <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+            {session ? (
+              <>
+                <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', display: 'none' }} className="md-flex">
+                  Hi, {session.user?.email?.split('@')[0]}
+                </span>
+                <button onClick={() => signOut({ callbackUrl: '/' })} className="btn btn-outline" style={{ padding: '0.4rem 1rem', fontSize: '0.875rem' }}>
+                  Log Out
+                </button>
+              </>
+            ) : (
+              <>
+                <Link href="/login" style={{ fontSize: '0.875rem', fontWeight: 600, color: 'var(--color-text-main)', textDecoration: 'none' }}>Log In</Link>
+                <Link href="/signup" className="btn btn-primary" style={{ padding: '0.4rem 1rem', fontSize: '0.875rem', textDecoration: 'none' }}>Sign Up</Link>
+              </>
+            )}
           </div>
         </div>
       </nav>
