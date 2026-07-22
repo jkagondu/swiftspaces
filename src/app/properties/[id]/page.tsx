@@ -66,6 +66,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
             <Link href="/agents" className="nav-link">Agents</Link>
             <Link href="/saved" className="nav-link">❤️ Saved</Link>
             <Link href="/manager" className="nav-link">Manager Portal</Link>
+            <Link href="/admin" className="nav-link">Admin Portal</Link>
           </div>
         </div>
       </nav>

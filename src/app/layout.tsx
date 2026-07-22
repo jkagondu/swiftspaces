@@ -31,6 +31,9 @@ export const metadata: Metadata = {
     description: "Discover exclusive homes and apartments tailored to your luxury lifestyle.",
     images: ["https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&q=80&w=1200"],
   },
+  verification: {
+    google: "KjHKO7e73ZUPTM-QXfTBWqTh4qnjAI0T549GxeW9PaA",
+  },
 };
 
 export default function RootLayout({

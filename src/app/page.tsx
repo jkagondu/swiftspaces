@@ -25,6 +25,7 @@ export default async function Home() {
             <Link href="/agents" className="nav-link nav-link-light">Agents</Link>
             <Link href="/saved" className="nav-link nav-link-light">❤️ Saved</Link>
             <Link href="/manager" className="nav-link nav-link-light">Manager Portal</Link>
+            <Link href="/admin" className="nav-link nav-link-light">Admin Portal</Link>
           </div>
         </div>
       </nav>

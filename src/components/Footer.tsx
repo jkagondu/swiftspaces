@@ -54,6 +54,7 @@ export default function Footer() {
               <li><Link href="/properties" className="footer-link">Browse Properties</Link></li>
               <li><Link href="/agents" className="footer-link">Our Agents</Link></li>
               <li><Link href="/manager" className="footer-link">Manager Portal</Link></li>
+              <li><Link href="/admin" className="footer-link">Admin Portal</Link></li>
               <li><Link href="/register" className="footer-link">List a Property</Link></li>
             </ul>
           </div>
