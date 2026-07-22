@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     
     if (resend) {
       await resend.emails.send({
-        from: 'SwiftSpaces <support@swiftspace.africa>',
+        from: 'SwiftSpaces <onboarding@resend.dev>',
         to: email,
         subject: 'SwiftSpaces - Password Reset Request',
         html: `
