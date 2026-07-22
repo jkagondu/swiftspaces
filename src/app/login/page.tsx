@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { signIn } from "next-auth/react";
+import { signIn, getSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Logo from "@/components/Logo";
@@ -28,7 +28,12 @@ export default function LoginPage() {
       if (res?.error) {
         setError(res.error);
       } else {
-        router.push("/manager");
+        const session = await getSession();
+        if ((session?.user as any)?.role === "ADMIN") {
+          router.push("/admin");
+        } else {
+          router.push("/manager");
+        }
         router.refresh();
       }
     } catch (err) {
