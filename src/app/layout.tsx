@@ -34,6 +34,12 @@ export const metadata: Metadata = {
   verification: {
     google: "KjHKO7e73ZUPTM-QXfTBWqTh4qnjAI0T549GxeW9PaA",
   },
+  manifest: "/manifest.json",
+  appleWebApp: {
+    title: "SwiftSpaces",
+    statusBarStyle: "black-translucent",
+    capable: true,
+  },
 };
 
 export default function RootLayout({
