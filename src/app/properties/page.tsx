@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import AllPropertiesMap from "@/components/AllPropertiesMap";
+import CompareCheckbox from "@/components/CompareCheckbox";
 
 export default function PropertiesPage() {
   const [locationQuery, setLocationQuery] = useState("");
@@ -257,6 +258,9 @@ export default function PropertiesPage() {
                     />
                     <div style={{ position: 'absolute', top: '1rem', right: '1rem', backgroundColor: (property.status === 'SOLD' || property.status === 'RENTED') ? 'rgba(239, 68, 68, 0.9)' : 'rgba(16, 185, 129, 0.9)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700, backdropFilter: 'blur(4px)' }}>
                       {(property.status === 'SOLD' || property.status === 'RENTED') ? 'TAKEN' : property.status.replace('_', ' ')}
+                    </div>
+                    <div style={{ position: 'absolute', top: '3rem', right: '1rem', zIndex: 10 }}>
+                      <CompareCheckbox propertyId={property.id} />
                     </div>
                   </div>
                   

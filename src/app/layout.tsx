@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Providers } from "@/components/Providers";
 import Footer from "@/components/Footer";
+import { CompareProvider } from "@/components/CompareContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -56,12 +57,14 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-            <main style={{ flex: 1 }}>
-              {children}
-            </main>
-            <Footer />
-          </div>
+          <CompareProvider>
+            <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+              <main style={{ flex: 1 }}>
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </CompareProvider>
         </Providers>
       </body>
     </html>

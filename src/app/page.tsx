@@ -3,6 +3,7 @@ import Link from "next/link";
 import prisma from "@/lib/prisma";
 import HeroSlider from "@/components/HeroSlider";
 import Logo from "@/components/Logo";
+import CompareCheckbox from "@/components/CompareCheckbox";
 
 export default async function Home() {
   // Fetch latest 3 properties dynamically from the database
@@ -92,6 +93,9 @@ export default async function Home() {
                     style={{ objectFit: 'cover' }} 
                   />
                   <div className="property-badge">{property.status.replace('_', ' ')}</div>
+                  <div style={{ position: 'absolute', top: '10px', right: '10px', zIndex: 10 }}>
+                    <CompareCheckbox propertyId={property.id} />
+                  </div>
                 </div>
                 
                 <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
