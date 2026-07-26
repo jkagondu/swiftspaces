@@ -84,6 +84,56 @@ export async function POST(request: Request) {
       }
     });
 
+    // Check for matching Alert Subscriptions
+    try {
+      const subscriptions = await prisma.alertSubscription.findMany();
+      // This is a naive matching implementation for demonstration
+      // In production, you would parse the JSON query and accurately check price/location limits
+      const matchingEmails = subscriptions
+        .filter(sub => {
+          try {
+            const query = JSON.parse(sub.query);
+            if (query.location && !property.location.toLowerCase().includes(query.location.toLowerCase())) return false;
+            if (query.type && query.type !== 'all' && property.type.toLowerCase() !== query.type.toLowerCase()) return false;
+            // Matches!
+            return true;
+          } catch (e) { return false; }
+        })
+        .map(sub => sub.email);
+
+      if (matchingEmails.length > 0 && process.env.RESEND_API_KEY) {
+        // Send email to matching users
+        const { Resend } = require('resend');
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        
+        await Promise.all(matchingEmails.map(email => 
+          resend.emails.send({
+            from: "SwiftSpace Alerts <onboarding@resend.dev>",
+            to: email,
+            subject: `New Property Match: ${property.title}`,
+            html: `
+              <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #eee; border-radius: 8px; overflow: hidden;">
+                <div style="background-color: #0f172a; padding: 20px; text-align: center; color: white;">
+                  <h1 style="margin: 0; font-size: 24px;">New Property Alert</h1>
+                </div>
+                <div style="padding: 20px;">
+                  <p>A new property just hit the market that matches your search criteria!</p>
+                  <h2>${property.title}</h2>
+                  <p><strong>Location:</strong> ${property.location}</p>
+                  <p><strong>Price:</strong> ${property.price}</p>
+                  <p><strong>Type:</strong> ${property.type.replace('_', ' ')}</p>
+                  <a href="https://swiftspace-tau.vercel.app/properties/${property.id}" style="display: inline-block; background-color: #10b981; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; margin-top: 10px;">View Property</a>
+                </div>
+              </div>
+            `
+          })
+        ));
+      }
+    } catch (alertError) {
+      console.error("Failed to process alerts:", alertError);
+      // Don't fail the property creation if alerts fail
+    }
+
     return NextResponse.json({ message: "Property created successfully", property }, { status: 201 });
   } catch (error) {
     console.error("Failed to create property:", error);

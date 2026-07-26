@@ -6,6 +6,7 @@ import Link from "next/link";
 import Logo from "@/components/Logo";
 import AllPropertiesMap from "@/components/AllPropertiesMap";
 import CompareCheckbox from "@/components/CompareCheckbox";
+import SaveSearchButton from "@/components/SaveSearchButton";
 
 export default function PropertiesPage() {
   const [locationQuery, setLocationQuery] = useState("");
@@ -215,6 +216,7 @@ export default function PropertiesPage() {
                 {isLocating ? <div style={{ width: '16px', height: '16px', border: '2px solid', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div> : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>}
                 {isNearbyMode ? "Turn Off Near Me" : "Near Me"}
               </button>
+              <SaveSearchButton query={{ location: locationQuery, type: propertyType, minPrice, maxPrice, beds }} />
             </div>
           </div>
 
