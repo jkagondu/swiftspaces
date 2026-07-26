@@ -378,6 +378,18 @@ export default function ManagerDashboard() {
                 <div style={{ fontSize: '2.5rem', fontWeight: 700, color: 'var(--color-primary)' }}>{myListings.filter(p => p.status === 'SOLD' || p.status === 'RENTED').length}</div>
               </div>
               <div className="card" style={{ padding: '1.5rem' }}>
+                <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>Total Property Views</div>
+                <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#3b82f6' }}>
+                  {myListings.reduce((sum, p) => sum + (p.views || 0), 0)}
+                </div>
+              </div>
+              <div className="card" style={{ padding: '1.5rem' }}>
+                <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>Total Favorites/Saves</div>
+                <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#ef4444' }}>
+                  {myListings.reduce((sum, p) => sum + (p.saves || 0), 0)}
+                </div>
+              </div>
+              <div className="card" style={{ padding: '1.5rem' }}>
                 <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>Total Inquiries</div>
                 <div style={{ fontSize: '2.5rem', fontWeight: 700, color: '#f59e0b' }}>{inquiries.length}</div>
               </div>
@@ -718,9 +730,24 @@ export default function ManagerDashboard() {
                       </div>
                       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                         <div>
-                          <h3 style={{ fontSize: '1.125rem', fontWeight: 600 }}>{property.title}</h3>
-                          <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.location}</div>
-                          <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary)', marginTop: '0.25rem' }}>{property.price}</div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <div>
+                              <h3 style={{ fontSize: '1.125rem', fontWeight: 600 }}>{property.title}</h3>
+                              <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.location}</div>
+                              <div style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-primary)', marginTop: '0.25rem' }}>{property.price}</div>
+                            </div>
+                            <div style={{ display: 'flex', gap: '1rem', backgroundColor: 'var(--color-surface-secondary)', padding: '0.5rem 1rem', borderRadius: '8px', border: '1px solid var(--color-border)' }}>
+                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Views</span>
+                                <span style={{ fontSize: '1.125rem', fontWeight: 700, color: 'var(--color-navy)' }}>{property.views || 0}</span>
+                              </div>
+                              <div style={{ width: '1px', backgroundColor: 'var(--color-border)' }}></div>
+                              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', fontWeight: 600, textTransform: 'uppercase' }}>Saves</span>
+                                <span style={{ fontSize: '1.125rem', fontWeight: 700, color: '#ef4444' }}>{property.saves || 0}</span>
+                              </div>
+                            </div>
+                          </div>
                         </div>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', marginTop: '1rem' }}>
                           <button onClick={() => {

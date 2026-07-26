@@ -43,6 +43,12 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
     notFound();
   }
 
+  // Increment views
+  await prisma.property.update({
+    where: { id },
+    data: { views: { increment: 1 } }
+  });
+
   // Use the multiple images array, or fallback to a placeholder
   const images = property.images && property.images.length > 0 
     ? property.images 

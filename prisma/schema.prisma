@@ -105,6 +105,10 @@ model Property {
   beds          Int            @default(0)
   baths         Int            @default(0)
   
+  // Analytics
+  views         Int            @default(0)
+  saves         Int            @default(0)
+  
   // Foreign Key linking to the Agent who posted this
   agentId       String
   agent         User           @relation("AgentProperties", fields: [agentId], references: [id], onDelete: Cascade)
@@ -132,4 +136,11 @@ model Inquiry {
   property      Property    @relation(fields: [propertyId], references: [id], onDelete: Cascade)
   
   createdAt     DateTime    @default(now())
+}
+
+model AlertSubscription {
+  id        String   @id @default(uuid())
+  email     String
+  query     String   // Store search criteria as JSON string
+  createdAt DateTime @default(now())
 }

@@ -83,7 +83,7 @@ export default function SavePropertyButton({
     setIsSaved(isPropertySaved(property.id));
   }, [property.id, isPropertySaved]);
 
-  const handleClick = (e: React.MouseEvent) => {
+  const handleClick = async (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     const savedProperty: SavedProperty = {
@@ -96,10 +96,23 @@ export default function SavePropertyButton({
       baths: property.baths,
       savedAt: "",
     };
+    
+    const willSave = !isSaved;
     setAnimating(true);
     setTimeout(() => setAnimating(false), 400);
     toggleSave(savedProperty);
-    setIsSaved((prev) => !prev);
+    setIsSaved(willSave);
+    
+    // Call API to update agent analytics
+    try {
+      await fetch(`/api/properties/${property.id}/save`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: willSave ? 'save' : 'unsave' })
+      });
+    } catch (e) {
+      console.error("Failed to update analytics", e);
+    }
   };
 
   const iconSize = size === "sm" ? 16 : 20;
