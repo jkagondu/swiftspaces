@@ -113,6 +113,23 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
           {/* Image Carousel Component */}
           <ImageCarousel images={images} status={property.status} />
 
+          {(property.virtualTourUrl || property.videoUrl) && (
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '-1rem' }}>
+              {property.virtualTourUrl && (
+                <a href={property.virtualTourUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', borderRadius: '8px' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M2 12h4l3-9 5 18 3-9h5"></path></svg>
+                  View 3D Tour
+                </a>
+              )}
+              {property.videoUrl && (
+                <a href={property.videoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', borderRadius: '8px' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
+                  Watch Video
+                </a>
+              )}
+            </div>
+          )}
+
           {/* Property Features */}
           <div className="card" style={{ padding: '2rem', display: 'flex', gap: '3rem', border: '1px solid var(--color-border)', flexWrap: 'wrap' }}>
             <div>
@@ -158,24 +175,21 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
           </div>
 
           {/* Premium Amenities */}
-          <div className="card" style={{ padding: '2rem' }}>
-            <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Premium Amenities</h2>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
-              {[
-                { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg>, text: "High-Speed Wi-Fi" },
-                { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>, text: "24/7 Security" },
-                { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>, text: "Secure Parking" },
-                { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>, text: "Fitness Center" },
-                { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><path d="M8 14s1.5 2 4 2 4-2 4-2"></path><line x1="9" y1="9" x2="9.01" y2="9"></line><line x1="15" y1="9" x2="15.01" y2="9"></line></svg>, text: "Pet Friendly" },
-                { icon: <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 2v20"></path><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>, text: "No Hidden Fees" }
-              ].map((amenity, idx) => (
-                <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--color-text-main)', fontSize: '1rem' }}>
-                  <div style={{ color: 'var(--color-primary)' }}>{amenity.icon}</div>
-                  {amenity.text}
-                </div>
-              ))}
+          {property.amenities && property.amenities.length > 0 && (
+            <div className="card" style={{ padding: '2rem' }}>
+              <h2 style={{ fontSize: '1.5rem', marginBottom: '1.5rem' }}>Premium Amenities</h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '1rem' }}>
+                {property.amenities.map((amenity, idx) => (
+                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--color-text-main)', fontSize: '1rem' }}>
+                    <div style={{ color: 'var(--color-primary)' }}>
+                      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    {amenity}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Map Location */}
           {property.latitude && property.longitude && (

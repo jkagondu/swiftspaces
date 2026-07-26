@@ -13,7 +13,7 @@ export default function Footer() {
       <div className="container">
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '3rem', justifyContent: 'space-between', marginBottom: '3rem' }}>
           
-          {/* Column 1: Brand */}
+          {/* Column 1: Brand & Contact */}
           <div style={{ flex: '1 1 300px' }}>
             <Link href="/" style={{ textDecoration: 'none', display: 'inline-block', marginBottom: '1.5rem' }}>
               <Logo width={32} height={32} invertText={true} />
@@ -21,6 +21,11 @@ export default function Footer() {
             <p style={{ lineHeight: 1.6, marginBottom: '1.5rem' }}>
               The premium destination to find, buy, and rent luxury properties, homes, and vacant land worldwide.
             </p>
+            <div style={{ marginBottom: '1.5rem', fontSize: '0.95rem' }}>
+              <p style={{ margin: '0.25rem 0' }}><strong>Email:</strong> support@swiftspaces.com</p>
+              <p style={{ margin: '0.25rem 0' }}><strong>Phone:</strong> +1 (555) 123-4567</p>
+              <p style={{ margin: '0.25rem 0' }}><strong>Address:</strong> 123 Real Estate Blvd, Suite 100, NY 10001</p>
+            </div>
             <div style={{ display: 'flex', gap: '1rem' }}>
               {/* Social Placeholders */}
               <a href="#" aria-label="Twitter" className="footer-social-link">

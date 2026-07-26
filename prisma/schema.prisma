@@ -95,6 +95,9 @@ model Property {
   longitude     Float?
   price         String         
   images        String[]       // Array of URLs for multiple property photos
+  amenities     String[]       @default([]) // Array of premium amenities
+  videoUrl      String?        // YouTube/Vimeo link
+  virtualTourUrl String?       // Matterport 3D tour iframe link
   
   type          PropertyType
   status        PropertyStatus @default(FOR_RENT)
@@ -119,6 +122,10 @@ model Inquiry {
   customerEmail String
   customerPhone String?
   message       String      @db.Text
+  
+  // Tour Request Fields
+  isTourRequest Boolean     @default(false)
+  tourDate      DateTime?
   
   // Foreign Key linking to the Property
   propertyId    String

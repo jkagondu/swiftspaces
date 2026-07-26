@@ -23,6 +23,8 @@ export default function ManagerDashboard() {
     baths: "",
     latitude: "",
     longitude: "",
+    videoUrl: "",
+    virtualTourUrl: "",
   });
   
   const [editingPropertyId, setEditingPropertyId] = useState<string | null>(null);
@@ -290,7 +292,7 @@ export default function ManagerDashboard() {
             onClick={() => {
               setActiveTab("add_property");
               setEditingPropertyId(null);
-              setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "" });
+              setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "" });
               setUploadedImageUrls([]);
               setIsSidebarOpen(false);
             }}
@@ -536,6 +538,18 @@ export default function ManagerDashboard() {
                   <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>If left blank, coordinates will be automatically guessed based on your Location/Address.</div>
                 </div>
 
+                {/* Grid for Virtual Tour & Video (Optional) */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Virtual 3D Tour URL (Optional)</label>
+                    <input name="virtualTourUrl" value={formData.virtualTourUrl} onChange={handleInputChange} type="url" placeholder="e.g. Matterport link" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>YouTube Video URL (Optional)</label>
+                    <input name="videoUrl" value={formData.videoUrl} onChange={handleInputChange} type="url" placeholder="e.g. YouTube link" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  </div>
+                </div>
+
                 {/* Grid for Type & Status */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -572,7 +586,7 @@ export default function ManagerDashboard() {
                   {editingPropertyId && (
                     <button type="button" onClick={() => {
                       setEditingPropertyId(null);
-                      setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "" });
+                      setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "" });
                       setUploadedImageUrls([]);
                       setActiveTab("my_listings");
                     }} className="btn btn-outline" style={{ padding: '0.75rem 2rem', marginLeft: '1rem' }}>
@@ -636,6 +650,13 @@ export default function ManagerDashboard() {
                           <div style={{ fontSize: '0.875rem', color: 'var(--color-primary)', fontWeight: 600, marginBottom: '0.5rem' }}>
                             Property: {inquiry.property?.title || 'Unknown Property'}
                           </div>
+                          
+                          {inquiry.isTourRequest && (
+                            <div style={{ display: 'inline-block', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, marginBottom: '0.5rem' }}>
+                              🗓️ Tour Request: {inquiry.tourDate ? new Date(inquiry.tourDate).toLocaleString('en-US', { dateStyle: 'medium', timeStyle: 'short' }) : 'Date not specified'}
+                            </div>
+                          )}
+
                           <div style={{ padding: '1rem', backgroundColor: 'var(--color-surface-secondary)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', marginBottom: '1rem', fontSize: '0.875rem', lineHeight: 1.6, color: 'var(--color-text-main)' }}>
                             "{inquiry.message}"
                           </div>
@@ -715,6 +736,8 @@ export default function ManagerDashboard() {
                               baths: property.baths?.toString() || "",
                               latitude: property.latitude?.toString() || "",
                               longitude: property.longitude?.toString() || "",
+                              videoUrl: property.videoUrl || "",
+                              virtualTourUrl: property.virtualTourUrl || "",
                             });
                             setUploadedImageUrls(property.images || []);
                             setActiveTab("add_property");

@@ -9,6 +9,8 @@ export default function InquiryForm({ propertyId }: { propertyId: string }) {
     phone: "",
     message: "",
   });
+  const [isTourRequest, setIsTourRequest] = useState(false);
+  const [tourDate, setTourDate] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState("");
@@ -27,7 +29,12 @@ export default function InquiryForm({ propertyId }: { propertyId: string }) {
       const res = await fetch("/api/inquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData, propertyId }),
+        body: JSON.stringify({ 
+          ...formData, 
+          propertyId, 
+          isTourRequest, 
+          tourDate: isTourRequest ? (tourDate ? new Date(tourDate).toISOString() : null) : null 
+        }),
       });
 
       if (!res.ok) {
@@ -37,6 +44,7 @@ export default function InquiryForm({ propertyId }: { propertyId: string }) {
 
       setSuccess(true);
       setFormData({ name: "", email: "", phone: "", message: "" });
+      setTourDate("");
     } catch (err: any) {
       setError(err.message);
     } finally {
@@ -48,7 +56,7 @@ export default function InquiryForm({ propertyId }: { propertyId: string }) {
     return (
       <div style={{ padding: '2rem', textAlign: 'center', backgroundColor: 'rgba(16, 185, 129, 0.1)', border: '1px solid #10b981', color: '#047857', borderRadius: 'var(--radius-md)' }}>
         <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>✅</div>
-        <h4 style={{ fontWeight: 600, marginBottom: '0.25rem' }}>Message Sent!</h4>
+        <h4 style={{ fontWeight: 600, marginBottom: '0.25rem' }}>{isTourRequest ? "Tour Requested!" : "Message Sent!"}</h4>
         <p style={{ fontSize: '0.875rem' }}>The agent will get back to you shortly.</p>
         <button onClick={() => setSuccess(false)} style={{ marginTop: '1rem', background: 'none', border: 'none', color: '#10b981', textDecoration: 'underline', cursor: 'pointer' }}>Send another message</button>
       </div>
@@ -57,11 +65,55 @@ export default function InquiryForm({ propertyId }: { propertyId: string }) {
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      {/* Request Type Toggle */}
+      <div style={{ display: "flex", background: "var(--color-surface-secondary)", borderRadius: "8px", padding: "4px", border: "1px solid var(--color-border)" }}>
+        <button
+          type="button"
+          onClick={() => setIsTourRequest(false)}
+          style={{
+            flex: 1, padding: "0.6rem", borderRadius: "6px", border: "none", cursor: "pointer",
+            fontWeight: 600, fontSize: "0.875rem", transition: "all 0.2s",
+            background: !isTourRequest ? "white" : "transparent",
+            color: !isTourRequest ? "var(--color-primary)" : "var(--color-text-muted)",
+            boxShadow: !isTourRequest ? "var(--shadow-sm)" : "none",
+          }}
+        >
+          ✉️ Ask a Question
+        </button>
+        <button
+          type="button"
+          onClick={() => setIsTourRequest(true)}
+          style={{
+            flex: 1, padding: "0.6rem", borderRadius: "6px", border: "none", cursor: "pointer",
+            fontWeight: 600, fontSize: "0.875rem", transition: "all 0.2s",
+            background: isTourRequest ? "white" : "transparent",
+            color: isTourRequest ? "var(--color-primary)" : "var(--color-text-muted)",
+            boxShadow: isTourRequest ? "var(--shadow-sm)" : "none",
+          }}
+        >
+          🗓️ Schedule a Tour
+        </button>
+      </div>
+
       {error && (
         <div style={{ padding: '0.75rem', backgroundColor: 'rgba(239, 68, 68, 0.1)', border: '1px solid #ef4444', color: '#b91c1c', borderRadius: 'var(--radius-md)', fontSize: '0.875rem' }}>
           {error}
         </div>
       )}
+
+      {isTourRequest && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>
+          <label style={{ fontSize: '0.875rem', fontWeight: 600 }}>Preferred Date & Time</label>
+          <input 
+            type="datetime-local" 
+            value={tourDate}
+            onChange={(e) => setTourDate(e.target.value)}
+            required={isTourRequest}
+            style={{ padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none', width: '100%' }}
+          />
+        </div>
+      )}
+
       <input 
         type="text" 
         name="name"
@@ -92,13 +144,13 @@ export default function InquiryForm({ propertyId }: { propertyId: string }) {
         name="message"
         value={formData.message}
         onChange={handleChange}
-        placeholder="Hi, I'm interested in this property..." 
+        placeholder={isTourRequest ? "Any specific requirements for the tour?" : "Hi, I'm interested in this property..."} 
         rows={4} 
         required 
         style={{ padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none', resize: 'vertical' }}
       ></textarea>
       <button type="submit" disabled={isSubmitting} className="btn btn-primary" style={{ padding: '1rem', width: '100%', fontSize: '1rem', opacity: isSubmitting ? 0.7 : 1 }}>
-        {isSubmitting ? "Sending..." : "Send Inquiry"}
+        {isSubmitting ? "Sending..." : (isTourRequest ? "Request Tour" : "Send Inquiry")}
       </button>
     </form>
   );

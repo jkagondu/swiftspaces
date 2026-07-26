@@ -38,7 +38,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, message, propertyId } = body;
+    const { name, email, phone, message, propertyId, isTourRequest, tourDate } = body;
 
     if (!name || !email || !message || !propertyId) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
@@ -59,7 +59,9 @@ export async function POST(request: Request) {
         customerEmail: email,
         customerPhone: phone,
         message,
-        propertyId
+        propertyId,
+        isTourRequest: isTourRequest || false,
+        tourDate: tourDate ? new Date(tourDate) : null
       }
     });
 
@@ -67,21 +69,38 @@ export async function POST(request: Request) {
     const resendKey = process.env.RESEND_API_KEY;
     if (resendKey) {
       const resend = new Resend(resendKey);
+      
+      const emailSubject = isTourRequest 
+        ? `🗓️ Tour Request: ${property.title}` 
+        : `New Lead: ${property.title}`;
+        
+      const tourDateFormatted = tourDate 
+        ? new Date(tourDate).toLocaleString('en-US', { dateStyle: 'full', timeStyle: 'short' })
+        : 'Not specified';
+
       try {
         await resend.emails.send({
           from: 'SwiftSpaces Leads <onboarding@resend.dev>', // Use onboarding email for testing without a domain
           to: property.agent.email,
-          subject: `New Lead: ${property.title}`,
+          subject: emailSubject,
           html: `
             <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden;">
-              <div style="background-color: #0F172A; padding: 20px; color: white;">
-                <h2 style="margin: 0;">New Property Inquiry</h2>
-                <p style="margin: 5px 0 0 0; color: #94a3b8;">${property.title}</p>
+              <div style="background-color: ${isTourRequest ? '#3b82f6' : '#0F172A'}; padding: 20px; color: white;">
+                <h2 style="margin: 0;">${isTourRequest ? 'New Tour Request' : 'New Property Inquiry'}</h2>
+                <p style="margin: 5px 0 0 0; color: #f1f5f9;">${property.title}</p>
               </div>
               <div style="padding: 20px; background-color: white;">
                 <p><strong>Name:</strong> ${name}</p>
                 <p><strong>Email:</strong> ${email}</p>
                 <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+                
+                ${isTourRequest ? `
+                <div style="margin-top: 15px; padding: 10px; background-color: #eff6ff; border-left: 4px solid #3b82f6; border-radius: 4px;">
+                  <strong>Requested Date/Time:</strong><br/>
+                  ${tourDateFormatted}
+                </div>
+                ` : ''}
+
                 <div style="margin-top: 20px; padding: 15px; background-color: #F4F6F9; border-left: 4px solid #10B981; border-radius: 4px;">
                   <p style="margin: 0; color: #1E293B;">"${message}"</p>
                 </div>
