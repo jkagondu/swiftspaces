@@ -213,15 +213,15 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
               <div style={{ padding: '1.5rem 2rem', background: 'var(--color-surface-secondary)', display: 'flex', gap: '1.5rem', borderTop: '1px solid var(--color-border)', flexWrap: 'wrap' }}>
                 <div style={{ flex: 1 }}>
                   <strong style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-navy)', marginBottom: '0.25rem' }}>Transit Score</strong>
-                  <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>85/100 (Excellent Transit)</span>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.transitScore || "Not specified"}</span>
                 </div>
                 <div style={{ flex: 1 }}>
                   <strong style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-navy)', marginBottom: '0.25rem' }}>Walkability</strong>
-                  <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Very Walkable neighborhood</span>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.walkability || "Not specified"}</span>
                 </div>
                 <div style={{ flex: 1 }}>
                   <strong style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-navy)', marginBottom: '0.25rem' }}>Nearby Places</strong>
-                  <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Supermarkets, Cafes, Schools</span>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.nearbyPlaces || "Not specified"}</span>
                 </div>
               </div>
             </div>

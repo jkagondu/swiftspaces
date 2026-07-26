@@ -109,6 +109,11 @@ model Property {
   views         Int            @default(0)
   saves         Int            @default(0)
   
+  // Neighborhood Insights
+  transitScore  String?
+  walkability   String?
+  nearbyPlaces  String?
+  
   // Foreign Key linking to the Agent who posted this
   agentId       String
   agent         User           @relation("AgentProperties", fields: [agentId], references: [id], onDelete: Cascade)

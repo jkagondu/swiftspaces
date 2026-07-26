@@ -25,6 +25,9 @@ export default function ManagerDashboard() {
     longitude: "",
     videoUrl: "",
     virtualTourUrl: "",
+    transitScore: "",
+    walkability: "",
+    nearbyPlaces: "",
   });
   
   const [editingPropertyId, setEditingPropertyId] = useState<string | null>(null);
@@ -292,7 +295,7 @@ export default function ManagerDashboard() {
             onClick={() => {
               setActiveTab("add_property");
               setEditingPropertyId(null);
-              setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "" });
+              setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "" });
               setUploadedImageUrls([]);
               setIsSidebarOpen(false);
             }}
@@ -562,6 +565,22 @@ export default function ManagerDashboard() {
                   </div>
                 </div>
 
+                {/* Neighborhood Insights */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', background: 'var(--color-surface-secondary)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Transit Score (Optional)</label>
+                    <input name="transitScore" value={formData.transitScore} onChange={handleInputChange} type="text" placeholder="e.g. 85/100 (Excellent Transit)" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Walkability (Optional)</label>
+                    <input name="walkability" value={formData.walkability} onChange={handleInputChange} type="text" placeholder="e.g. Very Walkable Neighborhood" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Nearby Places (Optional)</label>
+                    <input name="nearbyPlaces" value={formData.nearbyPlaces} onChange={handleInputChange} type="text" placeholder="e.g. Supermarkets, Schools" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  </div>
+                </div>
+
                 {/* Grid for Type & Status */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -598,7 +617,7 @@ export default function ManagerDashboard() {
                   {editingPropertyId && (
                     <button type="button" onClick={() => {
                       setEditingPropertyId(null);
-                      setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "" });
+                      setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "" });
                       setUploadedImageUrls([]);
                       setActiveTab("my_listings");
                     }} className="btn btn-outline" style={{ padding: '0.75rem 2rem', marginLeft: '1rem' }}>
@@ -765,6 +784,9 @@ export default function ManagerDashboard() {
                               longitude: property.longitude?.toString() || "",
                               videoUrl: property.videoUrl || "",
                               virtualTourUrl: property.virtualTourUrl || "",
+                              transitScore: property.transitScore || "",
+                              walkability: property.walkability || "",
+                              nearbyPlaces: property.nearbyPlaces || "",
                             });
                             setUploadedImageUrls(property.images || []);
                             setActiveTab("add_property");

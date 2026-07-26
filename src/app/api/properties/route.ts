@@ -39,7 +39,7 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, description, location, price, type, status, beds, baths, agentId, images, latitude: providedLat, longitude: providedLng } = body;
+    const { title, description, location, price, type, status, beds, baths, agentId, images, latitude: providedLat, longitude: providedLng, transitScore, walkability, nearbyPlaces } = body;
 
     // Validation
     if (!title || !location || !price || !agentId) {
@@ -80,7 +80,10 @@ export async function POST(request: Request) {
         latitude,
         longitude,
         agentId,
-        images: images || []
+        images: images || [],
+        transitScore: transitScore || null,
+        walkability: walkability || null,
+        nearbyPlaces: nearbyPlaces || null,
       }
     });
 
