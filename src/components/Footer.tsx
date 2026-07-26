@@ -22,9 +22,9 @@ export default function Footer() {
               The premium destination to find, buy, and rent luxury properties, homes, and vacant land worldwide.
             </p>
             <div style={{ marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-              <p style={{ margin: '0.25rem 0' }}><strong>Email:</strong> support@swiftspaces.com</p>
-              <p style={{ margin: '0.25rem 0' }}><strong>Phone:</strong> +1 (555) 123-4567</p>
-              <p style={{ margin: '0.25rem 0' }}><strong>Address:</strong> 123 Real Estate Blvd, Suite 100, NY 10001</p>
+              <p style={{ margin: '0.25rem 0' }}><strong>Email:</strong> support@swiftspace.africa</p>
+              <p style={{ margin: '0.25rem 0' }}><strong>Phone:</strong> +254757160517</p>
+              <p style={{ margin: '0.25rem 0' }}><strong>Address:</strong> Nairobi, Kenya</p>
             </div>
             <div style={{ display: 'flex', gap: '1rem' }}>
               {/* Social Placeholders */}
