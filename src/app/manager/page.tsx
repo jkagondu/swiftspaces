@@ -222,7 +222,7 @@ export default function ManagerDashboard() {
 
       setSuccessMessage(editingPropertyId ? "Property updated successfully!" : "Property published successfully to the live site!");
       setFormData({
-        title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: ""
+        title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: ""
       });
       setUploadedImageUrls([]);
       setEditingPropertyId(null);
