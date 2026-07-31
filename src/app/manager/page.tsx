@@ -118,6 +118,25 @@ export default function ManagerDashboard() {
     }
   };
 
+  const handleSubscribe = async (plan: string, amount: number) => {
+    try {
+      const res = await fetch("/api/payments/paystack", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ plan, amount }),
+      });
+      const data = await res.json();
+      if (data.authorization_url) {
+        window.location.href = data.authorization_url; // Redirect to Paystack checkout
+      } else {
+        alert(data.error || "Payment initialization failed");
+      }
+    } catch (error) {
+      console.error(error);
+      alert("An error occurred while initializing payment.");
+    }
+  };
+
   if (status === "loading" || status === "unauthenticated") {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>Loading...</div>;
   }
@@ -346,6 +365,23 @@ export default function ManagerDashboard() {
           >
             Client Inquiries
           </button>
+          <button 
+            onClick={() => { setActiveTab("billing"); setIsSidebarOpen(false); }}
+            style={{
+              padding: '0.75rem 1rem',
+              borderRadius: 'var(--radius-md)',
+              textAlign: 'left',
+              backgroundColor: activeTab === "billing" ? 'var(--color-primary-light)' : 'transparent',
+              color: activeTab === "billing" ? 'var(--color-primary)' : 'var(--color-text-main)',
+              fontWeight: activeTab === "billing" ? 600 : 400,
+              border: 'none',
+              transition: 'all 0.2s ease',
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '0.75rem'
+            }}
+          >
+            Billing & Subscriptions
+          </button>
         </nav>
 
         <div style={{ padding: '1.5rem', borderTop: '1px solid var(--color-border)' }}>
@@ -429,6 +465,7 @@ export default function ManagerDashboard() {
           </div>
         )}
 
+        {/* --- ADD PROPERTY TAB --- */}
         {activeTab === "add_property" && (
           <div className="animate-fade-in" style={{ maxWidth: '800px' }}>
             <h1 className="heading-2" style={{ marginBottom: '2rem' }}>{editingPropertyId ? "Edit Property" : "Add New Property"}</h1>
@@ -808,6 +845,56 @@ export default function ManagerDashboard() {
                   ))}
                 </div>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* --- BILLING TAB --- */}
+        {activeTab === "billing" && (
+          <div className="card animate-fade-in" style={{ padding: '2.5rem' }}>
+            <div style={{ marginBottom: '2.5rem', textAlign: 'center' }}>
+              <h1 className="heading-2" style={{ marginBottom: '0.5rem' }}>Upgrade Your Agency</h1>
+              <p style={{ color: 'var(--color-text-muted)', maxWidth: '600px', margin: '0 auto' }}>Choose a premium plan to unlock unlimited listings, verified badges, and priority support.</p>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
+              
+              {/* Premium Plan */}
+              <div style={{ border: '2px solid var(--color-primary)', borderRadius: '16px', padding: '2rem', position: 'relative', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-surface)' }}>
+                <div style={{ position: 'absolute', top: '-12px', left: '50%', transform: 'translateX(-50%)', backgroundColor: 'var(--color-primary)', color: 'white', padding: '4px 16px', borderRadius: '20px', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.05em' }}>MOST POPULAR</div>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', textAlign: 'center' }}>Agent Premium</h3>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, textAlign: 'center', marginBottom: '1.5rem', color: 'var(--color-navy)' }}>
+                  KES 2,500 <span style={{ fontSize: '1rem', color: 'var(--color-text-muted)', fontWeight: 400 }}>/mo</span>
+                </div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0', flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Unlimited Property Listings</li>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Verified Agent Blue Checkmark</li>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Priority Search Ranking</li>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Direct M-Pesa API Integration</li>
+                </ul>
+                <button onClick={() => handleSubscribe("PREMIUM", 2500)} style={{ padding: '1rem', borderRadius: '8px', border: 'none', backgroundColor: 'var(--color-primary)', color: 'white', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '0.5rem', transition: 'opacity 0.2s' }} onMouseOver={(e) => e.currentTarget.style.opacity = '0.9'} onMouseOut={(e) => e.currentTarget.style.opacity = '1'}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="5" width="20" height="14" rx="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+                  Pay with Paystack
+                </button>
+              </div>
+
+              {/* Agency Pro Plan */}
+              <div style={{ border: '1px solid var(--color-border)', borderRadius: '16px', padding: '2rem', display: 'flex', flexDirection: 'column', backgroundColor: 'var(--color-surface-secondary)' }}>
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', textAlign: 'center' }}>Agency Pro</h3>
+                <div style={{ fontSize: '2.5rem', fontWeight: 800, textAlign: 'center', marginBottom: '1.5rem', color: 'var(--color-navy)' }}>
+                  KES 10,000 <span style={{ fontSize: '1rem', color: 'var(--color-text-muted)', fontWeight: 400 }}>/mo</span>
+                </div>
+                <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 2rem 0', flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Everything in Premium</li>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Up to 10 Sub-Agents</li>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg> Featured Company Banner</li>
+                  <li style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.875rem' }}><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg> 24/7 Dedicated Support</li>
+                </ul>
+                <button onClick={() => handleSubscribe("PRO", 10000)} style={{ padding: '1rem', borderRadius: '8px', border: '1px solid var(--color-primary)', backgroundColor: 'transparent', color: 'var(--color-primary)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', width: '100%', transition: 'background-color 0.2s' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'var(--color-primary-light)'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                  Upgrade to Pro
+                </button>
+              </div>
+
             </div>
           </div>
         )}
