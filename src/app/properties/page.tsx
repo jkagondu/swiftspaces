@@ -271,10 +271,26 @@ export default function PropertiesPage() {
                       <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-primary)' }}>{property.price.split('/')[0]}</span>
                     </div>
                     <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-navy)', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{property.title}</h3>
-                    <p style={{ color: 'var(--color-text-muted)', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.8rem' }}>
-                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                      {property.location}
-                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                      <p style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.8rem', margin: 0 }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                        {property.location}
+                      </p>
+                      {property.latitude && property.longitude && (
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.open(`https://www.google.com/maps/dir/?api=1&destination=${property.latitude},${property.longitude}`, '_blank');
+                          }}
+                          style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem', fontWeight: 600, borderRadius: '4px', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(16, 185, 129, 0.2)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', transition: 'all 0.2s' }}
+                          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)'}
+                          onMouseOut={(e) => e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)'}
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
+                          Directions
+                        </button>
+                      )}
+                    </div>
                     <div style={{ display: 'flex', gap: '1rem', fontSize: '0.875rem', color: 'var(--color-text-main)', marginTop: 'auto', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
                       {property.beds > 0 && <span><strong>{property.beds}</strong> bd</span>}
                       <span><strong>{property.baths}</strong> ba</span>
