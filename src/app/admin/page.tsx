@@ -117,6 +117,29 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleVerifyAgent = async (agentId: string, isVerified: boolean) => {
+    try {
+      const res = await fetch("/api/admin/agents", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ agentId, isVerified }),
+      });
+
+      if (res.ok) {
+        setAgents(prev => prev.map((agent: any) => 
+          agent.id === agentId ? { ...agent, isVerified } : agent
+        ));
+        if (selectedAgent && selectedAgent.id === agentId) {
+          setSelectedAgent({ ...selectedAgent, isVerified });
+        }
+      } else {
+        alert("Failed to update verification status");
+      }
+    } catch (error) {
+      console.error("Error updating verification:", error);
+    }
+  };
+
   if (status === "loading" || status === "unauthenticated") {
     return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', backgroundColor: '#0f172a', color: 'white' }}>Loading...</div>;
   }
@@ -468,6 +491,23 @@ export default function AdminDashboard() {
                     <div>
                       <strong style={{ color: '#cbd5e1' }}>Status: </strong> 
                       <span style={{ color: selectedAgent.agentStatus === 'ACTIVE' ? '#10b981' : selectedAgent.agentStatus === 'SUSPENDED' ? '#ef4444' : '#f59e0b', fontWeight: 600 }}>{selectedAgent.agentStatus}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                      <strong style={{ color: '#cbd5e1' }}>Verification: </strong>
+                      {selectedAgent.isVerified ? (
+                        <span style={{ color: '#38bdf8', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                          <svg width="14" height="14" viewBox="0 0 24 24" fill="#38bdf8" stroke="white" strokeWidth="2"><polygon points="12 2 15.09 5.09 19.5 4.5 21 8.91 24 12 21 15.09 19.5 19.5 15.09 18.91 12 22 8.91 18.91 4.5 19.5 3 15.09 0 12 3 8.91 4.5 4.5 8.91 5.09 12 2"></polygon><polyline points="9 12 11 14 15 10"></polyline></svg>
+                          Verified
+                        </span>
+                      ) : (
+                        <span style={{ color: '#94a3b8' }}>Not Verified</span>
+                      )}
+                      <button 
+                        onClick={() => handleVerifyAgent(selectedAgent.id, !selectedAgent.isVerified)}
+                        style={{ marginLeft: 'auto', padding: '0.25rem 0.75rem', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 600, cursor: 'pointer', backgroundColor: selectedAgent.isVerified ? 'transparent' : '#38bdf8', color: selectedAgent.isVerified ? '#94a3b8' : 'white', border: selectedAgent.isVerified ? '1px solid #475569' : 'none' }}
+                      >
+                        {selectedAgent.isVerified ? 'Revoke Verification' : 'Verify Agent'}
+                      </button>
                     </div>
                     <div><strong style={{ color: '#cbd5e1' }}>Subscription:</strong> {selectedAgent.subscriptionPlan || "FREE_TRIAL"}</div>
                     <div><strong style={{ color: '#cbd5e1' }}>Total Properties:</strong> {selectedAgent._count?.properties || 0}</div>

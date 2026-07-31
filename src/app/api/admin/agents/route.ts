@@ -43,17 +43,19 @@ export async function PUT(request: Request) {
     }
 
     const body = await request.json();
-    const { agentId, newStatus } = body;
+    const { agentId, newStatus, isVerified } = body;
 
-    if (!agentId || !newStatus) {
-      return NextResponse.json({ error: "Missing agentId or newStatus" }, { status: 400 });
+    if (!agentId) {
+      return NextResponse.json({ error: "Missing agentId" }, { status: 400 });
     }
+
+    const dataToUpdate: any = {};
+    if (newStatus !== undefined) dataToUpdate.agentStatus = newStatus;
+    if (isVerified !== undefined) dataToUpdate.isVerified = isVerified;
 
     const updatedAgent = await prisma.user.update({
       where: { id: agentId },
-      data: {
-        agentStatus: newStatus as any
-      }
+      data: dataToUpdate
     });
 
     return NextResponse.json({ message: "Agent status updated successfully", agent: updatedAgent }, { status: 200 });

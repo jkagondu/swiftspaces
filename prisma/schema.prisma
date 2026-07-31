@@ -56,6 +56,7 @@ model User {
   agencyName    String?
   phoneNumber   String?
   agentStatus   AgentStatus @default(PENDING) // Used by admins to approve/suspend
+  isVerified    Boolean     @default(false) // Blue checkmark for anti-scam
   
   // Billing & Subscription
   subscriptionPlan String      @default("FREE_TRIAL") // e.g., FREE_TRIAL, PREMIUM, PRO
@@ -71,6 +72,15 @@ model User {
   
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+}
+
+model Report {
+  id          String   @id @default(uuid())
+  reason      String   @db.Text
+  propertyId  String
+  property    Property @relation("PropertyReports", fields: [propertyId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  status      String   @default("PENDING") // PENDING, REVIEWED
 }
 
 model Review {
@@ -120,6 +130,9 @@ model Property {
   
   // Inquiries made on this property
   inquiries     Inquiry[]
+  
+  // Anti-scam reports
+  reports       Report[]       @relation("PropertyReports")
   
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt

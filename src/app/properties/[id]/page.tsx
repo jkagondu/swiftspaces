@@ -232,14 +232,31 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
         <div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'sticky', top: '100px' }}>
             {/* Contact Agent Card */}
-            <div className="card" style={{ padding: '2rem' }}>
+            <div className="card" style={{ padding: '2rem', position: 'relative' }}>
+              <button 
+                onClick={() => alert("Report has been submitted to the SwiftSpaces Admin team for investigation.")}
+                style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ef4444', fontSize: '0.75rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: 'pointer', padding: '0.25rem 0.5rem', borderRadius: '4px' }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                title="Report this listing as a scam"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
+                Report
+              </button>
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--color-border)' }}>
                 <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'var(--color-primary-light)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1.5rem' }}>
                   {property.agent?.agencyName ? property.agent.agencyName.charAt(0) : 'A'}
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>{property.agent?.agencyName || 'Platform Agent'}</h3>
-                  <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Verified Agent</p>
+                  <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    {property.agent?.agencyName || 'Platform Agent'}
+                    {property.agent?.isVerified && (
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#38bdf8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" title="Verified Agent"><polygon points="12 2 15.09 5.09 19.5 4.5 21 8.91 24 12 21 15.09 19.5 19.5 15.09 18.91 12 22 8.91 18.91 4.5 19.5 3 15.09 0 12 3 8.91 4.5 4.5 8.91 5.09 12 2"></polygon><polyline points="9 12 11 14 15 10"></polyline></svg>
+                    )}
+                  </h3>
+                  <p style={{ fontSize: '0.875rem', color: property.agent?.isVerified ? '#38bdf8' : 'var(--color-text-muted)' }}>
+                    {property.agent?.isVerified ? 'Verified Agent' : 'Standard Agent'}
+                  </p>
                   {property.agent?.id && (
                     <Link href={`/agents/${property.agent.id}`} style={{ fontSize: '0.75rem', color: 'var(--color-primary)', textDecoration: 'underline' }}>View Profile →</Link>
                   )}
@@ -257,6 +274,17 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                   </a>
                 </div>
               )}
+
+              {/* Anti-Scam Safety Banner */}
+              <div style={{ marginTop: '1.5rem', padding: '1rem', backgroundColor: 'rgba(239, 68, 68, 0.05)', border: '1px solid rgba(239, 68, 68, 0.2)', borderRadius: '8px', display: 'flex', gap: '0.75rem', alignItems: 'flex-start' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" strokeWidth="2" style={{ flexShrink: 0, marginTop: '2px' }}><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                <div>
+                  <h5 style={{ color: '#ef4444', fontSize: '0.875rem', fontWeight: 700, margin: '0 0 0.25rem 0' }}>Safety Warning</h5>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.75rem', margin: 0, lineHeight: 1.5 }}>
+                    Never pay a viewing fee or send money via M-Pesa before physically inspecting this property and signing legal documents. SwiftSpaces is not responsible for off-platform transactions.
+                  </p>
+                </div>
+              </div>
             </div>
 
             {/* Mortgage / Rent Calculator */}

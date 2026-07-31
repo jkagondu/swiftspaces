@@ -8,7 +8,7 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
       where: { id },
       include: {
         agent: {
-          select: { agencyName: true, phoneNumber: true, email: true }
+          select: { id: true, agencyName: true, phoneNumber: true, email: true, isVerified: true }
         }
       }
     });
