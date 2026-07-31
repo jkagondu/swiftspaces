@@ -11,6 +11,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [agents, setAgents] = useState<any[]>([]);
+  const [selectedAgent, setSelectedAgent] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
   
@@ -356,6 +357,7 @@ export default function AdminDashboard() {
                         </td>
                         <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
                           <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                            <button onClick={() => setSelectedAgent(agent)} style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', backgroundColor: 'transparent', color: '#38bdf8', border: '1px solid #38bdf8' }}>Details</button>
                             {agent.agentStatus !== "ACTIVE" && (
                               <button onClick={() => handleUpdateStatus(agent.id, "ACTIVE")} style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius-md)', fontSize: '0.75rem', fontWeight: 600, cursor: 'pointer', backgroundColor: 'var(--color-primary)', color: 'white', border: 'none' }}>Approve</button>
                             )}
@@ -438,6 +440,61 @@ export default function AdminDashboard() {
         )}
 
       </main>
+
+      {/* Agent Details Modal */}
+      {selectedAgent && (
+        <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.7)', zIndex: 1000, display: 'flex', justifyContent: 'center', alignItems: 'center', padding: '1rem' }}>
+          <div style={{ backgroundColor: '#1e293b', borderRadius: '16px', width: '100%', maxWidth: '800px', maxHeight: '90vh', overflowY: 'auto', border: '1px solid #334155', boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)' }}>
+            <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #334155', display: 'flex', justifyContent: 'space-between', alignItems: 'center', position: 'sticky', top: 0, backgroundColor: '#1e293b', zIndex: 10 }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'white', margin: 0 }}>Agent Details</h2>
+              <button onClick={() => setSelectedAgent(null)} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', padding: '0.5rem' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+            <div style={{ padding: '2rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', marginBottom: '2rem' }}>
+                <div>
+                  <h3 style={{ fontSize: '0.875rem', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '1rem', letterSpacing: '0.05em' }}>Profile Info</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <div><strong style={{ color: '#cbd5e1' }}>Agency Name:</strong> {selectedAgent.agencyName || "N/A"}</div>
+                    <div><strong style={{ color: '#cbd5e1' }}>Email:</strong> {selectedAgent.email}</div>
+                    <div><strong style={{ color: '#cbd5e1' }}>Phone:</strong> {selectedAgent.phoneNumber || "N/A"}</div>
+                    <div><strong style={{ color: '#cbd5e1' }}>Joined:</strong> {new Date(selectedAgent.createdAt).toLocaleDateString()}</div>
+                  </div>
+                </div>
+                <div>
+                  <h3 style={{ fontSize: '0.875rem', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '1rem', letterSpacing: '0.05em' }}>Status & Account</h3>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                    <div>
+                      <strong style={{ color: '#cbd5e1' }}>Status: </strong> 
+                      <span style={{ color: selectedAgent.agentStatus === 'ACTIVE' ? '#10b981' : selectedAgent.agentStatus === 'SUSPENDED' ? '#ef4444' : '#f59e0b', fontWeight: 600 }}>{selectedAgent.agentStatus}</span>
+                    </div>
+                    <div><strong style={{ color: '#cbd5e1' }}>Subscription:</strong> {selectedAgent.subscriptionPlan || "FREE_TRIAL"}</div>
+                    <div><strong style={{ color: '#cbd5e1' }}>Total Properties:</strong> {selectedAgent._count?.properties || 0}</div>
+                  </div>
+                </div>
+              </div>
+
+              <h3 style={{ fontSize: '0.875rem', textTransform: 'uppercase', color: '#94a3b8', marginBottom: '1rem', letterSpacing: '0.05em', borderTop: '1px solid #334155', paddingTop: '1.5rem' }}>Properties by this Agent</h3>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                {properties.filter(p => p.agentId === selectedAgent.id).length === 0 ? (
+                  <p style={{ color: '#64748b', fontSize: '0.875rem' }}>This agent hasn't posted any properties yet.</p>
+                ) : (
+                  properties.filter(p => p.agentId === selectedAgent.id).map(p => (
+                    <div key={p.id} style={{ padding: '1rem', backgroundColor: '#0f172a', borderRadius: '8px', border: '1px solid #334155', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <div>
+                        <div style={{ fontWeight: 600, color: 'white', fontSize: '0.875rem', marginBottom: '0.25rem' }}>{p.title}</div>
+                        <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>{p.price}</div>
+                      </div>
+                      <Link href={`/properties/${p.id}`} target="_blank" style={{ fontSize: '0.75rem', color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 600 }}>View &rarr;</Link>
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
