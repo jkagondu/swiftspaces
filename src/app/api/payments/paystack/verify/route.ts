@@ -34,7 +34,7 @@ export async function POST(request: Request) {
     const plan = data.data.metadata?.plan || "PREMIUM";
 
     const updatedUser = await prisma.user.update({
-      where: { id: session.user.id },
+      where: { id: (session.user as any).id },
       data: {
         subscriptionPlan: plan,
       }

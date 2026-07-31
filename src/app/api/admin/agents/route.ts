@@ -63,7 +63,7 @@ export async function PUT(request: Request) {
       data: {
         action: newStatus !== undefined ? "AGENT_STATUS_UPDATED" : "AGENT_VERIFICATION_UPDATED",
         details: `Agent ${updatedAgent.agencyName || updatedAgent.email} was ${newStatus !== undefined ? `marked as ${newStatus}` : (isVerified ? 'verified' : 'unverified')} by Super Admin.`,
-        userId: session.user.id
+        userId: (session.user as any)?.id
       }
     });
 

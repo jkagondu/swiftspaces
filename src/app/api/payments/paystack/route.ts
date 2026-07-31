@@ -17,7 +17,7 @@ export async function POST(request: Request) {
       amount: amount * 100, // Paystack expects amount in Kobo/Cents
       callback_url: `${process.env.NEXTAUTH_URL}/manager?payment=success`,
       metadata: {
-        userId: session.user.id,
+        userId: (session.user as any).id,
         plan: plan,
       }
     });
