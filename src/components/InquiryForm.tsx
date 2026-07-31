@@ -9,6 +9,7 @@ export default function InquiryForm({ propertyId }: { propertyId: string }) {
     phone: "",
     message: "",
   });
+  const [honeypot, setHoneypot] = useState("");
   const [isTourRequest, setIsTourRequest] = useState(false);
   const [tourDate, setTourDate] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,6 +25,14 @@ export default function InquiryForm({ propertyId }: { propertyId: string }) {
     setIsSubmitting(true);
     setError("");
     setSuccess(false);
+
+    // Bot Protection: If the hidden honeypot field is filled, silently ignore the submission
+    if (honeypot) {
+      setSuccess(true);
+      setIsSubmitting(false);
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      return;
+    }
 
     try {
       const res = await fetch("/api/inquiries", {
@@ -100,6 +109,20 @@ export default function InquiryForm({ propertyId }: { propertyId: string }) {
           {error}
         </div>
       )}
+
+      {/* Honeypot Field - Invisible to humans, catches dumb bots */}
+      <div style={{ display: 'none', position: 'absolute', opacity: 0, zIndex: -1 }} aria-hidden="true">
+        <label htmlFor="website_url">Do not fill this out if you are human</label>
+        <input 
+          type="text" 
+          id="website_url" 
+          name="website_url" 
+          value={honeypot} 
+          onChange={(e) => setHoneypot(e.target.value)} 
+          tabIndex={-1} 
+          autoComplete="off" 
+        />
+      </div>
 
       {isTourRequest && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem' }}>

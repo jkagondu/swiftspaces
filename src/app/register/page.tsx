@@ -15,6 +15,8 @@ export default function RegisterPage() {
     password: "",
   });
   
+  const [honeypot, setHoneypot] = useState("");
+  
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,6 +31,15 @@ export default function RegisterPage() {
     setIsLoading(true);
     setError("");
     setSuccess(false);
+
+    // Bot Protection
+    if (honeypot) {
+      setSuccess(true);
+      setTimeout(() => {
+        router.push("/login");
+      }, 2500);
+      return;
+    }
 
     try {
       const res = await fetch("/api/auth/register", {
@@ -101,6 +112,20 @@ export default function RegisterPage() {
           ) : (
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
               
+              {/* Bot Protection Honeypot */}
+              <div style={{ display: 'none', position: 'absolute', opacity: 0, zIndex: -1 }} aria-hidden="true">
+                <label htmlFor="website_url">Do not fill this out if you are human</label>
+                <input 
+                  type="text" 
+                  id="website_url" 
+                  name="website_url" 
+                  value={honeypot} 
+                  onChange={(e) => setHoneypot(e.target.value)} 
+                  tabIndex={-1} 
+                  autoComplete="off" 
+                />
+              </div>
+
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                 <label style={{ fontWeight: 600, fontSize: '0.875rem', color: 'var(--color-text-main)' }}>Agency / Company Name</label>
                 <input 
