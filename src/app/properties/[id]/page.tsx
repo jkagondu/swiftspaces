@@ -251,7 +251,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                   <h3 style={{ fontSize: '1.25rem', marginBottom: '0.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                     {property.agent?.agencyName || 'Platform Agent'}
                     {property.agent?.isVerified && (
-                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#38bdf8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" title="Verified Agent"><polygon points="12 2 15.09 5.09 19.5 4.5 21 8.91 24 12 21 15.09 19.5 19.5 15.09 18.91 12 22 8.91 18.91 4.5 19.5 3 15.09 0 12 3 8.91 4.5 4.5 8.91 5.09 12 2"></polygon><polyline points="9 12 11 14 15 10"></polyline></svg>
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="#38bdf8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 5.09 19.5 4.5 21 8.91 24 12 21 15.09 19.5 19.5 15.09 18.91 12 22 8.91 18.91 4.5 19.5 3 15.09 0 12 3 8.91 4.5 4.5 8.91 5.09 12 2"></polygon><polyline points="9 12 11 14 15 10"></polyline></svg>
                     )}
                   </h3>
                   <p style={{ fontSize: '0.875rem', color: property.agent?.isVerified ? '#38bdf8' : 'var(--color-text-muted)' }}>
