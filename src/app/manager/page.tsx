@@ -49,8 +49,38 @@ export default function ManagerDashboard() {
     } else if (status === "authenticated") {
       fetchInquiries();
       fetchMyListings();
+
+      // Check for payment callback
+      const urlParams = new URLSearchParams(window.location.search);
+      const reference = urlParams.get('reference');
+      const paymentStatus = urlParams.get('payment');
+      
+      if (paymentStatus === 'success' && reference) {
+        verifyPayment(reference);
+      }
     }
   }, [status, router]);
+
+  const verifyPayment = async (reference: string) => {
+    try {
+      const res = await fetch("/api/payments/paystack/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ reference }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert("Payment successful! Your agency has been upgraded to the " + data.plan + " plan.");
+        // Clear the URL to avoid re-verifying
+        window.history.replaceState({}, document.title, window.location.pathname);
+        setActiveTab("overview");
+      } else {
+        alert("Payment verification failed: " + data.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   const fetchInquiries = async () => {
     setIsLoadingInquiries(true);
