@@ -11,6 +11,7 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [agents, setAgents] = useState<any[]>([]);
+  const [logs, setLogs] = useState<any[]>([]);
   const [selectedAgent, setSelectedAgent] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [stats, setStats] = useState<any>(null);
@@ -37,6 +38,7 @@ export default function AdminDashboard() {
       fetchAgents();
       fetchStats();
       fetchProperties();
+      fetchLogs();
     }
   }, [status]);
 
@@ -79,6 +81,18 @@ export default function AdminDashboard() {
       console.error("Failed to fetch properties", error);
     } finally {
       setIsLoadingProps(false);
+    }
+  };
+
+  const fetchLogs = async () => {
+    try {
+      const res = await fetch("/api/admin/logs");
+      if (res.ok) {
+        const data = await res.json();
+        setLogs(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch logs", error);
     }
   };
 
@@ -458,6 +472,71 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               )}
+            </div>
+          </div>
+        )}
+
+        {/* --- ACTIVITY LOGS TAB --- */}
+        {activeTab === "logs" && (
+          <div>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+              <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+                System Activity Logs
+              </h2>
+              <button onClick={fetchLogs} style={{ padding: '0.5rem 1rem', borderRadius: '8px', background: 'var(--color-surface-secondary)', border: '1px solid var(--color-border)', color: 'white', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.875rem' }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+                Refresh
+              </button>
+            </div>
+
+            <div style={{ backgroundColor: '#1e293b', borderRadius: '16px', border: '1px solid #334155', overflow: 'hidden' }}>
+              <div style={{ overflowX: 'auto' }}>
+                <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                  <thead>
+                    <tr style={{ borderBottom: '1px solid #334155', backgroundColor: '#0f172a' }}>
+                      <th style={{ padding: '1rem 1.5rem', color: '#94a3b8', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Date & Time</th>
+                      <th style={{ padding: '1rem 1.5rem', color: '#94a3b8', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Action</th>
+                      <th style={{ padding: '1rem 1.5rem', color: '#94a3b8', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Details</th>
+                      <th style={{ padding: '1rem 1.5rem', color: '#94a3b8', fontWeight: 600, fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>User</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {logs.map((log) => (
+                      <tr key={log.id} style={{ borderBottom: '1px solid #334155', transition: 'background-color 0.2s', backgroundColor: 'transparent' }} onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#0f172a'} onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                        <td style={{ padding: '1rem 1.5rem', color: '#94a3b8', fontSize: '0.875rem', whiteSpace: 'nowrap' }}>
+                          {new Date(log.createdAt).toLocaleString()}
+                        </td>
+                        <td style={{ padding: '1rem 1.5rem' }}>
+                          <span style={{ 
+                            padding: '0.25rem 0.5rem', 
+                            borderRadius: '4px', 
+                            fontSize: '0.7rem', 
+                            fontWeight: 600,
+                            backgroundColor: log.action.includes('CREATED') ? 'rgba(16, 185, 129, 0.1)' : log.action.includes('DELETED') || log.action.includes('SUSPENDED') ? 'rgba(239, 68, 68, 0.1)' : 'rgba(56, 189, 248, 0.1)',
+                            color: log.action.includes('CREATED') ? '#10b981' : log.action.includes('DELETED') || log.action.includes('SUSPENDED') ? '#ef4444' : '#38bdf8'
+                          }}>
+                            {log.action.replace(/_/g, ' ')}
+                          </span>
+                        </td>
+                        <td style={{ padding: '1rem 1.5rem', color: 'white', fontSize: '0.875rem' }}>
+                          {log.details}
+                        </td>
+                        <td style={{ padding: '1rem 1.5rem', color: '#94a3b8', fontSize: '0.875rem' }}>
+                          {log.user?.agencyName || log.user?.email || "System"}
+                        </td>
+                      </tr>
+                    ))}
+                    {logs.length === 0 && (
+                      <tr>
+                        <td colSpan={4} style={{ padding: '3rem', textAlign: 'center', color: '#64748b' }}>
+                          No activity logs recorded yet.
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         )}

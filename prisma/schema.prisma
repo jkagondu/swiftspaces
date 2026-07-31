@@ -69,6 +69,7 @@ model User {
   // Relationships
   properties    Property[]  @relation("AgentProperties")
   reviews       Review[]    @relation("AgentReviews")
+  activityLogs  ActivityLog[] @relation("UserActivities")
   
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -81,6 +82,15 @@ model Report {
   property    Property @relation("PropertyReports", fields: [propertyId], references: [id], onDelete: Cascade)
   createdAt   DateTime @default(now())
   status      String   @default("PENDING") // PENDING, REVIEWED
+}
+
+model ActivityLog {
+  id        String   @id @default(uuid())
+  action    String   // e.g., "PROPERTY_CREATED", "AGENT_VERIFIED"
+  details   String   @db.Text
+  userId    String?
+  user      User?    @relation("UserActivities", fields: [userId], references: [id], onDelete: SetNull)
+  createdAt DateTime @default(now())
 }
 
 model Review {

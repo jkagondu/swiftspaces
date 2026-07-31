@@ -58,6 +58,15 @@ export async function PUT(request: Request) {
       data: dataToUpdate
     });
 
+    // Log the activity
+    await prisma.activityLog.create({
+      data: {
+        action: newStatus !== undefined ? "AGENT_STATUS_UPDATED" : "AGENT_VERIFICATION_UPDATED",
+        details: `Agent ${updatedAgent.agencyName || updatedAgent.email} was ${newStatus !== undefined ? `marked as ${newStatus}` : (isVerified ? 'verified' : 'unverified')} by Super Admin.`,
+        userId: session.user.id
+      }
+    });
+
     return NextResponse.json({ message: "Agent status updated successfully", agent: updatedAgent }, { status: 200 });
   } catch (error) {
     console.error("Failed to update agent status:", error);
