@@ -36,7 +36,7 @@ export default function ImageCarousel({ images, status }: { images: string[], st
         fontWeight: 600,
         boxShadow: 'var(--shadow-lg)'
       }}>
-        {status.replace('_', ' ')}
+        {(status || "").replace('_', ' ')}
       </div>
 
       {/* Navigation Arrows */}

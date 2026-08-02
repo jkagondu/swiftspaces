@@ -43,11 +43,15 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
     notFound();
   }
 
-  // Increment views
-  await prisma.property.update({
-    where: { id },
-    data: { views: { increment: 1 } }
-  });
+  // Increment views (wrapped in try-catch so it doesn't crash the page if it fails)
+  try {
+    await prisma.property.update({
+      where: { id },
+      data: { views: { increment: 1 } }
+    });
+  } catch (err) {
+    console.error("Failed to increment views:", err);
+  }
 
   // Use the multiple images array, or fallback to a placeholder
   const images = property.images && property.images.length > 0 
