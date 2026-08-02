@@ -1,0 +1,32 @@
+
+> swiftspaces@0.1.0 dev
+> next dev --webpack
+
+▲ Next.js 16.2.10 (webpack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.100.230:3000
+- Environments: .env
+✓ Ready in 500ms
+
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} style=... onMouseOver=... onMouseOut=... title=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3760532370'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick=... style={{...}} onMouseOver={function onMouseOver} onMouseOut=... title=... children=...>
+                                                ^^^^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3519399026'
+}
+⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick=... style={{...}} onMouseOver=... onMouseOut={function onMouseOut} title=... children=...>
+                                                               ^^^^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>) {
+  digest: '3845990770'
+}
+ GET /properties/f928972e-e014-40fc-b528-0db172f702f3 500 in 10.3s (next.js: 4.1s, application-code: 6.2s)

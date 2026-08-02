@@ -7,6 +7,7 @@ import ImageCarousel from "@/components/ImageCarousel";
 import InquiryForm from "@/components/InquiryForm";
 import MortgageCalculator from "@/components/MortgageCalculator";
 import SavePropertyButton from "@/components/SavePropertyButton";
+import ReportButton from "@/components/ReportButton";
 import type { Metadata } from "next";
 
 export async function generateMetadata({ params }: { params: Promise<{ id: string }> }): Promise<Metadata> {
@@ -237,16 +238,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', position: 'sticky', top: '100px' }}>
             {/* Contact Agent Card */}
             <div className="card" style={{ padding: '2rem', position: 'relative' }}>
-              <button 
-                onClick={() => alert("Report has been submitted to the SwiftSpaces Admin team for investigation.")}
-                style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', background: 'none', border: 'none', color: '#ef4444', fontSize: '0.75rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: 'pointer', padding: '0.25rem 0.5rem', borderRadius: '4px' }}
-                onMouseOver={(e) => e.currentTarget.style.backgroundColor = 'rgba(239, 68, 68, 0.1)'}
-                onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                title="Report this listing as a scam"
-              >
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path><line x1="4" y1="22" x2="4" y2="15"></line></svg>
-                Report
-              </button>
+              <ReportButton />
               <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid var(--color-border)' }}>
                 <div style={{ width: '60px', height: '60px', borderRadius: '50%', backgroundColor: 'var(--color-primary-light)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1.5rem' }}>
                   {property.agent?.agencyName ? property.agent.agencyName.charAt(0) : 'A'}
