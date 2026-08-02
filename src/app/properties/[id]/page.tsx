@@ -20,10 +20,10 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   return {
     title: `${property.title} - ${property.price} | SwiftSpaces`,
-    description: property.description.substring(0, 160) + "...",
+    description: (property.description || "").substring(0, 160) + "...",
     openGraph: {
       title: `${property.title} for ${property.price}`,
-      description: property.description.substring(0, 160) + "...",
+      description: (property.description || "").substring(0, 160) + "...",
       images: property.images && property.images.length > 0 ? [{ url: property.images[0] }] : [],
     },
   };
@@ -156,7 +156,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
               <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Property Type</div>
               <div style={{ fontSize: '1.25rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem', textTransform: 'capitalize' }}>
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                {property.type.toLowerCase().replace('_', ' ')}
+                {(property.type || "").toLowerCase().replace('_', ' ')}
               </div>
             </div>
             <div>
@@ -167,7 +167,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                 ) : (
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
                 )}
-                {property.status.replace('_', ' ')}
+                {(property.status || "").replace('_', ' ')}
               </div>
             </div>
           </div>
