@@ -7,6 +7,7 @@ import Logo from "@/components/Logo";
 import AllPropertiesMap from "@/components/AllPropertiesMap";
 import CompareCheckbox from "@/components/CompareCheckbox";
 import SaveSearchButton from "@/components/SaveSearchButton";
+import DirectionsButton from "@/components/DirectionsButton";
 
 export default function PropertiesPage() {
   const [locationQuery, setLocationQuery] = useState("");
@@ -277,18 +278,7 @@ export default function PropertiesPage() {
                         {property.location}
                       </p>
                       {property.latitude && property.longitude && (
-                        <button 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            window.open(`https://www.google.com/maps/dir/?api=1&destination=${property.latitude},${property.longitude}`, '_blank');
-                          }}
-                          style={{ padding: '0.25rem 0.5rem', fontSize: '0.7rem', fontWeight: 600, borderRadius: '4px', background: 'rgba(16, 185, 129, 0.1)', color: 'var(--color-primary)', border: '1px solid rgba(16, 185, 129, 0.2)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem', transition: 'all 0.2s' }}
-                          onMouseOver={(e) => e.currentTarget.style.background = 'rgba(16, 185, 129, 0.2)'}
-                          onMouseOut={(e) => e.currentTarget.style.background = 'rgba(16, 185, 129, 0.1)'}
-                        >
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 16 16 12 12 8"></polyline><line x1="8" y1="12" x2="16" y2="12"></line></svg>
-                          Directions
-                        </button>
+                        <DirectionsButton latitude={property.latitude} longitude={property.longitude} />
                       )}
                     </div>
                     <div style={{ display: 'flex', gap: '1rem', fontSize: '0.875rem', color: 'var(--color-text-main)', marginTop: 'auto', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>

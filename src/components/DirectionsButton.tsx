@@ -2,15 +2,32 @@
 
 import React from 'react';
 
-export default function DirectionsButton({ latitude, longitude }: { latitude: string, longitude: string }) {
+export default function DirectionsButton({ latitude, longitude }: { latitude: number | string, longitude: number | string }) {
   if (!latitude || !longitude) return null;
+
+  const handleDirections = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const originLat = position.coords.latitude;
+          const originLng = position.coords.longitude;
+          window.open(`https://www.google.com/maps/dir/?api=1&origin=${originLat},${originLng}&destination=${latitude},${longitude}`, '_blank');
+        },
+        () => {
+          // Fallback if denied
+          window.open(`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`, '_blank');
+        },
+        { timeout: 5000 }
+      );
+    } else {
+      window.open(`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`, '_blank');
+    }
+  };
 
   return (
     <button 
-      onClick={(e) => {
-        e.preventDefault();
-        window.open(`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`, '_blank');
-      }}
+      onClick={handleDirections}
       style={{ 
         padding: '0.35rem 0.65rem', 
         fontSize: '0.75rem', 

@@ -94,7 +94,7 @@ export default function PropertyMap({ latitude, longitude, zoom = 12, interactiv
           <div>
             <div style={{ fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-navy)' }}>ETA: {eta}</div>
             <a 
-              href={`https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`} 
+              href={`https://www.google.com/maps/dir/?api=1${userLoc ? `&origin=${userLoc.lat},${userLoc.lng}` : ''}&destination=${latitude},${longitude}`} 
               target="_blank" 
               rel="noopener noreferrer"
               style={{ fontSize: '0.75rem', color: 'var(--color-primary)', textDecoration: 'underline', marginTop: '4px', display: 'block' }}
