@@ -172,3 +172,10 @@ model AlertSubscription {
   query     String   // Store search criteria as JSON string
   createdAt DateTime @default(now())
 }
+
+model PlatformSettings {
+  id              String   @id @default("singleton")
+  supportEmail    String   @default("support@swiftspace.africa")
+  supportPhone    String   @default("+254 700 000000")
+  updatedAt       DateTime @updatedAt
+}

@@ -20,6 +20,10 @@ export default function AdminDashboard() {
   const [properties, setProperties] = useState<any[]>([]);
   const [isLoadingProps, setIsLoadingProps] = useState(false);
 
+  // Platform settings state
+  const [settings, setSettings] = useState({ supportEmail: "", supportPhone: "" });
+  const [isSavingSettings, setIsSavingSettings] = useState(false);
+
   // Strict Authentication & Authorization Check
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -39,6 +43,7 @@ export default function AdminDashboard() {
       fetchStats();
       fetchProperties();
       fetchLogs();
+      fetchSettings();
     }
   }, [status]);
 
@@ -93,6 +98,41 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error("Failed to fetch logs", error);
+    }
+  };
+
+  const fetchSettings = async () => {
+    try {
+      const res = await fetch("/api/admin/settings");
+      if (res.ok) {
+        const data = await res.json();
+        setSettings({ supportEmail: data.supportEmail, supportPhone: data.supportPhone });
+      }
+    } catch (error) {
+      console.error("Failed to fetch settings", error);
+    }
+  };
+
+  const handleSaveSettings = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSavingSettings(true);
+    try {
+      const res = await fetch("/api/admin/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(settings)
+      });
+      if (res.ok) {
+        alert("Platform settings updated successfully!");
+        fetchLogs(); // refresh logs to show the update action
+      } else {
+        alert("Failed to update settings.");
+      }
+    } catch (error) {
+      console.error("Failed to update settings", error);
+      alert("Error updating settings.");
+    } finally {
+      setIsSavingSettings(false);
     }
   };
 
@@ -263,6 +303,25 @@ export default function AdminDashboard() {
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
             Manage Properties
+          </button>
+          
+          <button 
+            onClick={() => { setActiveTab("settings"); setIsSidebarOpen(false); }}
+            style={{
+              padding: '0.75rem 1rem',
+              borderRadius: 'var(--radius-md)',
+              textAlign: 'left',
+              backgroundColor: activeTab === "settings" ? 'rgba(16, 185, 129, 0.1)' : 'transparent',
+              color: activeTab === "settings" ? 'var(--color-primary)' : '#cbd5e1',
+              fontWeight: activeTab === "settings" ? 600 : 400,
+              border: 'none',
+              transition: 'all 0.2s ease',
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '0.75rem'
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            Platform Settings
           </button>
         </nav>
 
@@ -537,6 +596,66 @@ export default function AdminDashboard() {
                   </tbody>
                 </table>
               </div>
+            </div>
+          </div>
+        )}
+
+        {/* --- SETTINGS TAB --- */}
+        {activeTab === "settings" && (
+          <div className="animate-fade-in">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
+              <h1 style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.02em' }}>Platform Settings</h1>
+            </div>
+
+            <div style={{ backgroundColor: '#1e293b', borderRadius: 'var(--radius-lg)', border: '1px solid #334155', padding: '2rem', maxWidth: '800px' }}>
+              <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', fontWeight: 600, color: 'white', borderBottom: '1px solid #334155', paddingBottom: '1rem' }}>Global Contact Details</h2>
+              
+              <form onSubmit={handleSaveSettings} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                
+                <div>
+                  <label htmlFor="supportEmail" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Support Email Address</label>
+                  <input 
+                    type="email" 
+                    id="supportEmail"
+                    value={settings.supportEmail}
+                    onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })}
+                    required
+                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
+                  />
+                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.5rem' }}>This email will be displayed on the platform for users to contact support.</p>
+                </div>
+                
+                <div>
+                  <label htmlFor="supportPhone" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Support Phone Number</label>
+                  <input 
+                    type="tel" 
+                    id="supportPhone"
+                    value={settings.supportPhone}
+                    onChange={(e) => setSettings({ ...settings, supportPhone: e.target.value })}
+                    required
+                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
+                  />
+                </div>
+
+                <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
+                  <button 
+                    type="submit" 
+                    disabled={isSavingSettings}
+                    style={{ 
+                      padding: '0.75rem 1.5rem', 
+                      borderRadius: 'var(--radius-md)', 
+                      backgroundColor: 'var(--color-primary)', 
+                      color: 'white', 
+                      border: 'none', 
+                      fontWeight: 600, 
+                      cursor: isSavingSettings ? 'not-allowed' : 'pointer',
+                      opacity: isSavingSettings ? 0.7 : 1
+                    }}
+                  >
+                    {isSavingSettings ? 'Saving...' : 'Save Settings'}
+                  </button>
+                </div>
+              </form>
             </div>
           </div>
         )}
