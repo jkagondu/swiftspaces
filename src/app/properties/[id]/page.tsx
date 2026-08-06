@@ -326,16 +326,25 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                 </div>
               </div>
 
-              <h4 style={{ fontSize: '1.125rem', marginBottom: '1rem' }}>Contact Agent</h4>
-              <InquiryForm propertyId={property.id} />
-
-              {property.agent?.phoneNumber && (
-                <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
-                  <a href={`tel:${property.agent.phoneNumber}`} className="btn btn-outline" style={{ padding: '1rem', width: '100%', fontSize: '1rem', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                    Call Agent
-                  </a>
+              {(property.status === 'SOLD' || property.status === 'RENTED') ? (
+                <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', padding: '1.5rem', borderRadius: '8px', textAlign: 'center', border: '1px solid rgba(239, 68, 68, 0.3)' }}>
+                  <h4 style={{ color: '#ef4444', fontSize: '1.25rem', marginBottom: '0.5rem', fontWeight: 700 }}>House Taken</h4>
+                  <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', margin: 0 }}>This property is no longer available for inquiries.</p>
                 </div>
+              ) : (
+                <>
+                  <h4 style={{ fontSize: '1.125rem', marginBottom: '1rem' }}>Contact Agent</h4>
+                  <InquiryForm propertyId={property.id} />
+    
+                  {property.agent?.phoneNumber && (
+                    <div style={{ marginTop: '1.5rem', textAlign: 'center' }}>
+                      <a href={`tel:${property.agent.phoneNumber}`} className="btn btn-outline" style={{ padding: '1rem', width: '100%', fontSize: '1rem', display: 'flex', justifyContent: 'center', gap: '0.5rem' }}>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+                        Call Agent
+                      </a>
+                    </div>
+                  )}
+                </>
               )}
 
               {/* Anti-Scam Safety Banner */}

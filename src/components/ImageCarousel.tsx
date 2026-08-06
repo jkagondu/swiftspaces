@@ -26,20 +26,28 @@ export default function ImageCarousel({ images, categorizedImages, status }: { i
         priority
       />
       
-      {/* Status Badge */}
-      <div style={{
-        position: 'absolute',
-        top: '1.5rem',
-        left: '1.5rem',
-        background: 'var(--color-primary)',
-        color: 'white',
-        padding: '0.5rem 1.5rem',
-        borderRadius: 'var(--radius-full)',
-        fontWeight: 600,
-        boxShadow: 'var(--shadow-lg)'
-      }}>
-        {(status || "").replace('_', ' ')}
-      </div>
+      {/* Status Badge & Overlay */}
+      {(status === 'SOLD' || status === 'RENTED') ? (
+        <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 10, pointerEvents: 'none' }}>
+          <div style={{ backgroundColor: '#ef4444', color: 'white', border: '4px solid white', padding: '1.5rem 4rem', fontSize: '3rem', fontWeight: 900, transform: 'rotate(-15deg)', letterSpacing: '4px', boxShadow: '0 8px 24px rgba(0,0,0,0.5)', whiteSpace: 'nowrap', textTransform: 'uppercase' }}>
+            HOUSE TAKEN
+          </div>
+        </div>
+      ) : (
+        <div style={{
+          position: 'absolute',
+          top: '1.5rem',
+          left: '1.5rem',
+          background: 'var(--color-primary)',
+          color: 'white',
+          padding: '0.5rem 1.5rem',
+          borderRadius: 'var(--radius-full)',
+          fontWeight: 600,
+          boxShadow: 'var(--shadow-lg)'
+        }}>
+          {(status || "").replace('_', ' ')}
+        </div>
+      )}
 
       {/* Navigation Arrows */}
       {images.length > 1 && (

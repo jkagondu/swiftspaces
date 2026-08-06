@@ -257,18 +257,27 @@ export default function PropertiesPage() {
                 onMouseEnter={() => setHoveredPropertyId(property.id)}
                 onMouseLeave={() => setHoveredPropertyId(null)}
                 >
-                  <div style={{ position: 'relative', height: '180px', width: '100%' }}>
-                    <Image 
-                      src={property.images && property.images.length > 0 ? property.images[0] : "/prop-modern.png"} 
-                      alt={property.title} fill style={{ objectFit: 'cover' }}
-                    />
-                    <div style={{ position: 'absolute', top: '1rem', right: '1rem', backgroundColor: (property.status === 'SOLD' || property.status === 'RENTED') ? 'rgba(239, 68, 68, 0.9)' : 'rgba(16, 185, 129, 0.9)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700, backdropFilter: 'blur(4px)' }}>
-                      {(property.status === 'SOLD' || property.status === 'RENTED') ? 'TAKEN' : property.status.replace('_', ' ')}
+                    <div style={{ position: 'relative', height: '180px', width: '100%' }}>
+                      <Image 
+                        src={property.images && property.images.length > 0 ? property.images[0] : "/prop-modern.png"} 
+                        alt={property.title} fill style={{ objectFit: 'cover' }}
+                      />
+                      {(property.status === 'SOLD' || property.status === 'RENTED') && (
+                        <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
+                          <div style={{ backgroundColor: '#ef4444', color: 'white', border: '2px solid white', padding: '0.75rem 2rem', fontSize: '1.5rem', fontWeight: 900, transform: 'rotate(-15deg)', letterSpacing: '2px', boxShadow: '0 4px 12px rgba(0,0,0,0.3)', whiteSpace: 'nowrap', textTransform: 'uppercase' }}>
+                            HOUSE TAKEN
+                          </div>
+                        </div>
+                      )}
+                      {property.status !== 'SOLD' && property.status !== 'RENTED' && (
+                        <div style={{ position: 'absolute', top: '1rem', right: '1rem', backgroundColor: 'rgba(16, 185, 129, 0.9)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700, backdropFilter: 'blur(4px)', zIndex: 2 }}>
+                          {property.status.replace('_', ' ')}
+                        </div>
+                      )}
+                      <div style={{ position: 'absolute', top: '3rem', right: '1rem', zIndex: 10 }}>
+                        <CompareCheckbox propertyId={property.id} />
+                      </div>
                     </div>
-                    <div style={{ position: 'absolute', top: '3rem', right: '1rem', zIndex: 10 }}>
-                      <CompareCheckbox propertyId={property.id} />
-                    </div>
-                  </div>
                   
                   <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
