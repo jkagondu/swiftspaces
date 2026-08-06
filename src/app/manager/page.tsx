@@ -42,6 +42,8 @@ export default function ManagerDashboard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedImageUrls, setUploadedImageUrls] = useState<string[]>([]);
+  const [categorizedImageUrls, setCategorizedImageUrls] = useState<{ [category: string]: string[] }>({});
+  const [uploadCategory, setUploadCategory] = useState("All");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [inquiries, setInquiries] = useState<any[]>([]);
@@ -223,6 +225,12 @@ export default function ManagerDashboard() {
 
       const urls = await Promise.all(uploadPromises);
       setUploadedImageUrls((prev) => [...prev, ...urls]);
+      if (uploadCategory !== "All") {
+        setCategorizedImageUrls(prev => {
+          const currentCat = prev[uploadCategory] || [];
+          return { ...prev, [uploadCategory]: [...currentCat, ...urls] };
+        });
+      }
     } catch (error: any) {
       console.error("Upload error:", error);
       setErrorMessage(error.message || "Error uploading images.");
@@ -263,7 +271,8 @@ export default function ManagerDashboard() {
         ...formData,
         type: formData.type.toUpperCase().replace("-", "_"),
         agentId: (session?.user as any)?.id || "mock-agent-id-12345", 
-        images: uploadedImageUrls.length > 0 ? uploadedImageUrls : ["/prop-2bed.png"]
+        images: uploadedImageUrls.length > 0 ? uploadedImageUrls : ["/prop-2bed.png"],
+        categorizedImages: Object.keys(categorizedImageUrls).length > 0 ? categorizedImageUrls : undefined
       };
 
       const res = await fetch(editingPropertyId ? `/api/properties/${editingPropertyId}` : "/api/properties", {
@@ -535,21 +544,55 @@ export default function ManagerDashboard() {
                   
                   {uploadedImageUrls.length > 0 && (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))', gap: '1rem', marginBottom: '1rem' }}>
-                      {uploadedImageUrls.map((url, idx) => (
-                        <div key={idx} style={{ position: 'relative', height: '100px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--color-border)' }}>
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={url} alt={`Preview ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-                          <button 
-                            type="button" 
-                            onClick={() => setUploadedImageUrls(prev => prev.filter((_, i) => i !== idx))}
-                            style={{ position: 'absolute', top: '0.25rem', right: '0.25rem', background: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ))}
+                      {uploadedImageUrls.map((url, idx) => {
+                        let currentCat = "Uncategorized";
+                        for (const [cat, urls] of Object.entries(categorizedImageUrls)) {
+                          if (urls.includes(url)) {
+                            currentCat = cat;
+                            break;
+                          }
+                        }
+                        
+                        return (
+                          <div key={idx} style={{ position: 'relative', height: '100px', borderRadius: 'var(--radius-md)', overflow: 'hidden', border: '1px solid var(--color-border)' }}>
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img src={url} alt={`Preview ${idx + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                            {currentCat !== "Uncategorized" && (
+                              <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, background: 'rgba(0,0,0,0.6)', color: 'white', fontSize: '0.65rem', textAlign: 'center', padding: '0.125rem' }}>{currentCat}</div>
+                            )}
+                            <button 
+                              type="button" 
+                              onClick={() => {
+                                setUploadedImageUrls(prev => prev.filter((_, i) => i !== idx));
+                                setCategorizedImageUrls(prev => {
+                                  const newObj = { ...prev };
+                                  if (currentCat !== "Uncategorized" && newObj[currentCat]) {
+                                    newObj[currentCat] = newObj[currentCat].filter(u => u !== url);
+                                  }
+                                  return newObj;
+                                });
+                              }}
+                              style={{ position: 'absolute', top: '0.25rem', right: '0.25rem', background: 'rgba(239, 68, 68, 0.9)', color: 'white', border: 'none', borderRadius: '50%', width: '20px', height: '20px', cursor: 'pointer', fontSize: '0.75rem', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+                            >
+                              ×
+                            </button>
+                          </div>
+                        );
+                      })}
                     </div>
                   )}
+
+                  <div style={{ marginBottom: '1rem' }}>
+                    <label style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, marginBottom: '0.5rem' }}>Upload Category</label>
+                    <select value={uploadCategory} onChange={(e) => setUploadCategory(e.target.value)} style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', width: '100%', outline: 'none', backgroundColor: 'white' }}>
+                      <option value="All">Uncategorized (All)</option>
+                      <option value="Exterior">Exterior</option>
+                      <option value="Rooms">Rooms</option>
+                      <option value="Kitchen">Kitchen</option>
+                      <option value="Bathroom">Bathroom</option>
+                      <option value="360 View">360 View</option>
+                    </select>
+                  </div>
 
                   <label style={{ 
                     border: '2px dashed var(--color-border)', 
@@ -575,7 +618,7 @@ export default function ManagerDashboard() {
                       <polyline points="21 15 16 10 5 21"></polyline>
                     </svg>
                     <div style={{ fontWeight: 500, marginBottom: '0.25rem', color: 'var(--color-text-main)' }}>
-                      {isUploading ? "Uploading to Cloudinary..." : "Click to upload multiple images"}
+                      {isUploading ? "Uploading to Cloudinary..." : `Click to upload ${uploadCategory === "All" ? "multiple" : uploadCategory} images`}
                     </div>
                     <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Select multiple PNG, JPG, WEBP up to 10MB</div>
                   </label>

@@ -115,6 +115,7 @@ model Property {
   longitude     Float?
   price         String         
   images        String[]       // Array of URLs for multiple property photos
+  categorizedImages Json?      // Categorized photos e.g. { "Exterior": ["url"], "Rooms": ["url"] }
   amenities     String[]       @default([]) // Array of premium amenities
   videoUrl      String?        // YouTube/Vimeo link
   virtualTourUrl String?       // Matterport 3D tour iframe link

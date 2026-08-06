@@ -122,7 +122,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
           </div>
 
           {/* Image Carousel Component */}
-          <ImageCarousel images={images} status={property.status} />
+          <ImageCarousel images={images} categorizedImages={property.categorizedImages} status={property.status} />
 
           {(property.virtualTourUrl || property.videoUrl) && (
             <div style={{ display: 'flex', gap: '1rem', marginTop: '-1rem' }}>

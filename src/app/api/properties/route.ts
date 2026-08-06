@@ -40,7 +40,7 @@ export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { 
-      title, description, location, price, type, status, beds, baths, agentId, images, 
+      title, description, location, price, type, status, beds, baths, agentId, images, categorizedImages,
       latitude: providedLat, longitude: providedLng, 
       videoUrl, virtualTourUrl, transitScore, walkability, nearbyPlaces,
       nearbySchools, nearbyHospitals, deposit, waterBill, electricity, parking, petFriendly
@@ -86,6 +86,7 @@ export async function POST(request: Request) {
         longitude,
         agentId,
         images: images || [],
+        categorizedImages: categorizedImages || null,
         videoUrl: videoUrl || null,
         virtualTourUrl: virtualTourUrl || null,
         transitScore: transitScore || null,

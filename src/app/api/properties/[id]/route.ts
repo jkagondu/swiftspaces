@@ -42,6 +42,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         beds: parseInt(body.beds) || 0,
         baths: parseInt(body.baths) || 0,
         images: body.images,
+        categorizedImages: body.categorizedImages !== undefined ? body.categorizedImages : undefined,
         videoUrl: body.videoUrl !== undefined ? body.videoUrl : undefined,
         virtualTourUrl: body.virtualTourUrl !== undefined ? body.virtualTourUrl : undefined,
         transitScore: body.transitScore !== undefined ? body.transitScore : undefined,

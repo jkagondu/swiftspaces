@@ -3,9 +3,10 @@
 import { useState } from "react";
 import Image from "next/image";
 
-export default function ImageCarousel({ images, status }: { images: string[], status: string }) {
+export default function ImageCarousel({ images, categorizedImages, status }: { images: string[], categorizedImages?: any, status: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [showGallery, setShowGallery] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string>("All");
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -127,9 +128,31 @@ export default function ImageCarousel({ images, status }: { images: string[], st
               </button>
             </div>
             
+            
+            {/* Category Tabs */}
+            {categorizedImages && Object.keys(categorizedImages).length > 0 && (
+              <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', marginBottom: '1.5rem', paddingBottom: '0.5rem' }}>
+                <button 
+                  onClick={() => setActiveCategory("All")}
+                  style={{ padding: '0.5rem 1.5rem', borderRadius: '20px', border: '1px solid var(--color-border)', background: activeCategory === "All" ? 'var(--color-primary)' : 'white', color: activeCategory === "All" ? 'white' : 'var(--color-text-main)', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                >
+                  All
+                </button>
+                {Object.keys(categorizedImages).map(cat => (
+                  <button 
+                    key={cat}
+                    onClick={() => setActiveCategory(cat)}
+                    style={{ padding: '0.5rem 1.5rem', borderRadius: '20px', border: '1px solid var(--color-border)', background: activeCategory === cat ? 'var(--color-primary)' : 'white', color: activeCategory === cat ? 'white' : 'var(--color-text-main)', fontWeight: 600, cursor: 'pointer', whiteSpace: 'nowrap' }}
+                  >
+                    {cat}
+                  </button>
+                ))}
+              </div>
+            )}
+
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', gridAutoRows: '300px' }}>
-              {images.map((img, idx) => (
-                <div key={idx} style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden' }}>
+              {(activeCategory === "All" ? images : (categorizedImages[activeCategory] || [])).map((img: string, idx: number) => (
+                <div key={`${activeCategory}-${idx}`} style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden' }}>
                   <Image 
                     src={img} 
                     alt={`Property view ${idx + 1}`} 
