@@ -22,6 +22,13 @@ export default function AdminPropertyForm({ onComplete }: { onComplete: () => vo
     transitScore: "",
     walkability: "",
     nearbyPlaces: "",
+    nearbySchools: "",
+    nearbyHospitals: "",
+    deposit: "",
+    waterBill: "",
+    electricity: "",
+    parking: "",
+    petFriendly: false,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);

@@ -28,6 +28,13 @@ export default function ManagerDashboard() {
     transitScore: "",
     walkability: "",
     nearbyPlaces: "",
+    nearbySchools: "",
+    nearbyHospitals: "",
+    deposit: "",
+    waterBill: "",
+    electricity: "",
+    parking: "",
+    petFriendly: false,
   });
   
   const [editingPropertyId, setEditingPropertyId] = useState<string | null>(null);
@@ -642,6 +649,7 @@ export default function ManagerDashboard() {
                     <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Walkability (Optional)</label>
                     <input name="walkability" value={formData.walkability} onChange={handleInputChange} type="text" placeholder="e.g. Very Walkable Neighborhood" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
                   </div>
+                </div>
                   
                   {/* Financial & Utilities */}
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
@@ -740,6 +748,7 @@ export default function ManagerDashboard() {
                   )}
                 </div>
               </form>
+              )}
             </div>
           </div>
         )}
