@@ -10,13 +10,13 @@ export default async function Home() {
   // Fetch latest 3 featured properties, fallback to latest if none are featured
   let featuredProperties = await prisma.property.findMany({
     where: { isFeatured: true },
-    take: 3,
+    take: 12,
     orderBy: { createdAt: 'desc' },
   });
 
   if (featuredProperties.length === 0) {
     featuredProperties = await prisma.property.findMany({
-      take: 3,
+      take: 12,
       orderBy: { createdAt: 'desc' },
     });
   }
