@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import AdminPropertyForm from "@/components/AdminPropertyForm";
 
 export default function AdminDashboard() {
   const { data: session, status } = useSession();
@@ -478,6 +479,14 @@ export default function AdminDashboard() {
           <div className="animate-fade-in">
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem' }}>
               <h1 style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.02em' }}>Listing Moderation</h1>
+              <button 
+                onClick={() => setActiveTab("add_property")}
+                className="btn btn-primary"
+                style={{ padding: '0.75rem 1.5rem', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                Add New Property
+              </button>
             </div>
 
             <div className="table-container" style={{ backgroundColor: '#1e293b', borderRadius: 'var(--radius-lg)', border: '1px solid #334155', overflowX: 'auto' }}>
@@ -532,6 +541,24 @@ export default function AdminDashboard() {
                 </table>
               )}
             </div>
+          </div>
+        )}
+
+        {/* --- ADD PROPERTY TAB --- */}
+        {activeTab === "add_property" && (
+          <div className="animate-fade-in" style={{ maxWidth: '800px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
+              <button onClick={() => setActiveTab("properties")} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Back
+              </button>
+              <h1 style={{ fontSize: '2rem', fontWeight: 700, letterSpacing: '-0.02em', margin: 0 }}>Add New Property</h1>
+            </div>
+            <AdminPropertyForm onComplete={() => {
+              fetchProperties();
+              fetchStats();
+              setActiveTab("properties");
+            }} />
           </div>
         )}
 
