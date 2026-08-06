@@ -38,7 +38,7 @@ export default async function ComparePage({
         <Link href="/" className="btn btn-outline">Back to Search</Link>
       </div>
 
-      <div className="card table-container" style={{ overflowX: 'auto', padding: 0 }}>
+      <div className="card table-container hide-on-mobile" style={{ overflowX: 'auto', padding: 0 }}>
         <table style={{ width: '100%', minWidth: '800px', borderCollapse: 'collapse', textAlign: 'left' }}>
           <thead>
             <tr style={{ backgroundColor: 'var(--color-surface-secondary)' }}>
@@ -129,6 +129,74 @@ export default async function ComparePage({
             </tr>
           </tbody>
         </table>
+      </div>
+
+      {/* Mobile Optimized Swipeable Comparison */}
+      <div className="hide-on-desktop property-grid" style={{ marginTop: '1rem' }}>
+        {properties.map(p => (
+          <div key={p.id} className="card" style={{ display: 'flex', flexDirection: 'column', minWidth: '85%' }}>
+            <div style={{ position: 'relative', height: '220px', width: '100%' }}>
+              <Image 
+                src={p.images && p.images.length > 0 ? p.images[0] : "/prop-modern.png"} 
+                alt={p.title}
+                fill
+                style={{ objectFit: 'cover' }}
+              />
+              <div style={{ position: 'absolute', top: '10px', right: '10px', backgroundColor: 'var(--color-primary)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 700, zIndex: 10 }}>
+                {p.status.replace('_', ' ')}
+              </div>
+            </div>
+            
+            <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', gap: '1rem', flex: 1 }}>
+              <div>
+                <h3 style={{ fontSize: '1.25rem', margin: '0 0 0.25rem 0' }}>{p.title}</h3>
+                <div style={{ color: 'var(--color-primary)', fontWeight: 700, fontSize: '1.25rem' }}>{p.price}</div>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', padding: '1rem 0', borderTop: '1px solid var(--color-border)', borderBottom: '1px solid var(--color-border)' }}>
+                <div>
+                  <div className="text-muted" style={{ fontSize: '0.75rem' }}>Location</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{p.location}</div>
+                </div>
+                <div>
+                  <div className="text-muted" style={{ fontSize: '0.75rem' }}>Type</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{p.type.replace('_', ' ')}</div>
+                </div>
+                <div>
+                  <div className="text-muted" style={{ fontSize: '0.75rem' }}>Bedrooms</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{p.beds}</div>
+                </div>
+                <div>
+                  <div className="text-muted" style={{ fontSize: '0.75rem' }}>Bathrooms</div>
+                  <div style={{ fontWeight: 600, fontSize: '0.875rem' }}>{p.baths}</div>
+                </div>
+              </div>
+
+              <div>
+                <div className="text-muted" style={{ fontSize: '0.75rem', marginBottom: '0.5rem' }}>Premium Amenities</div>
+                {p.amenities && p.amenities.length > 0 ? (
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
+                    {p.amenities.slice(0, 4).map((amenity, idx) => (
+                      <span key={idx} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', backgroundColor: 'var(--color-surface-secondary)', padding: '0.25rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem' }}>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="2"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                        {amenity}
+                      </span>
+                    ))}
+                    {p.amenities.length > 4 && <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', alignSelf: 'center' }}>+{p.amenities.length - 4} more</span>}
+                  </div>
+                ) : (
+                  <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>None listed</div>
+                )}
+              </div>
+
+              <div style={{ marginTop: 'auto', paddingTop: '1.5rem' }}>
+                <Link href={`/properties/${p.id}`} className="btn btn-primary" style={{ width: '100%' }}>
+                  View Full Details
+                </Link>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   );
