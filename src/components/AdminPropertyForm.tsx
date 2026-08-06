@@ -126,7 +126,7 @@ export default function AdminPropertyForm({ onComplete }: { onComplete: () => vo
 
       setSuccessMessage("Property published successfully to the live site!");
       setFormData({
-        title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: ""
+        title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false
       });
       setUploadedImageUrls([]);
       
@@ -207,6 +207,46 @@ export default function AdminPropertyForm({ onComplete }: { onComplete: () => vo
             </div>
             <div style={{ fontSize: '0.875rem', color: '#94a3b8' }}>Select multiple PNG, JPG, WEBP up to 10MB</div>
           </label>
+        </div>
+
+        {/* Financial & Utilities */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', padding: '1rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 600, fontSize: '0.875rem' }}>Deposit Required (Optional)</label>
+            <input name="deposit" value={formData.deposit} onChange={handleInputChange} type="text" placeholder="e.g. 1 Month Rent, or None" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 600, fontSize: '0.875rem' }}>Water Bill (Optional)</label>
+            <input name="waterBill" value={formData.waterBill} onChange={handleInputChange} type="text" placeholder="e.g. Included, Separate Meter" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 600, fontSize: '0.875rem' }}>Electricity Bill (Optional)</label>
+            <input name="electricity" value={formData.electricity} onChange={handleInputChange} type="text" placeholder="e.g. Prepaid Tokens, Included" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 600, fontSize: '0.875rem' }}>Parking (Optional)</label>
+            <input name="parking" value={formData.parking} onChange={handleInputChange} type="text" placeholder="e.g. 1 slot, 2 car garage" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none' }} />
+          </div>
+        </div>
+
+        {/* Neighborhood Info */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem', padding: '1rem', backgroundColor: 'rgba(255,255,255,0.02)', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.05)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 600, fontSize: '0.875rem' }}>Nearby Schools (Optional)</label>
+            <input name="nearbySchools" value={formData.nearbySchools} onChange={handleInputChange} type="text" placeholder="e.g. Makini School (5 mins)" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 600, fontSize: '0.875rem' }}>Nearby Hospitals (Optional)</label>
+            <input name="nearbyHospitals" value={formData.nearbyHospitals} onChange={handleInputChange} type="text" placeholder="e.g. Nairobi Hospital" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 600, fontSize: '0.875rem' }}>Nearby Places/Malls (Optional)</label>
+            <input name="nearbyPlaces" value={formData.nearbyPlaces} onChange={handleInputChange} type="text" placeholder="e.g. 2 min walk to Junction Mall" style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none' }} />
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1.5rem' }}>
+            <input type="checkbox" id="petFriendlyAdmin" checked={formData.petFriendly} onChange={(e) => setFormData({...formData, petFriendly: e.target.checked})} style={{ width: '1.25rem', height: '1.25rem' }} />
+            <label htmlFor="petFriendlyAdmin" style={{ fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}>Pet Friendly Property?</label>
+          </div>
         </div>
 
         {/* Title */}

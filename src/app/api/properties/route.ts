@@ -39,7 +39,12 @@ export async function GET(request: Request) {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { title, description, location, price, type, status, beds, baths, agentId, images, latitude: providedLat, longitude: providedLng, transitScore, walkability, nearbyPlaces } = body;
+    const { 
+      title, description, location, price, type, status, beds, baths, agentId, images, 
+      latitude: providedLat, longitude: providedLng, 
+      videoUrl, virtualTourUrl, transitScore, walkability, nearbyPlaces,
+      nearbySchools, nearbyHospitals, deposit, waterBill, electricity, parking, petFriendly
+    } = body;
 
     // Validation
     if (!title || !location || !price || !agentId) {
@@ -81,9 +86,18 @@ export async function POST(request: Request) {
         longitude,
         agentId,
         images: images || [],
+        videoUrl: videoUrl || null,
+        virtualTourUrl: virtualTourUrl || null,
         transitScore: transitScore || null,
         walkability: walkability || null,
         nearbyPlaces: nearbyPlaces || null,
+        nearbySchools: nearbySchools || null,
+        nearbyHospitals: nearbyHospitals || null,
+        deposit: deposit || null,
+        waterBill: waterBill || null,
+        electricity: electricity || null,
+        parking: parking || null,
+        petFriendly: Boolean(petFriendly),
       }
     });
 

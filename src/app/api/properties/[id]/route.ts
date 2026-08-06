@@ -41,7 +41,19 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         description: body.description,
         beds: parseInt(body.beds) || 0,
         baths: parseInt(body.baths) || 0,
-        images: body.images
+        images: body.images,
+        videoUrl: body.videoUrl !== undefined ? body.videoUrl : undefined,
+        virtualTourUrl: body.virtualTourUrl !== undefined ? body.virtualTourUrl : undefined,
+        transitScore: body.transitScore !== undefined ? body.transitScore : undefined,
+        walkability: body.walkability !== undefined ? body.walkability : undefined,
+        nearbyPlaces: body.nearbyPlaces !== undefined ? body.nearbyPlaces : undefined,
+        nearbySchools: body.nearbySchools !== undefined ? body.nearbySchools : undefined,
+        nearbyHospitals: body.nearbyHospitals !== undefined ? body.nearbyHospitals : undefined,
+        deposit: body.deposit !== undefined ? body.deposit : undefined,
+        waterBill: body.waterBill !== undefined ? body.waterBill : undefined,
+        electricity: body.electricity !== undefined ? body.electricity : undefined,
+        parking: body.parking !== undefined ? body.parking : undefined,
+        petFriendly: body.petFriendly !== undefined ? Boolean(body.petFriendly) : undefined,
       }
     });
 

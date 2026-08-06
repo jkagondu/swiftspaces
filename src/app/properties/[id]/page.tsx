@@ -175,7 +175,47 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                 {(property.status || "").replace('_', ' ')}
               </div>
             </div>
-          </div>
+            </div>
+
+          {/* Financials & Utilities (If they exist) */}
+          {(property.deposit || property.waterBill || property.electricity || property.parking || property.petFriendly) && (
+            <div className="card" style={{ padding: '2rem', marginTop: '2rem' }}>
+              <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary"><rect x="2" y="4" width="20" height="16" rx="2"></rect><path d="M7 15h0M2 9.5h20"></path></svg>
+                Terms & Utilities
+              </h2>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+                {property.deposit && (
+                  <div>
+                    <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Security Deposit</div>
+                    <div style={{ fontWeight: 600 }}>{property.deposit}</div>
+                  </div>
+                )}
+                {property.waterBill && (
+                  <div>
+                    <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Water Bill</div>
+                    <div style={{ fontWeight: 600 }}>{property.waterBill}</div>
+                  </div>
+                )}
+                {property.electricity && (
+                  <div>
+                    <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Electricity</div>
+                    <div style={{ fontWeight: 600 }}>{property.electricity}</div>
+                  </div>
+                )}
+                {property.parking && (
+                  <div>
+                    <div style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Parking</div>
+                    <div style={{ fontWeight: 600 }}>{property.parking}</div>
+                  </div>
+                )}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: property.petFriendly ? 'var(--color-primary)' : 'var(--color-text-muted)' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
+                  <span style={{ fontWeight: 600 }}>{property.petFriendly ? "Pet Friendly" : "No Pets Allowed"}</span>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Description */}
           <div className="card" style={{ padding: '2rem' }}>
@@ -216,17 +256,25 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                 <PropertyMap latitude={property.latitude} longitude={property.longitude} zoom={13} interactive={true} />
               </div>
               <div style={{ padding: '1.5rem 2rem', background: 'var(--color-surface-secondary)', display: 'flex', gap: '1.5rem', borderTop: '1px solid var(--color-border)', flexWrap: 'wrap' }}>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, minWidth: '150px' }}>
                   <strong style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-navy)', marginBottom: '0.25rem' }}>Transit Score</strong>
                   <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.transitScore || "Not specified"}</span>
                 </div>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, minWidth: '150px' }}>
                   <strong style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-navy)', marginBottom: '0.25rem' }}>Walkability</strong>
                   <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.walkability || "Not specified"}</span>
                 </div>
-                <div style={{ flex: 1 }}>
+                <div style={{ flex: 1, minWidth: '150px' }}>
                   <strong style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-navy)', marginBottom: '0.25rem' }}>Nearby Places</strong>
                   <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.nearbyPlaces || "Not specified"}</span>
+                </div>
+                <div style={{ flex: 1, minWidth: '150px' }}>
+                  <strong style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-navy)', marginBottom: '0.25rem' }}>Nearby Schools</strong>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.nearbySchools || "Not specified"}</span>
+                </div>
+                <div style={{ flex: 1, minWidth: '150px' }}>
+                  <strong style={{ display: 'block', fontSize: '0.875rem', color: 'var(--color-navy)', marginBottom: '0.25rem' }}>Nearby Hospitals</strong>
+                  <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{property.nearbyHospitals || "Not specified"}</span>
                 </div>
               </div>
             </div>

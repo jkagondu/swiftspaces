@@ -133,6 +133,17 @@ model Property {
   transitScore  String?
   walkability   String?
   nearbyPlaces  String?
+  nearbySchools String?
+  nearbyHospitals String?
+  
+  // Financial & Utilities (Mostly for Rentals)
+  deposit       String?        // e.g., "1 Month Rent", "None"
+  waterBill     String?        // e.g., "Included", "Separate Meter"
+  electricity   String?        // e.g., "Prepaid", "Postpaid", "Included"
+  
+  // Additional Features
+  parking       String?        // e.g., "1 slot included", "Street parking"
+  petFriendly   Boolean        @default(false)
   
   // Foreign Key linking to the Agent who posted this
   agentId       String

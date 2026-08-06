@@ -271,7 +271,7 @@ export default function ManagerDashboard() {
 
       setSuccessMessage(editingPropertyId ? "Property updated successfully!" : "Property published successfully to the live site!");
       setFormData({
-        title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: ""
+        title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false
       });
       setUploadedImageUrls([]);
       setEditingPropertyId(null);
@@ -344,7 +344,7 @@ export default function ManagerDashboard() {
             onClick={() => {
               setActiveTab("add_property");
               setEditingPropertyId(null);
-              setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "" });
+              setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false });
               setUploadedImageUrls([]);
               setIsSidebarOpen(false);
             }}
@@ -638,15 +638,50 @@ export default function ManagerDashboard() {
                     <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Transit Score (Optional)</label>
                     <input name="transitScore" value={formData.transitScore} onChange={handleInputChange} type="text" placeholder="e.g. 85/100 (Excellent Transit)" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Walkability (Optional)</label>
                     <input name="walkability" value={formData.walkability} onChange={handleInputChange} type="text" placeholder="e.g. Very Walkable Neighborhood" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
                   </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Nearby Places (Optional)</label>
-                    <input name="nearbyPlaces" value={formData.nearbyPlaces} onChange={handleInputChange} type="text" placeholder="e.g. Supermarkets, Schools" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  
+                  {/* Financial & Utilities */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '1.5rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Deposit Required (Optional)</label>
+                      <input name="deposit" value={formData.deposit} onChange={handleInputChange} type="text" placeholder="e.g. 1 Month Rent, or None" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Water Bill (Optional)</label>
+                      <input name="waterBill" value={formData.waterBill} onChange={handleInputChange} type="text" placeholder="e.g. Included, Separate Meter" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Electricity Bill (Optional)</label>
+                      <input name="electricity" value={formData.electricity} onChange={handleInputChange} type="text" placeholder="e.g. Prepaid Tokens, Included" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Parking (Optional)</label>
+                      <input name="parking" value={formData.parking} onChange={handleInputChange} type="text" placeholder="e.g. 1 slot, 2 car garage" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    </div>
                   </div>
-                </div>
+
+                  {/* Neighborhood Insights */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Nearby Places</label>
+                      <input name="nearbyPlaces" value={formData.nearbyPlaces} onChange={handleInputChange} type="text" placeholder="e.g. Supermarkets" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Nearby Schools</label>
+                      <input name="nearbySchools" value={formData.nearbySchools} onChange={handleInputChange} type="text" placeholder="e.g. Makini School" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                      <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Nearby Hospitals</label>
+                      <input name="nearbyHospitals" value={formData.nearbyHospitals} onChange={handleInputChange} type="text" placeholder="e.g. Nairobi Hospital" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginTop: '1.5rem' }}>
+                      <input type="checkbox" id="petFriendlyManager" checked={formData.petFriendly} onChange={(e) => setFormData({...formData, petFriendly: e.target.checked})} style={{ width: '1.25rem', height: '1.25rem' }} />
+                      <label htmlFor="petFriendlyManager" style={{ fontWeight: 600, fontSize: '0.875rem', cursor: 'pointer' }}>Pet Friendly Property?</label>
+                    </div>
+                  </div>
 
                 {/* Grid for Type & Status */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
@@ -696,7 +731,7 @@ export default function ManagerDashboard() {
                   {editingPropertyId && (
                     <button type="button" onClick={() => {
                       setEditingPropertyId(null);
-                      setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "" });
+                      setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false });
                       setUploadedImageUrls([]);
                       setActiveTab("my_listings");
                     }} className="btn btn-outline" style={{ padding: '0.75rem 2rem', marginLeft: '1rem' }}>
@@ -866,6 +901,13 @@ export default function ManagerDashboard() {
                               transitScore: property.transitScore || "",
                               walkability: property.walkability || "",
                               nearbyPlaces: property.nearbyPlaces || "",
+                              nearbySchools: property.nearbySchools || "",
+                              nearbyHospitals: property.nearbyHospitals || "",
+                              deposit: property.deposit || "",
+                              waterBill: property.waterBill || "",
+                              electricity: property.electricity || "",
+                              parking: property.parking || "",
+                              petFriendly: property.petFriendly || false,
                             });
                             setUploadedImageUrls(property.images || []);
                             setActiveTab("add_property");
