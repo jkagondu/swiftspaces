@@ -677,6 +677,18 @@ export default function ManagerDashboard() {
                   <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} placeholder="Describe the property..." style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none', resize: 'vertical' }}></textarea>
                 </div>
 
+                {/* Media Links */}
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>YouTube Video URL (Optional)</label>
+                    <input name="videoUrl" value={formData.videoUrl} onChange={handleInputChange} type="url" placeholder="e.g. https://youtube.com/watch?v=..." style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>3D Virtual Tour URL (Optional)</label>
+                    <input name="virtualTourUrl" value={formData.virtualTourUrl} onChange={handleInputChange} type="url" placeholder="e.g. https://my.matterport.com/show/?m=..." style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  </div>
+                </div>
+
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
                   <button type="submit" disabled={isSubmitting} className="btn btn-primary" style={{ padding: '0.75rem 2rem', opacity: isSubmitting ? 0.7 : 1 }}>
                     {isSubmitting ? (editingPropertyId ? "Updating..." : "Publishing...") : (editingPropertyId ? "Update Property" : "Publish Listing")}

@@ -5,6 +5,7 @@ import Image from "next/image";
 
 export default function ImageCarousel({ images, status }: { images: string[], status: string }) {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [showGallery, setShowGallery] = useState(false);
 
   const handleNext = () => {
     setCurrentIndex((prev) => (prev + 1) % images.length);
@@ -72,7 +73,74 @@ export default function ImageCarousel({ images, status }: { images: string[], st
               />
             ))}
           </div>
+          <button 
+            onClick={() => setShowGallery(true)}
+            style={{ 
+              position: 'absolute', 
+              bottom: '1.5rem', 
+              right: '1.5rem', 
+              background: 'white', 
+              color: 'var(--color-navy)', 
+              border: '1px solid var(--color-border)', 
+              borderRadius: '8px', 
+              padding: '0.5rem 1rem', 
+              fontSize: '0.875rem', 
+              fontWeight: 600, 
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              boxShadow: 'var(--shadow-md)'
+            }}
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            Show all photos
+          </button>
         </>
+      )}
+
+      {/* Full Screen Gallery Modal */}
+      {showGallery && (
+        <div style={{
+          position: 'fixed',
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundColor: 'white',
+          zIndex: 9999,
+          overflowY: 'auto',
+          padding: '2rem'
+        }}>
+          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '2rem', position: 'sticky', top: 0, backgroundColor: 'white', padding: '1rem 0', zIndex: 10 }}>
+              <h2 style={{ margin: 0, fontSize: '1.5rem', fontWeight: 600 }}>Property Gallery</h2>
+              <button 
+                onClick={() => setShowGallery(false)}
+                style={{ 
+                  background: 'var(--color-surface-secondary)', 
+                  border: 'none', 
+                  borderRadius: '50%', 
+                  width: '40px', height: '40px', 
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', 
+                  cursor: 'pointer' 
+                }}
+              >
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+              </button>
+            </div>
+            
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', autoRows: '300px' }}>
+              {images.map((img, idx) => (
+                <div key={idx} style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden' }}>
+                  <Image 
+                    src={img} 
+                    alt={`Property view ${idx + 1}`} 
+                    fill 
+                    style={{ objectFit: 'cover' }}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

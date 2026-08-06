@@ -283,6 +283,18 @@ export default function AdminPropertyForm({ onComplete }: { onComplete: () => vo
           <textarea name="description" value={formData.description} onChange={handleInputChange} rows={4} placeholder="Describe the property, features, rules, etc." style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none', resize: 'vertical' }}></textarea>
         </div>
 
+        {/* Media Links */}
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 600, fontSize: '0.875rem' }}>YouTube Video URL (Optional)</label>
+            <input name="videoUrl" value={formData.videoUrl} onChange={handleInputChange} type="url" placeholder="e.g. https://youtube.com/watch?v=..." style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none' }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label style={{ fontWeight: 600, fontSize: '0.875rem' }}>3D Virtual Tour URL (Optional)</label>
+            <input name="virtualTourUrl" value={formData.virtualTourUrl} onChange={handleInputChange} type="url" placeholder="e.g. https://my.matterport.com/show/?m=..." style={{ padding: '0.75rem', borderRadius: '8px', border: '1px solid #475569', backgroundColor: '#0f172a', color: 'white', outline: 'none' }} />
+          </div>
+        </div>
+
         <button 
           type="submit" 
           disabled={isSubmitting || isUploading}
