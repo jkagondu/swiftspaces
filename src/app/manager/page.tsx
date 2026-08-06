@@ -740,7 +740,6 @@ export default function ManagerDashboard() {
                   )}
                 </div>
               </form>
-              )}
             </div>
           </div>
         )}
