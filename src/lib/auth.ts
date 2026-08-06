@@ -36,19 +36,36 @@ export const authOptions: NextAuthOptions = {
           email: user.email,
           role: user.role,
           agentStatus: user.agentStatus,
-          agencyName: user.agencyName
+          agencyName: user.agencyName,
+          facebookUrl: user.facebookUrl,
+          twitterUrl: user.twitterUrl,
+          instagramUrl: user.instagramUrl,
+          linkedinUrl: user.linkedinUrl,
         };
       }
     })
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
         token.role = (user as any).role;
         token.agentStatus = (user as any).agentStatus;
         token.agencyName = (user as any).agencyName;
+        token.facebookUrl = (user as any).facebookUrl;
+        token.twitterUrl = (user as any).twitterUrl;
+        token.instagramUrl = (user as any).instagramUrl;
+        token.linkedinUrl = (user as any).linkedinUrl;
       }
+      
+      // Allow updating session data
+      if (trigger === "update" && session) {
+        if (session.facebookUrl !== undefined) token.facebookUrl = session.facebookUrl;
+        if (session.twitterUrl !== undefined) token.twitterUrl = session.twitterUrl;
+        if (session.instagramUrl !== undefined) token.instagramUrl = session.instagramUrl;
+        if (session.linkedinUrl !== undefined) token.linkedinUrl = session.linkedinUrl;
+      }
+      
       return token;
     },
     async session({ session, token }) {
@@ -59,6 +76,10 @@ export const authOptions: NextAuthOptions = {
           role: token.role as string,
           agentStatus: token.agentStatus as string,
           agencyName: token.agencyName as string,
+          facebookUrl: token.facebookUrl as string | undefined,
+          twitterUrl: token.twitterUrl as string | undefined,
+          instagramUrl: token.instagramUrl as string | undefined,
+          linkedinUrl: token.linkedinUrl as string | undefined,
         } as any;
       }
       return session;

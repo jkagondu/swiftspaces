@@ -6,7 +6,7 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function ManagerDashboard() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const router = useRouter();
   const [activeTab, setActiveTab] = useState("overview");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -38,6 +38,41 @@ export default function ManagerDashboard() {
   });
   
   const [editingPropertyId, setEditingPropertyId] = useState<string | null>(null);
+
+  // Profile State
+  const [profileData, setProfileData] = useState({
+    facebookUrl: (session?.user as any)?.facebookUrl || "",
+    twitterUrl: (session?.user as any)?.twitterUrl || "",
+    instagramUrl: (session?.user as any)?.instagramUrl || "",
+    linkedinUrl: (session?.user as any)?.linkedinUrl || "",
+  });
+  const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
+  const [profileSuccessMessage, setProfileSuccessMessage] = useState("");
+  const [profileErrorMessage, setProfileErrorMessage] = useState("");
+
+  const handleProfileUpdate = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsUpdatingProfile(true);
+    setProfileSuccessMessage("");
+    setProfileErrorMessage("");
+    try {
+      const res = await fetch("/api/user/profile", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(profileData),
+      });
+      if (res.ok) {
+        await update(profileData);
+        setProfileSuccessMessage("Profile updated successfully!");
+      } else {
+        setProfileErrorMessage("Failed to update profile.");
+      }
+    } catch (err) {
+      setProfileErrorMessage("An error occurred.");
+    } finally {
+      setIsUpdatingProfile(false);
+    }
+  };
   
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -427,6 +462,23 @@ export default function ManagerDashboard() {
             }}
           >
             Billing & Subscriptions
+          </button>
+          <button 
+            onClick={() => { setActiveTab("profile"); setIsSidebarOpen(false); }}
+            style={{
+              padding: '0.75rem 1rem',
+              borderRadius: 'var(--radius-md)',
+              textAlign: 'left',
+              backgroundColor: activeTab === "profile" ? 'var(--color-primary-light)' : 'transparent',
+              color: activeTab === "profile" ? 'var(--color-primary)' : 'var(--color-text-main)',
+              fontWeight: activeTab === "profile" ? 600 : 400,
+              border: 'none',
+              transition: 'all 0.2s ease',
+              cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '0.75rem'
+            }}
+          >
+            Agent Profile
           </button>
         </nav>
 
@@ -1030,6 +1082,71 @@ export default function ManagerDashboard() {
                 </button>
               </div>
 
+            </div>
+          </div>
+        )}
+
+        {/* PROFILE TAB */}
+        {activeTab === "profile" && (
+          <div className="animate-fade-in" style={{ maxWidth: '800px' }}>
+            <h1 className="heading-2" style={{ marginBottom: '0.5rem', letterSpacing: '-0.02em' }}>Agent Profile</h1>
+            <p className="text-muted" style={{ marginBottom: '2rem' }}>Update your public profile and social media links.</p>
+            
+            <div className="card" style={{ padding: '2rem' }}>
+              <h3 style={{ fontSize: '1.25rem', marginBottom: '1.5rem' }}>Social Media Links</h3>
+              <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', marginBottom: '1.5rem' }}>
+                Add your social media profiles so clients can easily find you. These will be displayed on your agent profile page.
+              </p>
+
+              {profileSuccessMessage && <div style={{ backgroundColor: 'rgba(16, 185, 129, 0.1)', color: '#10b981', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>{profileSuccessMessage}</div>}
+              {profileErrorMessage && <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>{profileErrorMessage}</div>}
+
+              <form onSubmit={handleProfileUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <label style={{ fontSize: '0.875rem', fontWeight: 600 }}>Facebook URL</label>
+                  <input 
+                    type="url" 
+                    value={profileData.facebookUrl} 
+                    onChange={e => setProfileData({...profileData, facebookUrl: e.target.value})} 
+                    placeholder="https://facebook.com/yourpage" 
+                    style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', width: '100%' }}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <label style={{ fontSize: '0.875rem', fontWeight: 600 }}>X (Twitter) URL</label>
+                  <input 
+                    type="url" 
+                    value={profileData.twitterUrl} 
+                    onChange={e => setProfileData({...profileData, twitterUrl: e.target.value})} 
+                    placeholder="https://x.com/yourhandle" 
+                    style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', width: '100%' }}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <label style={{ fontSize: '0.875rem', fontWeight: 600 }}>Instagram URL</label>
+                  <input 
+                    type="url" 
+                    value={profileData.instagramUrl} 
+                    onChange={e => setProfileData({...profileData, instagramUrl: e.target.value})} 
+                    placeholder="https://instagram.com/yourhandle" 
+                    style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', width: '100%' }}
+                  />
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <label style={{ fontSize: '0.875rem', fontWeight: 600 }}>LinkedIn URL</label>
+                  <input 
+                    type="url" 
+                    value={profileData.linkedinUrl} 
+                    onChange={e => setProfileData({...profileData, linkedinUrl: e.target.value})} 
+                    placeholder="https://linkedin.com/in/yourprofile" 
+                    style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', width: '100%' }}
+                  />
+                </div>
+                
+                <button type="submit" disabled={isUpdatingProfile} className="btn btn-primary" style={{ alignSelf: 'flex-start', padding: '0.75rem 2rem', marginTop: '1rem' }}>
+                  {isUpdatingProfile ? "Saving..." : "Save Profile"}
+                </button>
+              </form>
             </div>
           </div>
         )}

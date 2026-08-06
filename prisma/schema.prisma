@@ -62,6 +62,12 @@ model User {
   subscriptionPlan String      @default("FREE_TRIAL") // e.g., FREE_TRIAL, PREMIUM, PRO
   trialEndsAt   DateTime?      // When the free trial expires
 
+  // Social Media
+  facebookUrl   String?
+  twitterUrl    String?
+  instagramUrl  String?
+  linkedinUrl   String?
+
   // Password Reset
   resetToken    String?
   resetTokenExpiry DateTime?
