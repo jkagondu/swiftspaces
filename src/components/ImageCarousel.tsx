@@ -127,7 +127,7 @@ export default function ImageCarousel({ images, status }: { images: string[], st
               </button>
             </div>
             
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', autoRows: '300px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem', gridAutoRows: '300px' }}>
               {images.map((img, idx) => (
                 <div key={idx} style={{ position: 'relative', width: '100%', height: '100%', borderRadius: '12px', overflow: 'hidden' }}>
                   <Image 
