@@ -23,13 +23,23 @@ export default function TermsOfService() {
         <p style={{ lineHeight: 1.7, marginBottom: '1rem' }}>
           You agree to use the platform only for lawful purposes. If you post a property listing, you represent and warrant that you have the right to list the property and that all information provided is accurate and not misleading.
         </p>
-        <p style={{ lineHeight: 1.7 }}>
+        <p style={{ lineHeight: 1.7, marginBottom: '1rem' }}>
           We reserve the right to remove any listing or suspend any account that violates these terms, including listings that are fraudulent, discriminatory, or offensive.
         </p>
       </section>
 
       <section style={{ marginBottom: '2.5rem' }}>
-        <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1rem', color: '#0f172a' }}>4. Limitation of Liability</h2>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1rem', color: '#0f172a' }}>4. Property Owner Privacy & Anonymity</h2>
+        <p style={{ lineHeight: 1.7, marginBottom: '1rem' }}>
+          SwiftSpaces strictly protects the privacy of landlords, property owners, and property managers. We do not publicly disclose the identity, personal contact information, or direct ownership details of properties listed on the platform. 
+        </p>
+        <p style={{ lineHeight: 1.7 }}>
+          Users agree that they will not attempt to scrape, reverse-engineer, or maliciously uncover the private ownership details of any property on the platform. Identity details are only disclosed securely to verified parties during the final stages of a transaction, at the owner's discretion.
+        </p>
+      </section>
+
+      <section style={{ marginBottom: '2.5rem' }}>
+        <h2 style={{ fontSize: '1.75rem', fontWeight: 700, marginBottom: '1rem', color: '#0f172a' }}>5. Limitation of Liability</h2>
         <p style={{ lineHeight: 1.7 }}>
           SwiftSpaces is not responsible for the accuracy of property listings or the actions of any users on the platform. In no event shall SwiftSpaces be liable for any direct, indirect, incidental, special, or consequential damages arising out of or in any way connected with the use of our services.
         </p>

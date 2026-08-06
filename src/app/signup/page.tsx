@@ -132,6 +132,18 @@ export default function SignupPage() {
                 />
               </div>
 
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', marginTop: '0.5rem' }}>
+                <input 
+                  type="checkbox" 
+                  id="terms" 
+                  required 
+                  style={{ marginTop: '0.25rem', width: '1.25rem', height: '1.25rem', cursor: 'pointer', accentColor: 'var(--color-primary)' }} 
+                />
+                <label htmlFor="terms" style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)', lineHeight: '1.5' }}>
+                  I agree to the <Link href="/terms" target="_blank" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Terms & Conditions</Link> and <Link href="/privacy" target="_blank" style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>Privacy Policy</Link>. I understand that any attempt to misuse property data or harass landlords is strictly prohibited.
+                </label>
+              </div>
+
               <button type="submit" disabled={isLoading} style={{ 
                 padding: '1.25rem', width: '100%', fontSize: '1rem', fontWeight: 700, marginTop: '1rem', 
                 background: 'var(--color-primary)', 
