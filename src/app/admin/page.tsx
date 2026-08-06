@@ -169,6 +169,21 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleToggleFeature = async (id: string, currentStatus: boolean) => {
+    try {
+      const res = await fetch(`/api/admin/properties/feature`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ propertyId: id, isFeatured: !currentStatus })
+      });
+      if (res.ok) {
+        setProperties(properties.map(p => p.id === id ? { ...p, isFeatured: !currentStatus } : p));
+      }
+    } catch (error) {
+      console.error("Failed to toggle feature status", error);
+    }
+  };
+
   const handleUpdateStatus = async (agentId: string, newStatus: string) => {
     try {
       const res = await fetch("/api/admin/agents", {
@@ -520,6 +535,7 @@ export default function AdminDashboard() {
                       <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8' }}>Agent</th>
                       <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8' }}>Price & Type</th>
                       <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8' }}>Status</th>
+                      <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8', textAlign: 'center' }}>Featured</th>
                       <th style={{ padding: '1rem 1.5rem', fontWeight: 600, fontSize: '0.875rem', color: '#94a3b8', textAlign: 'right' }}>Actions</th>
                     </tr>
                   </thead>
@@ -542,6 +558,15 @@ export default function AdminDashboard() {
                            <span style={{ display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'white', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
                              {property.status.replace('_', ' ')}
                            </span>
+                        </td>
+                        <td style={{ padding: '1rem 1.5rem', textAlign: 'center' }}>
+                          <button 
+                            onClick={() => handleToggleFeature(property.id, property.isFeatured)}
+                            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '0.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto' }}
+                            title={property.isFeatured ? "Unfeature" : "Feature on Homepage"}
+                          >
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill={property.isFeatured ? "#fbbf24" : "none"} stroke={property.isFeatured ? "#fbbf24" : "#64748b"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                          </button>
                         </td>
                         <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
                           <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>

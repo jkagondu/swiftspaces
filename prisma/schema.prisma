@@ -144,6 +144,8 @@ model Property {
   // Anti-scam reports
   reports       Report[]       @relation("PropertyReports")
   
+  isFeatured    Boolean        @default(false)
+
   createdAt     DateTime       @default(now())
   updatedAt     DateTime       @updatedAt
 }
