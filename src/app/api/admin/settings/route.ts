@@ -19,7 +19,10 @@ export async function GET(request: Request) {
         data: {
           id: "singleton",
           supportEmail: "support@swiftspace.africa",
-          supportPhone: "+254 700 000000"
+          supportPhone: "+254 700 000000",
+          siteName: "SwiftSpaces",
+          maintenanceMode: false,
+          allowAgentRegistration: true
         }
       });
     }
@@ -38,18 +41,39 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { supportEmail, supportPhone } = await request.json();
+    const { 
+      supportEmail, 
+      supportPhone,
+      siteName,
+      maintenanceMode,
+      allowAgentRegistration,
+      facebookUrl,
+      instagramUrl,
+      twitterUrl
+    } = await request.json();
 
     const updated = await prisma.platformSettings.upsert({
       where: { id: "singleton" },
       update: {
         supportEmail,
-        supportPhone
+        supportPhone,
+        siteName,
+        maintenanceMode,
+        allowAgentRegistration,
+        facebookUrl,
+        instagramUrl,
+        twitterUrl
       },
       create: {
         id: "singleton",
         supportEmail,
-        supportPhone
+        supportPhone,
+        siteName,
+        maintenanceMode,
+        allowAgentRegistration,
+        facebookUrl,
+        instagramUrl,
+        twitterUrl
       }
     });
 

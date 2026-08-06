@@ -174,8 +174,14 @@ model AlertSubscription {
 }
 
 model PlatformSettings {
-  id              String   @id @default("singleton")
-  supportEmail    String   @default("support@swiftspace.africa")
-  supportPhone    String   @default("+254 700 000000")
-  updatedAt       DateTime @updatedAt
+  id                      String   @id @default("singleton")
+  supportEmail            String   @default("support@swiftspace.africa")
+  supportPhone            String   @default("+254 700 000000")
+  siteName                String   @default("SwiftSpaces")
+  maintenanceMode         Boolean  @default(false)
+  allowAgentRegistration  Boolean  @default(true)
+  facebookUrl             String?
+  instagramUrl            String?
+  twitterUrl              String?
+  updatedAt               DateTime @updatedAt
 }

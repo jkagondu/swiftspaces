@@ -22,7 +22,16 @@ export default function AdminDashboard() {
   const [isLoadingProps, setIsLoadingProps] = useState(false);
 
   // Platform settings state
-  const [settings, setSettings] = useState({ supportEmail: "", supportPhone: "" });
+  const [settings, setSettings] = useState({ 
+    supportEmail: "", 
+    supportPhone: "",
+    siteName: "",
+    maintenanceMode: false,
+    allowAgentRegistration: true,
+    facebookUrl: "",
+    instagramUrl: "",
+    twitterUrl: ""
+  });
   const [isSavingSettings, setIsSavingSettings] = useState(false);
 
   // Strict Authentication & Authorization Check
@@ -107,7 +116,16 @@ export default function AdminDashboard() {
       const res = await fetch("/api/admin/settings");
       if (res.ok) {
         const data = await res.json();
-        setSettings({ supportEmail: data.supportEmail, supportPhone: data.supportPhone });
+        setSettings({ 
+          supportEmail: data.supportEmail || "", 
+          supportPhone: data.supportPhone || "",
+          siteName: data.siteName || "",
+          maintenanceMode: data.maintenanceMode || false,
+          allowAgentRegistration: data.allowAgentRegistration ?? true,
+          facebookUrl: data.facebookUrl || "",
+          instagramUrl: data.instagramUrl || "",
+          twitterUrl: data.twitterUrl || ""
+        });
       }
     } catch (error) {
       console.error("Failed to fetch settings", error);
@@ -635,33 +653,122 @@ export default function AdminDashboard() {
             </div>
 
             <div style={{ backgroundColor: '#1e293b', borderRadius: 'var(--radius-lg)', border: '1px solid #334155', padding: '2rem', maxWidth: '800px' }}>
-              <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', fontWeight: 600, color: 'white', borderBottom: '1px solid #334155', paddingBottom: '1rem' }}>Global Contact Details</h2>
-              
-              <form onSubmit={handleSaveSettings} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              <form onSubmit={handleSaveSettings} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                 
+                {/* General Settings */}
                 <div>
-                  <label htmlFor="supportEmail" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Support Email Address</label>
-                  <input 
-                    type="email" 
-                    id="supportEmail"
-                    value={settings.supportEmail}
-                    onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })}
-                    required
-                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
-                  />
-                  <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.5rem' }}>This email will be displayed on the platform for users to contact support.</p>
+                  <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', fontWeight: 600, color: 'white', borderBottom: '1px solid #334155', paddingBottom: '1rem' }}>General Settings</h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <div>
+                      <label htmlFor="siteName" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Site Name</label>
+                      <input 
+                        type="text" 
+                        id="siteName"
+                        value={settings.siteName}
+                        onChange={(e) => setSettings({ ...settings, siteName: e.target.value })}
+                        required
+                        style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
+                      />
+                    </div>
+                  </div>
                 </div>
-                
+
+                {/* Support Contact */}
                 <div>
-                  <label htmlFor="supportPhone" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Support Phone Number</label>
-                  <input 
-                    type="tel" 
-                    id="supportPhone"
-                    value={settings.supportPhone}
-                    onChange={(e) => setSettings({ ...settings, supportPhone: e.target.value })}
-                    required
-                    style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
-                  />
+                  <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', fontWeight: 600, color: 'white', borderBottom: '1px solid #334155', paddingBottom: '1rem' }}>Global Contact Details</h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <div>
+                      <label htmlFor="supportEmail" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Support Email Address</label>
+                      <input 
+                        type="email" 
+                        id="supportEmail"
+                        value={settings.supportEmail}
+                        onChange={(e) => setSettings({ ...settings, supportEmail: e.target.value })}
+                        required
+                        style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="supportPhone" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Support Phone Number</label>
+                      <input 
+                        type="tel" 
+                        id="supportPhone"
+                        value={settings.supportPhone}
+                        onChange={(e) => setSettings({ ...settings, supportPhone: e.target.value })}
+                        required
+                        style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Social Media Links */}
+                <div>
+                  <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', fontWeight: 600, color: 'white', borderBottom: '1px solid #334155', paddingBottom: '1rem' }}>Social Media Links</h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <div>
+                      <label htmlFor="facebookUrl" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Facebook URL (Optional)</label>
+                      <input 
+                        type="url" 
+                        id="facebookUrl"
+                        value={settings.facebookUrl}
+                        onChange={(e) => setSettings({ ...settings, facebookUrl: e.target.value })}
+                        style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="twitterUrl" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Twitter URL (Optional)</label>
+                      <input 
+                        type="url" 
+                        id="twitterUrl"
+                        value={settings.twitterUrl}
+                        onChange={(e) => setSettings({ ...settings, twitterUrl: e.target.value })}
+                        style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
+                      />
+                    </div>
+                    <div>
+                      <label htmlFor="instagramUrl" style={{ display: 'block', fontSize: '0.875rem', fontWeight: 600, color: '#94a3b8', marginBottom: '0.5rem' }}>Instagram URL (Optional)</label>
+                      <input 
+                        type="url" 
+                        id="instagramUrl"
+                        value={settings.instagramUrl}
+                        onChange={(e) => setSettings({ ...settings, instagramUrl: e.target.value })}
+                        style={{ width: '100%', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', backgroundColor: '#0f172a', border: '1px solid #334155', color: 'white', outline: 'none' }}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Advanced Controls */}
+                <div>
+                  <h2 style={{ fontSize: '1.25rem', marginBottom: '1.5rem', fontWeight: 600, color: 'white', borderBottom: '1px solid #334155', paddingBottom: '1rem' }}>Advanced Controls</h2>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer' }}>
+                      <input 
+                        type="checkbox" 
+                        checked={settings.allowAgentRegistration}
+                        onChange={(e) => setSettings({ ...settings, allowAgentRegistration: e.target.checked })}
+                        style={{ width: '1.25rem', height: '1.25rem', accentColor: 'var(--color-primary)' }}
+                      />
+                      <div>
+                        <div style={{ fontWeight: 600, color: 'white' }}>Allow New Agent Registrations</div>
+                        <div style={{ fontSize: '0.875rem', color: '#94a3b8' }}>If disabled, new agents cannot sign up for the platform.</div>
+                      </div>
+                    </label>
+
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '1rem', cursor: 'pointer' }}>
+                      <input 
+                        type="checkbox" 
+                        checked={settings.maintenanceMode}
+                        onChange={(e) => setSettings({ ...settings, maintenanceMode: e.target.checked })}
+                        style={{ width: '1.25rem', height: '1.25rem', accentColor: '#ef4444' }}
+                      />
+                      <div>
+                        <div style={{ fontWeight: 600, color: '#ef4444' }}>Enable Maintenance Mode</div>
+                        <div style={{ fontSize: '0.875rem', color: '#94a3b8' }}>Shows a maintenance page to all regular users. Admins can still log in.</div>
+                      </div>
+                    </label>
+                  </div>
                 </div>
 
                 <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '1rem' }}>
