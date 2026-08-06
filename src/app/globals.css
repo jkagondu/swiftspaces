@@ -341,6 +341,27 @@ h1, h2, h3, h4, h5, h6 {
   body {
     padding-bottom: 4rem;
   }
+
+  /* Make property grids scroll horizontally on mobile for a better UX */
+  .property-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 1rem; /* Space for scrollbar */
+    -webkit-overflow-scrolling: touch;
+    /* Hide scrollbar for cleaner look */
+    scrollbar-width: none; 
+  }
+  .property-grid::-webkit-scrollbar {
+    display: none;
+  }
+  
+  .property-grid > * {
+    flex: 0 0 85%; /* Cards take 85% width so the next one peeks out */
+    scroll-snap-align: center;
+  }
 }
 
 @media (min-width: 769px) {
