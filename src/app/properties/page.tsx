@@ -162,64 +162,67 @@ export default function PropertiesPage() {
         </div>
       </nav>
 
+      {/* Global Filters Subheader (Visible on Mobile and Desktop) */}
+      <div style={{ background: '#0F172A', padding: '1rem 2rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
+        <div className="hide-on-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
+          <h1 className="heading-2" style={{ fontSize: '2rem', margin: 0, color: 'white' }}>Discover Properties</h1>
+          <p style={{ color: '#94a3b8' }}>Find exactly what you're looking for with our interactive map and filters.</p>
+        </div>
+
+        {/* Filters inline with horizontal scroll on mobile */}
+        <div style={{ display: 'flex', gap: '0.75rem', overflowX: 'auto', flexWrap: 'nowrap', WebkitOverflowScrolling: 'touch', paddingBottom: '0.5rem', alignItems: 'center' }}>
+          <input 
+            type="text" 
+            placeholder="Search location..." 
+            value={locationQuery}
+            onChange={(e) => setLocationQuery(e.target.value)}
+            style={{ flex: '0 0 160px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+          />
+          <select 
+            value={propertyType}
+            onChange={(e) => setPropertyType(e.target.value)}
+            style={{ flex: '0 0 140px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', cursor: 'pointer', background: 'rgba(255,255,255,0.1)', color: 'white' }}>
+            <option value="all" style={{ color: 'black' }}>All Types</option>
+            <option value="house" style={{ color: 'black' }}>House</option>
+            <option value="apartment" style={{ color: 'black' }}>Apartment</option>
+            <option value="single" style={{ color: 'black' }}>Single Room</option>
+            <option value="bedsitter" style={{ color: 'black' }}>Bedsitter</option>
+            <option value="airbnb" style={{ color: 'black' }}>Airbnb</option>
+            <option value="land" style={{ color: 'black' }}>Land</option>
+          </select>
+          <input 
+            type="number" 
+            placeholder="Min Price" 
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            style={{ flex: '0 0 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+          />
+          <input 
+            type="number" 
+            placeholder="Max Price" 
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            style={{ flex: '0 0 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+          />
+          <button 
+            onClick={handleFindNearMe}
+            style={{ flexShrink: 0, padding: '0.75rem 1rem', borderRadius: '10px', background: isNearbyMode ? 'var(--color-primary)' : 'transparent', color: isNearbyMode ? 'white' : 'var(--color-primary)', border: '1px solid var(--color-primary)', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s' }}
+          >
+            {isLocating ? <div style={{ width: '16px', height: '16px', border: '2px solid', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div> : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>}
+            {isNearbyMode ? "Turn Off Near Me" : "Near Me"}
+          </button>
+          <div style={{ flexShrink: 0 }}>
+             <SaveSearchButton query={{ location: locationQuery, type: propertyType, minPrice, maxPrice, beds }} />
+          </div>
+        </div>
+      </div>
+
       {/* Split Screen Container */}
-      <div style={{ display: 'flex', flex: 1, height: 'calc(100vh - 80px)', overflow: 'hidden', position: 'relative' }}>
+      <div style={{ display: 'flex', flex: 1, height: 'calc(100vh - 160px)', overflow: 'hidden', position: 'relative' }}>
         
         {/* Left Scrollable Panel */}
         <div className={mobileView === 'map' ? 'hide-on-mobile' : ''} style={{ flex: '1 1 50%', maxWidth: '900px', overflowY: 'auto', display: 'flex', flexDirection: 'column', background: 'var(--color-surface-secondary)' }}>
           
-          {/* Dark Header inside the split panel */}
-          <div style={{ background: '#0F172A', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-              <h1 className="heading-2" style={{ fontSize: '2.5rem', margin: 0, color: 'white' }}>Discover Properties</h1>
-              <p style={{ color: '#94a3b8' }}>Find exactly what you're looking for with our interactive map and filters.</p>
-            </div>
-
-            {/* Filters inline (Dark Mode Styled) */}
-            <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
-              <input 
-                type="text" 
-                placeholder="Search location..." 
-                value={locationQuery}
-                onChange={(e) => setLocationQuery(e.target.value)}
-                style={{ flex: '1 1 150px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
-              />
-              <select 
-                value={propertyType}
-                onChange={(e) => setPropertyType(e.target.value)}
-                style={{ flex: '1 1 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', cursor: 'pointer', background: 'rgba(255,255,255,0.1)', color: 'white' }}>
-                <option value="all" style={{ color: 'black' }}>All Types</option>
-                <option value="house" style={{ color: 'black' }}>House</option>
-                <option value="apartment" style={{ color: 'black' }}>Apartment</option>
-                <option value="single" style={{ color: 'black' }}>Single Room</option>
-                <option value="bedsitter" style={{ color: 'black' }}>Bedsitter</option>
-                <option value="airbnb" style={{ color: 'black' }}>Airbnb</option>
-                <option value="land" style={{ color: 'black' }}>Land</option>
-              </select>
-              <input 
-                type="number" 
-                placeholder="Min Price (KES)" 
-                value={minPrice}
-                onChange={(e) => setMinPrice(e.target.value)}
-                style={{ flex: '1 1 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
-              />
-              <input 
-                type="number" 
-                placeholder="Max Price (KES)" 
-                value={maxPrice}
-                onChange={(e) => setMaxPrice(e.target.value)}
-                style={{ flex: '1 1 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
-              />
-              <button 
-                onClick={handleFindNearMe}
-                style={{ padding: '0.75rem 1rem', borderRadius: '10px', background: isNearbyMode ? 'var(--color-primary)' : 'transparent', color: isNearbyMode ? 'white' : 'var(--color-primary)', border: '1px solid var(--color-primary)', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '0.5rem', transition: 'all 0.2s' }}
-              >
-                {isLocating ? <div style={{ width: '16px', height: '16px', border: '2px solid', borderTopColor: 'transparent', borderRadius: '50%', animation: 'spin 1s linear infinite' }}></div> : <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"></polygon></svg>}
-                {isNearbyMode ? "Turn Off Near Me" : "Near Me"}
-              </button>
-              <SaveSearchButton query={{ location: locationQuery, type: propertyType, minPrice, maxPrice, beds }} />
-            </div>
-          </div>
 
           <div style={{ padding: '1.5rem 2rem 0 2rem', fontSize: '0.875rem', fontWeight: 700, color: 'var(--color-text-main)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {isLoading ? "Searching properties..." : `${filteredProperties.length} Properties Found`}
