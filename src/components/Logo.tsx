@@ -10,7 +10,7 @@ interface LogoProps {
 
 export default function Logo({ className = "", width = 32, height = 32, invertText = false }: LogoProps) {
   return (
-    <div className={className} style={{ display: 'flex', alignItems: 'center', backgroundColor: 'white', padding: '0.25rem 0.5rem', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
+    <div className={className} style={{ display: 'flex', alignItems: 'center' }}>
       <Image 
         src="/logo-concept-final.png" 
         alt="SwiftSpaces Logo" 
