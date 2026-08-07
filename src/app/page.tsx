@@ -85,8 +85,8 @@ export default async function Home() {
       <section className="container" style={{ paddingTop: '6rem' }}>
         <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
           <div style={{ flex: '1 1 250px' }}>
-            <h2 className="heading-2" style={{ marginBottom: '0.5rem' }}>Latest Premium Listings</h2>
-            <p className="text-muted">Handpicked properties directly from verified agents.</p>
+            <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', fontWeight: 700, color: 'var(--color-text-muted)', letterSpacing: '0.05em' }}>Featured Properties</span>
+            <h2 className="heading-2" style={{ margin: '0.25rem 0', fontSize: '2rem', color: 'var(--color-navy)' }}>Explore Our Exclusive Properties</h2>
           </div>
           <Link href="/properties" className="btn btn-outline" style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}>
             View All
@@ -114,28 +114,31 @@ export default async function Home() {
                   </div>
                 </div>
                 
-                <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                  <h3 style={{ fontSize: '1.25rem', marginBottom: '0.5rem', fontWeight: 600, textTransform: 'capitalize' }}>{property.title}</h3>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem' }}>
-                    <p className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', margin: 0, fontSize: '0.875rem' }}>
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                      <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '150px' }}>{property.location}</span>
-                    </p>
-                    {property.latitude && property.longitude && (
-                      <div style={{ transform: 'scale(0.85)', transformOrigin: 'right center' }}>
-                        <DirectionsButton latitude={property.latitude} longitude={property.longitude} />
-                      </div>
+                <div style={{ padding: '1rem', flex: 1, display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                  <h3 style={{ fontSize: '1.1rem', margin: 0, fontWeight: 700, textTransform: 'capitalize', color: 'var(--color-navy)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    {property.title}
+                  </h3>
+                  
+                  <p className="text-muted" style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', margin: 0, fontSize: '0.8rem' }}>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{property.location}</span>
+                  </p>
+                  
+                  <div style={{ display: 'flex', gap: '1rem', fontSize: '0.8rem', color: 'var(--color-text-main)', marginTop: '0.25rem', borderBottom: '1px solid var(--color-border)', paddingBottom: '0.75rem' }}>
+                    {property.beds > 0 && (
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4v16"></path><path d="M2 8h18a2 2 0 0 1 2 2v10"></path><path d="M2 17h20"></path></svg> 
+                        <strong>{property.beds} Beds</strong>
+                      </span>
                     )}
+                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 22h6"></path><path d="M12 18v4"></path><path d="M3 18h18v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4z"></path></svg> 
+                      <strong>{property.baths} Baths</strong>
+                    </span>
                   </div>
                   
-                  <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', fontSize: '0.875rem', color: 'var(--color-text-main)' }}>
-                    {property.beds > 0 && <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4v16"></path><path d="M2 8h18a2 2 0 0 1 2 2v10"></path><path d="M2 17h20"></path></svg> <strong>{property.beds}</strong></span>}
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 22h6"></path><path d="M12 18v4"></path><path d="M3 18h18v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4z"></path></svg> <strong>{property.baths}</strong></span>
-                  </div>
-                  
-                  <div style={{ marginTop: 'auto', display: 'flex', flexWrap: 'wrap', gap: '0.75rem', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <span style={{ fontSize: '1.125rem', fontWeight: 600, color: 'var(--color-primary)', flex: '1 1 auto' }}>{property.price}</span>
-                    <span className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.875rem', whiteSpace: 'nowrap' }}>View</span>
+                  <div style={{ marginTop: '0.25rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '1.125rem', fontWeight: 800, color: 'var(--color-primary)' }}>{property.price}</span>
                   </div>
                 </div>
               </Link>

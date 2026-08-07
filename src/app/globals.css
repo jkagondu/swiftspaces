@@ -243,7 +243,7 @@ h1, h2, h3, h4, h5, h6 {
 .property-image {
   position: relative;
   width: 100%;
-  height: 240px;
+  height: 200px;
 }
 
 .property-badge {
@@ -354,17 +354,25 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: 4rem;
   }
 
-  /* Standardize property grids as vertical feeds on mobile (Zillow/Airbnb style) */
+  /* Mobile horizontal scroll for property grid - compact and elegant */
   .property-grid {
-    display: grid !important;
-    grid-template-columns: 1fr !important;
-    gap: 1.5rem;
-    padding-bottom: 1rem;
-    overflow-x: hidden;
+    display: flex !important;
+    flex-wrap: nowrap !important;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1rem;
+    padding-bottom: 1.5rem;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+  .property-grid::-webkit-scrollbar {
+    display: none;
   }
   
   .property-grid > * {
-    width: 100%;
+    width: 280px !important;
+    flex: 0 0 280px !important;
+    scroll-snap-align: center;
   }
 }
 
