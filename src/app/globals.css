@@ -354,25 +354,17 @@ h1, h2, h3, h4, h5, h6 {
     padding-bottom: 4rem;
   }
 
-  /* Make property grids scroll horizontally on mobile for a better UX */
+  /* Standardize property grids as vertical feeds on mobile (Zillow/Airbnb style) */
   .property-grid {
-    display: flex;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    gap: 1rem;
-    padding-bottom: 1rem; /* Space for scrollbar */
-    -webkit-overflow-scrolling: touch;
-    /* Hide scrollbar for cleaner look */
-    scrollbar-width: none; 
-  }
-  .property-grid::-webkit-scrollbar {
-    display: none;
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    gap: 1.5rem;
+    padding-bottom: 1rem;
+    overflow-x: hidden;
   }
   
   .property-grid > * {
-    flex: 0 0 85%; /* Cards take 85% width so the next one peeks out */
-    scroll-snap-align: center;
+    width: 100%;
   }
 }
 
