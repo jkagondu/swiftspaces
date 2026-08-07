@@ -15,6 +15,24 @@ export default async function Home() {
     ],
   });
 
+  // Fetch latest 3 reviews
+  const latestReviews = await prisma.review.findMany({
+    take: 3,
+    orderBy: { createdAt: 'desc' },
+    include: {
+      agent: {
+        select: { agencyName: true }
+      }
+    }
+  });
+
+  // Fallback reviews if database has none
+  const reviewsToDisplay = latestReviews.length > 0 ? latestReviews : [
+    { customerName: "Sarah Jenkins", agent: { agencyName: "First-time Buyer" }, rating: 5, comment: "SwiftSpaces made finding our first home an absolute breeze. The direct contact with verified agents gave us peace of mind." },
+    { customerName: "Michael O.", agent: { agencyName: "Property Investor" }, rating: 5, comment: "The premium listings and transparent pricing help me make quick investment decisions. Highly recommended platform." },
+    { customerName: "Elena R.", agent: { agencyName: "Renter" }, rating: 5, comment: "I found an amazing urban apartment within days. The map view and advanced filters are game changers." }
+  ];
+
   return (
     <div style={{ paddingBottom: '4rem' }}>
       {/* Navbar */}
@@ -139,24 +157,26 @@ export default async function Home() {
             <p className="text-muted" style={{ fontSize: '1.125rem', marginTop: '0.5rem' }}>Don't just take our word for it.</p>
           </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2.5rem' }}>
-            {[
-              { name: "Sarah Jenkins", role: "First-time Buyer", text: "SwiftSpaces made finding our first home an absolute breeze. The direct contact with verified agents gave us peace of mind." },
-              { name: "Michael O.", role: "Property Investor", text: "The premium listings and transparent pricing help me make quick investment decisions. Highly recommended platform." },
-              { name: "Elena R.", role: "Renter", text: "I found an amazing urban apartment within days. The map view and advanced filters are game changers." }
-            ].map((testimonial, i) => (
+            {reviewsToDisplay.map((review: any, i) => (
               <div key={i} className="card" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', borderTop: '4px solid var(--color-primary)', position: 'relative' }}>
                 <svg width="40" height="40" viewBox="0 0 24 24" fill="var(--color-primary-light)" style={{ position: 'absolute', top: '1.5rem', right: '1.5rem', opacity: 0.5 }}><path d="M14.017 18L14.017 14.9231C14.017 12.0354 15.6881 10.3341 18.0673 10.0101L18.0673 12.0163C16.8962 12.1933 16.299 12.9837 16.299 14.2885L16.299 14.8846L19.9808 14.8846L19.9808 18L14.017 18ZM4 18L4 14.9231C4 12.0354 5.67115 10.3341 8.05032 10.0101L8.05032 12.0163C6.87917 12.1933 6.28199 12.9837 6.28199 14.2885L6.28199 14.8846L9.96378 14.8846L9.96378 18L4 18Z"></path></svg>
                 <div style={{ color: 'var(--color-primary)', display: 'flex', gap: '0.25rem', zIndex: 1 }}>
-                  {[...Array(5)].map((_, i) => <svg key={i} width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>)}
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} width="20" height="20" viewBox="0 0 24 24" fill={i < review.rating ? "currentColor" : "none"} stroke="currentColor" strokeWidth={i < review.rating ? "0" : "2"}>
+                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+                    </svg>
+                  ))}
                 </div>
-                <p style={{ fontStyle: 'italic', color: 'var(--color-text-main)', flex: 1, fontSize: '1.125rem', lineHeight: 1.6, zIndex: 1 }}>"{testimonial.text}"</p>
+                <p style={{ fontStyle: 'italic', color: 'var(--color-text-main)', flex: 1, fontSize: '1.125rem', lineHeight: 1.6, zIndex: 1 }}>"{review.comment}"</p>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', zIndex: 1 }}>
                   <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--color-primary-light)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '1.25rem' }}>
-                    {testimonial.name.charAt(0)}
+                    {review.customerName ? review.customerName.charAt(0) : "U"}
                   </div>
                   <div>
-                    <h4 style={{ fontWeight: 700, margin: 0, color: 'var(--color-navy)' }}>{testimonial.name}</h4>
-                    <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>{testimonial.role}</span>
+                    <h4 style={{ fontWeight: 700, margin: 0, color: 'var(--color-navy)' }}>{review.customerName}</h4>
+                    <span style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>
+                      {review.agent?.agencyName ? `Reviewed Agent: ${review.agent.agencyName}` : "Customer"}
+                    </span>
                   </div>
                 </div>
               </div>
