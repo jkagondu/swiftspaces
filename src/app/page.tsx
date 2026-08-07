@@ -7,19 +7,13 @@ import Logo from "@/components/Logo";
 import CompareCheckbox from "@/components/CompareCheckbox";
 
 export default async function Home() {
-  // Fetch latest 3 featured properties, fallback to latest if none are featured
-  let featuredProperties = await prisma.property.findMany({
-    where: { isFeatured: true },
-    take: 12,
-    orderBy: { createdAt: 'desc' },
+  // Fetch properties, ensuring featured properties appear first
+  const featuredProperties = await prisma.property.findMany({
+    orderBy: [
+      { isFeatured: 'desc' },
+      { createdAt: 'desc' }
+    ],
   });
-
-  if (featuredProperties.length === 0) {
-    featuredProperties = await prisma.property.findMany({
-      take: 12,
-      orderBy: { createdAt: 'desc' },
-    });
-  }
 
   return (
     <div style={{ paddingBottom: '4rem' }}>
