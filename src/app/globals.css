@@ -231,19 +231,13 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .property-grid {
-  display: flex;
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   gap: 2rem;
-  padding-bottom: 1.5rem;
-  -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin;
 }
 
 .property-grid > * {
-  flex: 0 0 320px; /* Fixed width for cards in horizontal scroll */
-  scroll-snap-align: start;
+  /* No fixed flex-basis for grid items */
 }
 
 .property-image {
