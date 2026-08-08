@@ -51,42 +51,6 @@ export default async function Home() {
       {/* Dynamic Hero Slider */}
       <HeroSlider />
 
-      {/* Floating Search Bar */}
-      <div style={{ position: 'relative', zIndex: 20, marginTop: '-3.5rem', padding: '0 1rem' }}>
-        <div className="container">
-          <div style={{ background: 'white', borderRadius: '12px', padding: '1rem', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
-            <div style={{ flex: '1 1 200px' }}>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Location</label>
-              <input type="text" placeholder="Where are you looking?" style={{ width: '100%', border: 'none', outline: 'none', fontSize: '1rem', fontWeight: 500, color: 'var(--color-navy)' }} />
-            </div>
-            <div style={{ width: '1px', height: '40px', background: 'var(--color-border)' }} className="hide-on-mobile"></div>
-            <div style={{ flex: '1 1 150px' }}>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Property Type</label>
-              <select style={{ width: '100%', border: 'none', outline: 'none', fontSize: '1rem', fontWeight: 500, color: 'var(--color-navy)', background: 'transparent', cursor: 'pointer' }}>
-                <option>All Types</option>
-                <option>House</option>
-                <option>Apartment</option>
-                <option>Commercial</option>
-                <option>Land</option>
-              </select>
-            </div>
-            <div style={{ width: '1px', height: '40px', background: 'var(--color-border)' }} className="hide-on-mobile"></div>
-            <div style={{ flex: '1 1 150px' }}>
-              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Price Range</label>
-              <select style={{ width: '100%', border: 'none', outline: 'none', fontSize: '1rem', fontWeight: 500, color: 'var(--color-navy)', background: 'transparent', cursor: 'pointer' }}>
-                <option>Any Price</option>
-                <option>Under $500k</option>
-                <option>$500k - $1M</option>
-                <option>Over $1M</option>
-              </select>
-            </div>
-            <Link href="/properties" className="btn btn-primary" style={{ padding: '1rem 2rem', borderRadius: '8px', flexShrink: 0, width: 'auto', textAlign: 'center' }}>
-              Search Properties
-            </Link>
-          </div>
-        </div>
-      </div>
-
       {/* 1. Quick Category Shortcuts */}
       <section style={{ backgroundColor: 'var(--color-surface-secondary)', padding: '4rem 0', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">

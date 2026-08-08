@@ -247,6 +247,15 @@ h1, h2, h3, h4, h5, h6 {
   position: relative;
   width: 100%;
   height: 200px;
+  overflow: hidden;
+}
+
+.property-image img {
+  transition: transform 0.5s ease !important;
+}
+
+.property-card:hover .property-image img {
+  transform: scale(1.05) !important;
 }
 
 .property-badge {
