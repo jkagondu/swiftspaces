@@ -199,12 +199,51 @@ export default function HeroSlider() {
           />
         ))}
       </div>
+      {/* Bouncing Scroll Down Indicator (Solves false bottom UX issue) */}
+      <div 
+        style={{
+          position: 'absolute',
+          bottom: '1.5rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 10,
+          animation: 'bounce 2s infinite',
+          cursor: 'pointer',
+          opacity: 0.8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: '0.25rem'
+        }}
+        onClick={() => {
+          window.scrollTo({
+            top: window.innerHeight * 0.85,
+            behavior: 'smooth'
+          });
+        }}
+      >
+        <span style={{ fontSize: '0.75rem', textTransform: 'uppercase', letterSpacing: '0.1em', color: 'white', fontWeight: 600 }}>Explore</span>
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <polyline points="6 9 12 15 18 9"></polyline>
+        </svg>
+      </div>
       
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes fadeInUp {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+        @keyframes bounce {
+          0%, 20%, 50%, 80%, 100% {
+            transform: translateX(-50%) translateY(0);
+          }
+          40% {
+            transform: translateX(-50%) translateY(-10px);
+          }
+          60% {
+            transform: translateX(-50%) translateY(-5px);
           }
         }
       `}} />

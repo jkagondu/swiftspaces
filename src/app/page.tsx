@@ -4,6 +4,7 @@ import DirectionsButton from "@/components/DirectionsButton";
 import prisma from "@/lib/prisma";
 import HeroSlider from "@/components/HeroSlider";
 import Logo from "@/components/Logo";
+import Navbar from "@/components/Navbar";
 import NewsletterForm from "@/components/NewsletterForm";
 import CompareCheckbox from "@/components/CompareCheckbox";
 
@@ -31,22 +32,8 @@ export default async function Home() {
 
   return (
     <div style={{ paddingBottom: '4rem' }}>
-      {/* Navbar */}
-      <nav className="navbar" style={{ position: 'absolute', top: 0, left: 0, right: 0, zIndex: 10 }}>
-        <div className="container nav-container">
-          <Link href="/" style={{ textDecoration: 'none' }}>
-            <Logo width={40} height={40} invertText={true} />
-          </Link>
-          <div className="nav-links">
-            <Link href="/" className="nav-link nav-link-light">Home</Link>
-            <Link href="/properties" className="nav-link nav-link-light">Properties</Link>
-            <Link href="/agents" className="nav-link nav-link-light">Agents</Link>
-            <Link href="/saved" className="nav-link nav-link-light">❤️ Saved</Link>
-            <Link href="/manager" className="nav-link nav-link-light">Manager Portal</Link>
-            <Link href="/admin" className="nav-link nav-link-light">Admin Portal</Link>
-          </div>
-        </div>
-      </nav>
+      {/* Dynamic Sticky Navbar */}
+      <Navbar />
 
       {/* Dynamic Hero Slider */}
       <HeroSlider />
