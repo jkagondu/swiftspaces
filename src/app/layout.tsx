@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Providers } from "@/components/Providers";
 import Footer from "@/components/Footer";
 import { CompareProvider } from "@/components/CompareContext";
+import WhatsAppButton from "@/components/WhatsAppButton";
+import prisma from "@/lib/prisma";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -43,11 +45,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const settings = await prisma.platformSettings.findFirst();
+  const supportPhone = settings?.supportPhone || "+254757160517";
   return (
     <html lang="en">
       <head>
@@ -64,6 +68,7 @@ export default function RootLayout({
               </main>
               <Footer />
             </div>
+            <WhatsAppButton phone={supportPhone} />
           </CompareProvider>
         </Providers>
       </body>
