@@ -192,14 +192,16 @@ export default async function Home() {
       {/* Newsletter Signup */}
       <section style={{ padding: '6rem 0', backgroundColor: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', top: '-50%', left: '-10%', width: '60%', height: '200%', background: 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%)', transform: 'rotate(15deg)' }}></div>
-        <div className="container" style={{ position: 'relative', zIndex: 1, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '3rem' }}>
-          <div style={{ flex: '1 1 400px' }}>
-            <h2 className="display-2" style={{ fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem', letterSpacing: '-0.02em' }}>Join the Inner Circle</h2>
-            <p style={{ fontSize: '1.125rem', color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.6 }}>Get exclusive access to premium listings and market insights before they hit the general market.</p>
+        <div className="container" style={{ position: 'relative', zIndex: 1, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '2rem' }}>
+          <div style={{ flex: '1 1 300px', minWidth: '0' }}>
+            <h2 className="heading-2" style={{ color: 'white', marginBottom: '1rem', letterSpacing: '-0.02em' }}>Join the Inner Circle</h2>
+            <p style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.6 }}>Get exclusive access to premium listings and market insights before they hit the general market.</p>
           </div>
-          <div style={{ flex: '1 1 400px', display: 'flex', gap: '0.5rem', background: 'white', padding: '0.5rem', borderRadius: '12px', boxShadow: 'var(--shadow-lg)' }}>
-            <input type="email" placeholder="Enter your email address" style={{ flex: 1, padding: '1rem 1.5rem', borderRadius: '8px', border: 'none', outline: 'none', backgroundColor: 'transparent', color: 'var(--color-text-main)', fontSize: '1rem' }} />
-            <button className="btn" style={{ padding: '0 2.5rem', borderRadius: '8px', fontWeight: 600, backgroundColor: 'var(--color-navy)', color: 'white' }}>Subscribe</button>
+          <div style={{ flex: '1 1 300px', minWidth: '0', width: '100%' }}>
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', background: 'white', padding: '0.5rem', borderRadius: '12px', boxShadow: 'var(--shadow-lg)' }}>
+              <input type="email" placeholder="Enter your email address" style={{ flex: '1 1 200px', minWidth: '0', padding: '1rem', borderRadius: '8px', border: 'none', outline: 'none', backgroundColor: 'transparent', color: 'var(--color-text-main)', fontSize: '1rem' }} />
+              <button className="btn" style={{ flex: '1 1 auto', padding: '1rem 2rem', borderRadius: '8px', fontWeight: 600, backgroundColor: 'var(--color-navy)', color: 'white', whiteSpace: 'nowrap' }}>Subscribe</button>
+            </div>
           </div>
         </div>
       </section>
