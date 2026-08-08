@@ -4,6 +4,7 @@ import DirectionsButton from "@/components/DirectionsButton";
 import prisma from "@/lib/prisma";
 import HeroSlider from "@/components/HeroSlider";
 import Logo from "@/components/Logo";
+import NewsletterForm from "@/components/NewsletterForm";
 import CompareCheckbox from "@/components/CompareCheckbox";
 
 export default async function Home() {
@@ -198,10 +199,7 @@ export default async function Home() {
             <p style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.6 }}>Get exclusive access to premium listings and market insights before they hit the general market.</p>
           </div>
           <div style={{ flex: '1 1 300px', minWidth: '0', width: '100%' }}>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', background: 'white', padding: '0.5rem', borderRadius: '12px', boxShadow: 'var(--shadow-lg)' }}>
-              <input type="email" placeholder="Enter your email address" style={{ flex: '1 1 200px', minWidth: '0', padding: '1rem', borderRadius: '8px', border: 'none', outline: 'none', backgroundColor: 'transparent', color: 'var(--color-text-main)', fontSize: '1rem' }} />
-              <button className="btn" style={{ flex: '1 1 auto', padding: '1rem 2rem', borderRadius: '8px', fontWeight: 600, backgroundColor: 'var(--color-navy)', color: 'white', whiteSpace: 'nowrap' }}>Subscribe</button>
-            </div>
+            <NewsletterForm />
           </div>
         </div>
       </section>
