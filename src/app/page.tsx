@@ -51,32 +51,74 @@ export default async function Home() {
       {/* Dynamic Hero Slider */}
       <HeroSlider />
 
+      {/* Floating Search Bar */}
+      <div style={{ position: 'relative', zIndex: 20, marginTop: '-3.5rem', padding: '0 1rem' }}>
+        <div className="container">
+          <div style={{ background: 'white', borderRadius: '12px', padding: '1rem', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1)', display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center' }}>
+            <div style={{ flex: '1 1 200px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Location</label>
+              <input type="text" placeholder="Where are you looking?" style={{ width: '100%', border: 'none', outline: 'none', fontSize: '1rem', fontWeight: 500, color: 'var(--color-navy)' }} />
+            </div>
+            <div style={{ width: '1px', height: '40px', background: 'var(--color-border)' }} className="hide-on-mobile"></div>
+            <div style={{ flex: '1 1 150px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Property Type</label>
+              <select style={{ width: '100%', border: 'none', outline: 'none', fontSize: '1rem', fontWeight: 500, color: 'var(--color-navy)', background: 'transparent', cursor: 'pointer' }}>
+                <option>All Types</option>
+                <option>House</option>
+                <option>Apartment</option>
+                <option>Commercial</option>
+                <option>Land</option>
+              </select>
+            </div>
+            <div style={{ width: '1px', height: '40px', background: 'var(--color-border)' }} className="hide-on-mobile"></div>
+            <div style={{ flex: '1 1 150px' }}>
+              <label style={{ display: 'block', fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.25rem' }}>Price Range</label>
+              <select style={{ width: '100%', border: 'none', outline: 'none', fontSize: '1rem', fontWeight: 500, color: 'var(--color-navy)', background: 'transparent', cursor: 'pointer' }}>
+                <option>Any Price</option>
+                <option>Under $500k</option>
+                <option>$500k - $1M</option>
+                <option>Over $1M</option>
+              </select>
+            </div>
+            <Link href="/properties" className="btn btn-primary" style={{ padding: '1rem 2rem', borderRadius: '8px', flexShrink: 0, width: 'auto', textAlign: 'center' }}>
+              Search Properties
+            </Link>
+          </div>
+        </div>
+      </div>
+
       {/* 1. Quick Category Shortcuts */}
       <section style={{ backgroundColor: 'var(--color-surface-secondary)', padding: '4rem 0', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
             <Link href="/properties?type=house" className="category-card">
-              <div style={{ width: '64px', height: '64px', margin: '0 auto 1.5rem auto', background: 'var(--color-primary-light)', color: 'var(--color-primary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+              <div style={{ width: '48px', height: '48px', flexShrink: 0, background: 'var(--color-primary-light)', color: 'var(--color-primary)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
               </div>
-              <h3 style={{ color: 'var(--color-text-main)', fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>Vacant Houses</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Find your perfect family home.</p>
+              <div>
+                <h3 style={{ color: 'var(--color-navy)', fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.25rem' }}>Vacant Houses</h3>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', margin: 0 }}>Find your perfect family home.</p>
+              </div>
             </Link>
 
             <Link href="/properties?type=land" className="category-card">
-              <div style={{ width: '64px', height: '64px', margin: '0 auto 1.5rem auto', background: 'var(--color-primary-light)', color: 'var(--color-primary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2h3.17"></path><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2h-1.52"></path><circle cx="12" cy="12" r="10"></circle></svg>
+              <div style={{ width: '48px', height: '48px', flexShrink: 0, background: 'var(--color-primary-light)', color: 'var(--color-primary)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2h3.17"></path><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2h-1.52"></path><circle cx="12" cy="12" r="10"></circle></svg>
               </div>
-              <h3 style={{ color: 'var(--color-text-main)', fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>Land & Plots</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Secure a plot for your future.</p>
+              <div>
+                <h3 style={{ color: 'var(--color-navy)', fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.25rem' }}>Land & Plots</h3>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', margin: 0 }}>Secure a plot for your future.</p>
+              </div>
             </Link>
 
             <Link href="/properties?type=commercial" className="category-card">
-              <div style={{ width: '64px', height: '64px', margin: '0 auto 1.5rem auto', background: 'var(--color-primary-light)', color: 'var(--color-primary)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg>
+              <div style={{ width: '48px', height: '48px', flexShrink: 0, background: 'var(--color-primary-light)', color: 'var(--color-primary)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg>
               </div>
-              <h3 style={{ color: 'var(--color-text-main)', fontSize: '1.25rem', fontWeight: 700, marginBottom: '0.5rem' }}>Commercial Spaces</h3>
-              <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem' }}>Prime locations for your business.</p>
+              <div>
+                <h3 style={{ color: 'var(--color-navy)', fontSize: '1.125rem', fontWeight: 700, marginBottom: '0.25rem' }}>Commercial Spaces</h3>
+                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.875rem', margin: 0 }}>Prime locations for your business.</p>
+              </div>
             </Link>
           </div>
         </div>
