@@ -6,6 +6,8 @@ import HeroSlider from "@/components/HeroSlider";
 import Logo from "@/components/Logo";
 import Navbar from "@/components/Navbar";
 import NewsletterForm from "@/components/NewsletterForm";
+
+export const revalidate = 60; // Revalidate every 60 seconds
 import CompareCheckbox from "@/components/CompareCheckbox";
 
 export default async function Home() {
