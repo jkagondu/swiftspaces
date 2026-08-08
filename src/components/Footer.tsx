@@ -1,7 +1,18 @@
 import Link from "next/link";
 import Logo from "./Logo";
+import prisma from "@/lib/prisma";
+import NewsletterForm from "./NewsletterForm";
 
-export default function Footer() {
+export default async function Footer() {
+  const settings = await prisma.platformSettings.findFirst() || {
+    supportEmail: 'support@swiftspace.africa',
+    supportPhone: '+254757160517',
+    facebookUrl: null,
+    instagramUrl: null,
+    twitterUrl: null,
+    siteName: 'SwiftSpaces'
+  };
+
   return (
     <footer style={{ 
       backgroundColor: '#020617', // Very deep slate/navy (darker than the trust section)
@@ -22,21 +33,27 @@ export default function Footer() {
               The premium destination to find, buy, and rent luxury properties, homes, and vacant land worldwide.
             </p>
             <div style={{ marginBottom: '1.5rem', fontSize: '0.95rem' }}>
-              <p style={{ margin: '0.25rem 0' }}><strong>Email:</strong> support@swiftspace.africa</p>
-              <p style={{ margin: '0.25rem 0' }}><strong>Phone:</strong> +254757160517</p>
+              <p style={{ margin: '0.25rem 0' }}><strong>Email:</strong> {settings.supportEmail}</p>
+              <p style={{ margin: '0.25rem 0' }}><strong>Phone:</strong> {settings.supportPhone}</p>
               <p style={{ margin: '0.25rem 0' }}><strong>Address:</strong> Nairobi, Kenya</p>
             </div>
             <div style={{ display: 'flex', gap: '1rem' }}>
               {/* Social Placeholders */}
-              <a href="#" aria-label="Twitter" className="footer-social-link">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
-              </a>
-              <a href="#" aria-label="Instagram" className="footer-social-link">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-              </a>
-              <a href="#" aria-label="LinkedIn" className="footer-social-link">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-              </a>
+              {settings.twitterUrl && (
+                <a href={settings.twitterUrl} aria-label="Twitter" className="footer-social-link">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z"></path></svg>
+                </a>
+              )}
+              {settings.instagramUrl && (
+                <a href={settings.instagramUrl} aria-label="Instagram" className="footer-social-link">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                </a>
+              )}
+              {settings.facebookUrl && (
+                <a href={settings.facebookUrl} aria-label="Facebook" className="footer-social-link">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                </a>
+              )}
             </div>
           </div>
 
@@ -68,11 +85,8 @@ export default function Footer() {
           <div style={{ flex: '1 1 250px' }}>
             <h4 style={{ color: 'white', fontSize: '1.125rem', fontWeight: 600, marginBottom: '1.5rem' }}>Subscribe</h4>
             <p style={{ marginBottom: '1rem', fontSize: '0.875rem' }}>Get the latest premium listings delivered directly to your inbox.</p>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              <input type="email" placeholder="Email address" style={{ flex: 1, padding: '0.75rem 1rem', borderRadius: '8px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(255,255,255,0.05)', color: 'white', outline: 'none' }} />
-              <button className="footer-btn">
-                Join
-              </button>
+            <div style={{ transform: 'scale(0.9)', transformOrigin: 'left top', width: '111%' }}>
+              <NewsletterForm />
             </div>
           </div>
         </div>
