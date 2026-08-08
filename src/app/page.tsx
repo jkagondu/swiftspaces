@@ -190,19 +190,6 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Newsletter Signup */}
-      <section style={{ padding: '6rem 0', backgroundColor: 'var(--color-primary)', color: 'white', position: 'relative', overflow: 'hidden' }}>
-        <div style={{ position: 'absolute', top: '-50%', left: '-10%', width: '60%', height: '200%', background: 'linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%)', transform: 'rotate(15deg)' }}></div>
-        <div className="container" style={{ position: 'relative', zIndex: 1, display: 'flex', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', gap: '2rem' }}>
-          <div style={{ flex: '1 1 300px', minWidth: '0' }}>
-            <h2 className="heading-2" style={{ color: 'white', marginBottom: '1rem', letterSpacing: '-0.02em' }}>Join the Inner Circle</h2>
-            <p style={{ fontSize: '1rem', color: 'rgba(255, 255, 255, 0.9)', lineHeight: 1.6 }}>Get exclusive access to premium listings and market insights before they hit the general market.</p>
-          </div>
-          <div style={{ flex: '1 1 300px', minWidth: '0', width: '100%' }}>
-            <NewsletterForm />
-          </div>
-        </div>
-      </section>
 
       {/* 3. Trust / Value Footer */}
       <section style={{ backgroundColor: 'var(--color-navy)', color: 'white', padding: '6rem 0', marginTop: '6rem' }}>
