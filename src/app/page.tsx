@@ -44,7 +44,7 @@ export default async function Home() {
       <section style={{ backgroundColor: 'var(--color-surface-secondary)', padding: '4rem 0', borderBottom: '1px solid var(--color-border)' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
-            <Link href="/properties?type=house" className="category-card">
+            <Link href="/properties" className="category-card">
               <div style={{ width: '48px', height: '48px', flexShrink: 0, background: 'var(--color-primary-light)', color: 'var(--color-primary)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
               </div>
@@ -54,7 +54,7 @@ export default async function Home() {
               </div>
             </Link>
 
-            <Link href="/properties?type=land" className="category-card">
+            <Link href="/properties" className="category-card">
               <div style={{ width: '48px', height: '48px', flexShrink: 0, background: 'var(--color-primary-light)', color: 'var(--color-primary)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21.54 15H17a2 2 0 0 0-2 2v4.54"></path><path d="M7 3.34V5a3 3 0 0 0 3 3v0a2 2 0 0 1 2 2v0c0 1.1.9 2 2 2h3.17"></path><path d="M11 21.95V18a2 2 0 0 0-2-2v0a2 2 0 0 1-2-2h-1.52"></path><circle cx="12" cy="12" r="10"></circle></svg>
               </div>
@@ -64,7 +64,7 @@ export default async function Home() {
               </div>
             </Link>
 
-            <Link href="/properties?type=commercial" className="category-card">
+            <Link href="/properties" className="category-card">
               <div style={{ width: '48px', height: '48px', flexShrink: 0, background: 'var(--color-primary-light)', color: 'var(--color-primary)', borderRadius: '12px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect><path d="M9 22v-4h6v4"></path><path d="M8 6h.01"></path><path d="M16 6h.01"></path><path d="M12 6h.01"></path><path d="M12 10h.01"></path><path d="M12 14h.01"></path><path d="M16 10h.01"></path><path d="M16 14h.01"></path><path d="M8 10h.01"></path><path d="M8 14h.01"></path></svg>
               </div>
