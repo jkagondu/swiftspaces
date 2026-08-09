@@ -58,8 +58,12 @@ export default async function AgentProfilePage({ params }: { params: Promise<{ i
       {/* Agent Header */}
       <div style={{ backgroundColor: 'var(--color-surface)', borderBottom: '1px solid var(--color-border)', padding: '4rem 0' }}>
         <div className="container" style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-          <div style={{ width: '120px', height: '120px', borderRadius: '50%', backgroundColor: 'var(--color-primary-light)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: 700, flexShrink: 0, border: '4px solid white', boxShadow: 'var(--shadow-md)' }}>
-            {agent.agencyName ? agent.agencyName.charAt(0) : "A"}
+          <div style={{ width: '120px', height: '120px', borderRadius: '50%', backgroundColor: 'var(--color-primary-light)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '3rem', fontWeight: 700, flexShrink: 0, border: '4px solid white', boxShadow: 'var(--shadow-md)', overflow: 'hidden' }}>
+            {agent.logoUrl ? (
+              <img src={agent.logoUrl} alt={agent.agencyName || "Agent"} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            ) : (
+              agent.agencyName ? agent.agencyName.charAt(0) : "A"
+            )}
           </div>
           <div style={{ flex: 1, minWidth: '300px' }}>
             <h1 className="heading-2" style={{ marginBottom: '0.5rem' }}>{agent.agencyName || "Independent Agent"}</h1>

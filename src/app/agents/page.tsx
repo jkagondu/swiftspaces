@@ -16,9 +16,21 @@ export default async function AgentsDirectoryPage() {
     include: {
       _count: {
         select: { properties: true }
+      },
+      reviews: {
+        select: { rating: true }
       }
     },
     orderBy: { properties: { _count: 'desc' } } // "Ranked" by number of properties for now
+  });
+
+  // Calculate average ratings
+  const agentsWithRatings = agents.map(agent => {
+    const totalReviews = agent.reviews.length;
+    const avgRating = totalReviews > 0 
+      ? (agent.reviews.reduce((sum, rev) => sum + rev.rating, 0) / totalReviews).toFixed(1)
+      : "New";
+    return { ...agent, avgRating, totalReviews };
   });
 
   return (
@@ -59,7 +71,7 @@ export default async function AgentsDirectoryPage() {
       <div className="container" style={{ position: 'relative', zIndex: 1 }}>
 
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
-          {agents.map((agent: any) => (
+          {agentsWithRatings.map((agent: any) => (
             <Link href={`/agents/${agent.id}`} key={agent.id} className="animate-fade-in card" style={{ 
               textDecoration: 'none', color: 'inherit', padding: '2.5rem 2rem', textAlign: 'center', 
               transition: 'all 0.3s ease', display: 'flex', flexDirection: 'column', alignItems: 'center',
@@ -86,9 +98,9 @@ export default async function AgentsDirectoryPage() {
                 <div style={{ textAlign: 'center' }}>
                   <div style={{ fontSize: '1.5rem', fontWeight: 800, color: '#f59e0b', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="#f59e0b" stroke="none"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-                    4.9
+                    {agent.avgRating}
                   </div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginTop: '0.25rem' }}>Rating</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600, marginTop: '0.25rem' }}>{agent.totalReviews > 0 ? `${agent.totalReviews} Reviews` : 'No Reviews'}</div>
                 </div>
               </div>
             </Link>
