@@ -20,6 +20,7 @@ export async function PUT(request: Request) {
         twitterUrl: body.twitterUrl !== undefined ? body.twitterUrl : undefined,
         instagramUrl: body.instagramUrl !== undefined ? body.instagramUrl : undefined,
         linkedinUrl: body.linkedinUrl !== undefined ? body.linkedinUrl : undefined,
+        logoUrl: body.logoUrl !== undefined ? body.logoUrl : undefined,
       }
     });
 

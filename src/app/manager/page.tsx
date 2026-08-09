@@ -45,6 +45,7 @@ export default function ManagerDashboard() {
     twitterUrl: (session?.user as any)?.twitterUrl || "",
     instagramUrl: (session?.user as any)?.instagramUrl || "",
     linkedinUrl: (session?.user as any)?.linkedinUrl || "",
+    logoUrl: (session?.user as any)?.logoUrl || "",
   });
   const [isUpdatingProfile, setIsUpdatingProfile] = useState(false);
   const [profileSuccessMessage, setProfileSuccessMessage] = useState("");
@@ -269,6 +270,35 @@ export default function ManagerDashboard() {
     } catch (error: any) {
       console.error("Upload error:", error);
       setErrorMessage(error.message || "Error uploading images.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    setIsUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", files[0]);
+      const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || "yeuu8aup";
+      const uploadPreset = process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET || "swiftspaces_preset";
+      formData.append("upload_preset", uploadPreset);
+
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      if (!response.ok) throw new Error(data.error?.message || "Failed to upload logo");
+      
+      setProfileData(prev => ({ ...prev, logoUrl: data.secure_url }));
+    } catch (error: any) {
+      console.error("Logo upload error:", error);
+      setProfileErrorMessage(error.message || "Error uploading logo.");
     } finally {
       setIsUploading(false);
     }
@@ -1102,6 +1132,28 @@ export default function ManagerDashboard() {
               {profileErrorMessage && <div style={{ backgroundColor: 'rgba(239, 68, 68, 0.1)', color: '#ef4444', padding: '1rem', borderRadius: '8px', marginBottom: '1.5rem' }}>{profileErrorMessage}</div>}
 
               <form onSubmit={handleProfileUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
+                  <label style={{ fontSize: '0.875rem', fontWeight: 600 }}>Agency/Agent Logo</label>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                    {profileData.logoUrl ? (
+                      <div style={{ position: 'relative', width: '80px', height: '80px', borderRadius: '50%', overflow: 'hidden', border: '2px solid var(--color-primary)' }}>
+                        <img src={profileData.logoUrl} alt="Logo" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                        <button type="button" onClick={() => setProfileData(p => ({...p, logoUrl: ""}))} style={{ position: 'absolute', top: 0, right: 0, background: 'rgba(239,68,68,0.9)', color: 'white', border: 'none', width: '20px', height: '20px', borderRadius: '50%', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '10px' }}>✕</button>
+                      </div>
+                    ) : (
+                      <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--color-surface-secondary)', border: '1px dashed var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-text-muted)' }}>
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                      </div>
+                    )}
+                    <div>
+                      <label htmlFor="logo-upload" className="btn btn-outline" style={{ cursor: isUploading ? 'wait' : 'pointer', opacity: isUploading ? 0.6 : 1, padding: '0.5rem 1rem', fontSize: '0.875rem' }}>
+                        {isUploading ? "Uploading..." : "Upload Logo"}
+                      </label>
+                      <input id="logo-upload" type="file" accept="image/*" onChange={handleLogoUpload} disabled={isUploading} style={{ display: 'none' }} />
+                      <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', marginTop: '0.5rem' }}>Recommended: Square image, max 2MB.</p>
+                    </div>
+                  </div>
+                </div>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                   <label style={{ fontSize: '0.875rem', fontWeight: 600 }}>Facebook URL</label>
                   <input 

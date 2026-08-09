@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: "Find and connect with top verified real estate agents in your area.",
 };
 
+export const revalidate = 60; // Revalidate every 60 seconds
+
 export default async function AgentsDirectoryPage() {
   const agents = await prisma.user.findMany({
     where: { role: "AGENT", agentStatus: "ACTIVE" },
@@ -65,8 +67,12 @@ export default async function AgentsDirectoryPage() {
               border: '1px solid var(--color-border)', borderRadius: '16px',
               boxShadow: 'var(--shadow-md)'
             }}>
-              <div style={{ width: '90px', height: '90px', borderRadius: '50%', background: 'var(--color-surface-secondary)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.25rem', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
-                {agent.agencyName ? agent.agencyName.charAt(0) : "A"}
+              <div style={{ width: '90px', height: '90px', borderRadius: '50%', background: 'var(--color-surface-secondary)', color: 'var(--color-primary)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '2.5rem', fontWeight: 800, marginBottom: '1.25rem', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)', overflow: 'hidden' }}>
+                {agent.logoUrl ? (
+                  <img src={agent.logoUrl} alt={agent.agencyName || "Agent"} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                ) : (
+                  agent.agencyName ? agent.agencyName.charAt(0) : "A"
+                )}
               </div>
               <h2 style={{ fontSize: '1.5rem', fontWeight: 700, color: 'var(--color-navy)', marginBottom: '0.25rem' }}>{agent.agencyName || "Independent Agent"}</h2>
               <p style={{ color: 'var(--color-teal)', fontSize: '0.875rem', fontWeight: 600, marginBottom: '2rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>Premium Partner</p>

@@ -55,6 +55,7 @@ model User {
   // Agent-specific fields
   agencyName    String?
   phoneNumber   String?
+  logoUrl       String?
   agentStatus   AgentStatus @default(PENDING) // Used by admins to approve/suspend
   isVerified    Boolean     @default(false) // Blue checkmark for anti-scam
   
