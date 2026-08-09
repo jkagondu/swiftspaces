@@ -105,7 +105,7 @@ export default function PropertiesPage() {
 
   const filteredProperties = properties.filter((prop) => {
     const matchesLocation = prop.location.toLowerCase().includes(locationQuery.toLowerCase());
-    const matchesType = propertyType === "all" || prop.type.toLowerCase() === propertyType.replace('-', '_');
+    const matchesType = propertyType === "all" || prop.type.toLowerCase() === propertyType.toLowerCase().replace('-', '_');
     
     let matchesPrice = true;
     if (minPrice || maxPrice) {
