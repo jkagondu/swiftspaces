@@ -91,25 +91,6 @@ export default function MortgageCalculator({ propertyPrice, deposit, waterBill, 
         {mode === "mortgage" ? "Mortgage Calculator" : "Rental Cost Estimator"}
       </h2>
 
-      {/* Mode Toggle */}
-      <div style={{ display: "flex", background: "var(--color-surface-secondary)", borderRadius: "10px", padding: "4px", marginBottom: "1.75rem", border: "1px solid var(--color-border)" }}>
-        {(["mortgage", "rent"] as const).map((m) => (
-          <button
-            key={m}
-            onClick={() => setMode(m)}
-            style={{
-              flex: 1, padding: "0.6rem", borderRadius: "8px", border: "none", cursor: "pointer",
-              fontWeight: 600, fontSize: "0.875rem", transition: "all 0.2s",
-              background: mode === m ? "white" : "transparent",
-              color: mode === m ? "var(--color-primary)" : "var(--color-text-muted)",
-              boxShadow: mode === m ? "var(--shadow-sm)" : "none",
-            }}
-          >
-            {m === "mortgage" ? "🏠 Buy" : "🔑 Rent"}
-          </button>
-        ))}
-      </div>
-
       {mode === "mortgage" ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
           {/* Home Price (Fixed) */}
