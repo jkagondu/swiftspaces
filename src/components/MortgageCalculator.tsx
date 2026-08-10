@@ -84,15 +84,13 @@ export default function MortgageCalculator({ propertyPrice }: MortgageCalculator
 
       {mode === "mortgage" ? (
         <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          {/* Home Price */}
-          <div>
-            <label style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--color-text-main)" }}>
-              <span>Home Price</span>
-              <span style={{ color: "var(--color-primary)" }}>{fmt(homePrice)}</span>
+          {/* Home Price (Fixed) */}
+          <div style={{ backgroundColor: "rgba(16, 185, 129, 0.05)", padding: "1rem", borderRadius: "8px", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
+            <label style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem", fontWeight: 600, color: "var(--color-text-main)" }}>
+              <span>Property Price</span>
+              <span style={{ color: "var(--color-primary)", fontSize: "1.125rem", fontWeight: 800 }}>{fmt(homePrice)}</span>
             </label>
-            <input type="range" min={500000} max={50000000} step={100000}
-              value={homePrice} onChange={(e) => setHomePrice(Number(e.target.value))}
-              style={{ width: "100%", accentColor: "var(--color-primary)" }} />
+            <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "0.25rem", margin: 0 }}>This is the asking price of the property.</p>
           </div>
 
           {/* Down Payment */}
@@ -161,15 +159,13 @@ export default function MortgageCalculator({ propertyPrice }: MortgageCalculator
         </div>
       ) : (
         <div style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          {/* Monthly Rent */}
-          <div>
-            <label style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem", fontWeight: 600, marginBottom: "0.5rem", color: "var(--color-text-main)" }}>
+          {/* Monthly Rent (Fixed) */}
+          <div style={{ backgroundColor: "rgba(16, 185, 129, 0.05)", padding: "1rem", borderRadius: "8px", border: "1px solid rgba(16, 185, 129, 0.2)" }}>
+            <label style={{ display: "flex", justifyContent: "space-between", fontSize: "0.875rem", fontWeight: 600, color: "var(--color-text-main)" }}>
               <span>Monthly Rent</span>
-              <span style={{ color: "var(--color-primary)" }}>{fmt(monthlyRent)}</span>
+              <span style={{ color: "var(--color-primary)", fontSize: "1.125rem", fontWeight: 800 }}>{fmt(monthlyRent)}</span>
             </label>
-            <input type="range" min={5000} max={500000} step={1000}
-              value={monthlyRent} onChange={(e) => setMonthlyRent(Number(e.target.value))}
-              style={{ width: "100%", accentColor: "var(--color-primary)" }} />
+            <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", marginTop: "0.25rem", margin: 0 }}>This is the actual listing rent.</p>
           </div>
 
           {/* Deposit Months */}
