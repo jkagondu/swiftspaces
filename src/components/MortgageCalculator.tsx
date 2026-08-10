@@ -44,8 +44,35 @@ export default function MortgageCalculator({ propertyPrice, deposit, waterBill, 
   const totalPaid = monthlyPayment * numPayments;
   const totalInterest = totalPaid - principal;
 
-  // --- Rental Calculation ---
-  // Since deposit, water, and electricity are strings from the agent, we just display them.
+  // --- Smart Rental Calculation ---
+  let calculatedDeposit = 0;
+  if (deposit) {
+    const raw = deposit.toLowerCase();
+    const num = parsePrice(deposit);
+    if (raw.includes("month") && num > 0 && num < 20) {
+      calculatedDeposit = num * monthlyRent;
+    } else if (num > 0) {
+      calculatedDeposit = num;
+    }
+  }
+
+  let calculatedWater = 0;
+  if (waterBill) {
+    const num = parsePrice(waterBill);
+    if (num > 0) {
+      calculatedWater = num;
+    }
+  }
+
+  let calculatedElectricity = 0;
+  if (electricity) {
+    const num = parsePrice(electricity);
+    if (num > 0) {
+      calculatedElectricity = num;
+    }
+  }
+
+  const moveInTotal = monthlyRent + calculatedDeposit + calculatedWater + calculatedElectricity;
 
   const fmt = (n: number) =>
     "KES " +
@@ -172,30 +199,34 @@ export default function MortgageCalculator({ propertyPrice, deposit, waterBill, 
 
           {/* Utilities & Deposit Breakdown */}
           <div style={{ borderRadius: "12px", background: "linear-gradient(135deg, var(--color-navy) 0%, #1e3a5f 100%)", color: "white", padding: "1.5rem", marginTop: "0.5rem" }}>
-            <div style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.7, marginBottom: "1rem" }}>
-              Lease Terms & Utilities (By Agent)
+            <div style={{ fontSize: "0.75rem", textTransform: "uppercase", letterSpacing: "0.1em", opacity: 0.7, marginBottom: "0.5rem" }}>
+              Estimated Move-In Total
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
+            <div style={{ fontSize: "2.25rem", fontWeight: 800, letterSpacing: "-0.02em", color: "var(--color-primary)" }}>
+              {fmt(moveInTotal)}
+            </div>
+            
+            <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "1rem", borderTop: "1px solid rgba(255,255,255,0.1)", paddingTop: "1.25rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ fontSize: "0.875rem", opacity: 0.8 }}>First Month Rent</span>
+                <span style={{ fontWeight: 700 }}>{fmt(monthlyRent)}</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "0.875rem", opacity: 0.8 }}>Security Deposit</span>
                 <span style={{ fontWeight: 700 }}>{deposit || "Not specified"}</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "0.875rem", opacity: 0.8 }}>Water Bill</span>
                 <span style={{ fontWeight: 700 }}>{waterBill || "Not specified"}</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", borderBottom: "1px solid rgba(255,255,255,0.1)", paddingBottom: "0.75rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <span style={{ fontSize: "0.875rem", opacity: 0.8 }}>Electricity</span>
                 <span style={{ fontWeight: 700 }}>{electricity || "Not specified"}</span>
-              </div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", paddingTop: "0.25rem" }}>
-                <span style={{ fontSize: "0.875rem", opacity: 0.8 }}>Annual Rent Cost</span>
-                <span style={{ fontWeight: 700 }}>{fmt(monthlyRent * 12)}</span>
               </div>
             </div>
           </div>
           <p style={{ fontSize: "0.75rem", color: "var(--color-text-muted)", textAlign: "center" }}>
-            * This information is provided directly by the listing agent.
+            * This calculation uses intelligent parsing on agent-provided data. Exact costs may vary.
           </p>
         </div>
       )}
