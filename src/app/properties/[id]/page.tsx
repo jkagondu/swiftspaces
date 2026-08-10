@@ -366,6 +366,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
             {/* Mortgage / Rent Calculator */}
             <MortgageCalculator 
               propertyPrice={property.price} 
+              propertyStatus={property.status}
               deposit={property.deposit} 
               waterBill={property.waterBill} 
               electricity={property.electricity} 

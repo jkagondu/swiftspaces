@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 
 interface MortgageCalculatorProps {
   propertyPrice?: string; // e.g. "KES 5,000,000" or "KES 20,000/mo"
+  propertyStatus?: string; // e.g. "FOR_RENT", "FOR_SALE"
   deposit?: string | null;
   waterBill?: string | null;
   electricity?: string | null;
@@ -15,9 +16,12 @@ function parsePrice(raw: string): number {
   return parseFloat(cleaned) || 0;
 }
 
-export default function MortgageCalculator({ propertyPrice, deposit, waterBill, electricity }: MortgageCalculatorProps) {
+export default function MortgageCalculator({ propertyPrice, propertyStatus, deposit, waterBill, electricity }: MortgageCalculatorProps) {
   const rawNum = parsePrice(propertyPrice || "0");
-  const isRental = /\/mo|per month|month/i.test(propertyPrice || "");
+  
+  // A property is a rental if its explicit status is FOR_RENT or RENTED, or as a fallback if the price has "/mo"
+  const isRental = propertyStatus === "FOR_RENT" || propertyStatus === "RENTED" || /\/mo|per month|month/i.test(propertyPrice || "");
+  const mode = isRental ? "rent" : "mortgage";
 
   // We derive the values directly so they update if propertyPrice changes and don't get stuck at 0.
   const monthlyRent = rawNum;
@@ -27,8 +31,6 @@ export default function MortgageCalculator({ propertyPrice, deposit, waterBill, 
   const [downPaymentPct, setDownPaymentPct] = useState(20);
   const [interestRate, setInterestRate] = useState(12);
   const [loanTermYears, setLoanTermYears] = useState(20);
-
-  const [mode, setMode] = useState<"mortgage" | "rent">(isRental ? "rent" : "mortgage");
 
   // --- Mortgage Calculation ---
   const downPaymentAmt = (homePrice * downPaymentPct) / 100;
