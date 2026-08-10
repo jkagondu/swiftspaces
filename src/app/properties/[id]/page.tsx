@@ -360,7 +360,12 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
             </div>
 
             {/* Mortgage / Rent Calculator */}
-            <MortgageCalculator propertyPrice={property.price} />
+            <MortgageCalculator 
+              propertyPrice={property.price} 
+              deposit={property.deposit} 
+              waterBill={property.waterBill} 
+              electricity={property.electricity} 
+            />
           </div>
         </div>
 
