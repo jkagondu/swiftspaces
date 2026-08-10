@@ -19,12 +19,11 @@ export default function MortgageCalculator({ propertyPrice, deposit, waterBill, 
   const rawNum = parsePrice(propertyPrice || "0");
   const isRental = /\/mo|per month|month/i.test(propertyPrice || "");
 
-  // Rental mode state
-  const [monthlyRent, setMonthlyRent] = useState(isRental ? rawNum : 0);
-  const [depositMonths, setDepositMonths] = useState(2);
+  // We derive the values directly so they update if propertyPrice changes and don't get stuck at 0.
+  const monthlyRent = rawNum;
+  const homePrice = rawNum;
 
   // Mortgage mode state
-  const [homePrice, setHomePrice] = useState(!isRental ? rawNum : 0);
   const [downPaymentPct, setDownPaymentPct] = useState(20);
   const [interestRate, setInterestRate] = useState(12);
   const [loanTermYears, setLoanTermYears] = useState(20);
