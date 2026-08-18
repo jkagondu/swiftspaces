@@ -157,8 +157,13 @@ export default function ManagerDashboard() {
     }
   };
 
-  const handleMarkAsTaken = async (propertyId: string, currentType: string) => {
-    const newStatus = currentType === "FOR_SALE" ? "SOLD" : "RENTED";
+  const handleToggleStatus = async (propertyId: string, currentStatus: string) => {
+    let newStatus = "";
+    if (currentStatus === "FOR_SALE") newStatus = "SOLD";
+    else if (currentStatus === "SOLD") newStatus = "FOR_SALE";
+    else if (currentStatus === "FOR_RENT" || currentStatus === "SHORT_TERM") newStatus = "RENTED";
+    else if (currentStatus === "RENTED") newStatus = "FOR_RENT";
+    
     try {
       const res = await fetch("/api/properties/status", {
         method: "PUT",
@@ -752,17 +757,6 @@ export default function ManagerDashboard() {
                   <div style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>If left blank, coordinates will be automatically guessed based on your Location/Address.</div>
                 </div>
 
-                {/* Grid for Virtual Tour & Video (Optional) */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>Virtual 3D Tour URL (Optional)</label>
-                    <input name="virtualTourUrl" value={formData.virtualTourUrl} onChange={handleInputChange} type="url" placeholder="e.g. Matterport link" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
-                  </div>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>YouTube Video URL (Optional)</label>
-                    <input name="videoUrl" value={formData.videoUrl} onChange={handleInputChange} type="url" placeholder="e.g. YouTube link" style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
-                  </div>
-                </div>
 
                 {/* Neighborhood Insights */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', background: 'var(--color-surface-secondary)', padding: '1.5rem', borderRadius: 'var(--radius-md)' }}>
@@ -1048,9 +1042,13 @@ export default function ManagerDashboard() {
                             Edit
                           </button>
                           <Link href={`/properties/${property.id}`} target="_blank" className="btn btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem' }}>View Live</Link>
-                          {(property.status === "FOR_RENT" || property.status === "FOR_SALE" || property.status === "SHORT_TERM") && (
-                            <button onClick={() => handleMarkAsTaken(property.id, property.status)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', backgroundColor: '#f59e0b', color: 'white', border: 'none' }}>
+                          {(property.status === "FOR_RENT" || property.status === "FOR_SALE" || property.status === "SHORT_TERM") ? (
+                            <button onClick={() => handleToggleStatus(property.id, property.status)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', backgroundColor: '#f59e0b', color: 'white', border: 'none' }}>
                               Mark as Taken
+                            </button>
+                          ) : (
+                            <button onClick={() => handleToggleStatus(property.id, property.status)} className="btn btn-primary" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', backgroundColor: '#10b981', color: 'white', border: 'none' }}>
+                              Mark as Available
                             </button>
                           )}
                           <button onClick={() => handleDeleteProperty(property.id)} className="btn btn-outline" style={{ padding: '0.5rem 1rem', fontSize: '0.75rem', borderColor: '#ef4444', color: '#ef4444' }}>
