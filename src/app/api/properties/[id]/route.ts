@@ -45,6 +45,7 @@ export async function PUT(request: Request, { params }: { params: Promise<{ id: 
         categorizedImages: body.categorizedImages !== undefined ? body.categorizedImages : undefined,
         videoUrl: body.videoUrl !== undefined ? body.videoUrl : undefined,
         virtualTourUrl: body.virtualTourUrl !== undefined ? body.virtualTourUrl : undefined,
+        tiktokUrl: body.tiktokUrl !== undefined ? body.tiktokUrl : undefined,
         transitScore: body.transitScore !== undefined ? body.transitScore : undefined,
         walkability: body.walkability !== undefined ? body.walkability : undefined,
         nearbyPlaces: body.nearbyPlaces !== undefined ? body.nearbyPlaces : undefined,

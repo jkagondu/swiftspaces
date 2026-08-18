@@ -126,6 +126,7 @@ model Property {
   amenities     String[]       @default([]) // Array of premium amenities
   videoUrl      String?        // YouTube/Vimeo link
   virtualTourUrl String?       // Matterport 3D tour iframe link
+  tiktokUrl     String?        // TikTok video link
   
   type          PropertyType
   status        PropertyStatus @default(FOR_RENT)

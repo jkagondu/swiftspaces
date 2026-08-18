@@ -124,7 +124,7 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
           {/* Image Carousel Component */}
           <ImageCarousel images={images} categorizedImages={property.categorizedImages} status={property.status} />
 
-          {(property.virtualTourUrl || property.videoUrl) && (
+          {(property.virtualTourUrl || property.videoUrl || property.tiktokUrl) && (
             <div style={{ display: 'flex', gap: '1rem', marginTop: '-1rem' }}>
               {property.virtualTourUrl && (
                 <a href={property.virtualTourUrl} target="_blank" rel="noopener noreferrer" className="btn btn-primary" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', borderRadius: '8px' }}>
@@ -136,6 +136,12 @@ export default async function PropertyDetailsPage({ params }: { params: Promise<
                 <a href={property.videoUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', borderRadius: '8px' }}>
                   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polygon points="23 7 16 12 23 17 23 7"></polygon><rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect></svg>
                   Watch Video
+                </a>
+              )}
+              {property.tiktokUrl && (
+                <a href={property.tiktokUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', padding: '0.75rem 1.5rem', borderRadius: '8px', color: '#000', borderColor: '#000' }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M12.525.02c1.31-.02 2.61-.01 3.91-.01.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.12-3.44-3.1-3.67-5.37-.16-1.57.17-3.2 1.01-4.52 1.16-1.87 3.32-3.1 5.51-3.14.32-.01.63-.01.95-.01v4.06c-1.3-.09-2.58.52-3.32 1.56-.51.72-.73 1.63-.58 2.52.17 1.14 1.04 2.15 2.11 2.53 1.25.44 2.72.17 3.69-.74.77-.73 1.2-1.78 1.24-2.86.06-4.57.02-9.13.04-13.7.01-1.07.01-2.14.02-3.21z"/></svg>
+                  TikTok
                 </a>
               )}
             </div>

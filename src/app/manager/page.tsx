@@ -25,6 +25,7 @@ export default function ManagerDashboard() {
     longitude: "",
     videoUrl: "",
     virtualTourUrl: "",
+    tiktokUrl: "",
     transitScore: "",
     walkability: "",
     nearbyPlaces: "",
@@ -356,8 +357,8 @@ export default function ManagerDashboard() {
       }
 
       setSuccessMessage(editingPropertyId ? "Property updated successfully!" : "Property published successfully to the live site!");
-      setFormData({
-        title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false
+      setFormData({ 
+        title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", tiktokUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false 
       });
       setUploadedImageUrls([]);
       setEditingPropertyId(null);
@@ -430,7 +431,7 @@ export default function ManagerDashboard() {
             onClick={() => {
               setActiveTab("add_property");
               setEditingPropertyId(null);
-              setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false });
+              setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", tiktokUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false });
               setUploadedImageUrls([]);
               setIsSidebarOpen(false);
             }}
@@ -840,14 +841,18 @@ export default function ManagerDashboard() {
                 </div>
 
                 {/* Media Links */}
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem' }}>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>YouTube Video URL (Optional)</label>
-                    <input name="videoUrl" value={formData.videoUrl} onChange={handleInputChange} type="url" placeholder="e.g. https://youtube.com/watch?v=..." style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>YouTube Video URL</label>
+                    <input name="videoUrl" value={formData.videoUrl} onChange={handleInputChange} type="url" placeholder="e.g. https://youtube.com..." style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
                   </div>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>3D Virtual Tour URL (Optional)</label>
-                    <input name="virtualTourUrl" value={formData.virtualTourUrl} onChange={handleInputChange} type="url" placeholder="e.g. https://my.matterport.com/show/?m=..." style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>3D Virtual Tour URL</label>
+                    <input name="virtualTourUrl" value={formData.virtualTourUrl} onChange={handleInputChange} type="url" placeholder="e.g. https://my.matterport.com..." style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                    <label style={{ fontWeight: 500, fontSize: '0.875rem' }}>TikTok Video URL</label>
+                    <input name="tiktokUrl" value={formData.tiktokUrl} onChange={handleInputChange} type="url" placeholder="e.g. https://tiktok.com/@..." style={{ padding: '0.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', outline: 'none' }} />
                   </div>
                 </div>
 
@@ -858,7 +863,7 @@ export default function ManagerDashboard() {
                   {editingPropertyId && (
                     <button type="button" onClick={() => {
                       setEditingPropertyId(null);
-                      setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false });
+                      setFormData({ title: "", location: "", price: "", type: "apartment", status: "FOR_RENT", description: "", beds: "", baths: "", latitude: "", longitude: "", videoUrl: "", virtualTourUrl: "", tiktokUrl: "", transitScore: "", walkability: "", nearbyPlaces: "", nearbySchools: "", nearbyHospitals: "", deposit: "", waterBill: "", electricity: "", parking: "", petFriendly: false });
                       setUploadedImageUrls([]);
                       setActiveTab("my_listings");
                     }} className="btn btn-outline" style={{ padding: '0.75rem 2rem', marginLeft: '1rem' }}>
@@ -1025,6 +1030,7 @@ export default function ManagerDashboard() {
                               longitude: property.longitude?.toString() || "",
                               videoUrl: property.videoUrl || "",
                               virtualTourUrl: property.virtualTourUrl || "",
+                              tiktokUrl: property.tiktokUrl || "",
                               transitScore: property.transitScore || "",
                               walkability: property.walkability || "",
                               nearbyPlaces: property.nearbyPlaces || "",

@@ -42,7 +42,7 @@ export async function POST(request: Request) {
     const { 
       title, description, location, price, type, status, beds, baths, agentId, images, categorizedImages,
       latitude: providedLat, longitude: providedLng, 
-      videoUrl, virtualTourUrl, transitScore, walkability, nearbyPlaces,
+      videoUrl, virtualTourUrl, tiktokUrl, transitScore, walkability, nearbyPlaces,
       nearbySchools, nearbyHospitals, deposit, waterBill, electricity, parking, petFriendly
     } = body;
 
@@ -89,6 +89,7 @@ export async function POST(request: Request) {
         categorizedImages: categorizedImages || null,
         videoUrl: videoUrl || null,
         virtualTourUrl: virtualTourUrl || null,
+        tiktokUrl: tiktokUrl || null,
         transitScore: transitScore || null,
         walkability: walkability || null,
         nearbyPlaces: nearbyPlaces || null,
