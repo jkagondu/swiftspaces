@@ -28,7 +28,8 @@ export async function PUT(request: Request) {
       return NextResponse.json({ error: "Property not found" }, { status: 404 });
     }
 
-    if (property.agentId !== (session.user as any).id) {
+    const user = session.user as any;
+    if (property.agentId !== user.id && user.role !== "ADMIN") {
       return NextResponse.json({ error: "Unauthorized to update this property" }, { status: 403 });
     }
 

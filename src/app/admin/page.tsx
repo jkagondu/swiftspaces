@@ -184,6 +184,43 @@ export default function AdminDashboard() {
     }
   };
 
+  const handleToggleStatus = async (propertyId: string, currentStatus: string) => {
+    let newStatus = "AVAILABLE";
+    if (currentStatus === "AVAILABLE" || currentStatus === "UNAVAILABLE") {
+      const choice = window.prompt("Enter new status: RENTED or SOLD", "RENTED");
+      if (!choice) return;
+      if (choice.toUpperCase() === "RENTED" || choice.toUpperCase() === "SOLD") {
+        newStatus = choice.toUpperCase();
+      } else {
+        alert("Invalid status. Must be RENTED or SOLD.");
+        return;
+      }
+    } else {
+      if (!window.confirm("Are you sure you want to mark this property as AVAILABLE again?")) {
+        return;
+      }
+    }
+
+    try {
+      const res = await fetch("/api/properties/status", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ propertyId, status: newStatus }),
+      });
+
+      if (res.ok) {
+        setProperties(prev => prev.map((p: any) => 
+          p.id === propertyId ? { ...p, status: newStatus } : p
+        ));
+        fetchStats(); // Update stats optionally
+      } else {
+        alert("Failed to update property status");
+      }
+    } catch (error) {
+      console.error("Error updating property status:", error);
+    }
+  };
+
   const handleUpdateStatus = async (agentId: string, newStatus: string) => {
     try {
       const res = await fetch("/api/admin/agents", {
@@ -555,7 +592,7 @@ export default function AdminDashboard() {
                           <div style={{ fontSize: '0.75rem', color: '#94a3b8', textTransform: 'capitalize' }}>{property.type}</div>
                         </td>
                         <td style={{ padding: '1rem 1.5rem' }}>
-                           <span style={{ display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 600, backgroundColor: 'rgba(255, 255, 255, 0.1)', color: 'white', border: '1px solid rgba(255, 255, 255, 0.2)' }}>
+                           <span style={{ display: 'inline-block', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.75rem', fontWeight: 600, backgroundColor: property.status === 'AVAILABLE' ? 'rgba(16, 185, 129, 0.1)' : 'rgba(245, 158, 11, 0.1)', color: property.status === 'AVAILABLE' ? '#10b981' : '#f59e0b', border: property.status === 'AVAILABLE' ? '1px solid rgba(16, 185, 129, 0.2)' : '1px solid rgba(245, 158, 11, 0.2)' }}>
                              {property.status.replace('_', ' ')}
                            </span>
                         </td>
@@ -569,7 +606,10 @@ export default function AdminDashboard() {
                           </button>
                         </td>
                         <td style={{ padding: '1rem 1.5rem', textAlign: 'right' }}>
-                          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
+                          <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end', alignItems: 'center' }}>
+                            <button onClick={() => handleToggleStatus(property.id, property.status)} className="btn btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem', backgroundColor: property.status === 'AVAILABLE' ? 'rgba(245, 158, 11, 0.1)' : 'rgba(16, 185, 129, 0.1)', color: property.status === 'AVAILABLE' ? '#f59e0b' : '#10b981', borderColor: property.status === 'AVAILABLE' ? 'rgba(245, 158, 11, 0.3)' : 'rgba(16, 185, 129, 0.3)', whiteSpace: 'nowrap' }}>
+                              {property.status === 'AVAILABLE' ? 'Mark Taken' : 'Mark Available'}
+                            </button>
                             <Link href={`/properties/${property.id}`} target="_blank" className="btn btn-outline" style={{ padding: '0.4rem 0.75rem', fontSize: '0.75rem', backgroundColor: 'transparent', color: '#cbd5e1', borderColor: '#475569' }}>
                               View
                             </Link>
