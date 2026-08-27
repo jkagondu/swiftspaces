@@ -260,8 +260,19 @@ export default function PropertiesPage() {
                     <div style={{ position: 'relative', height: '180px', width: '100%' }}>
                       <Image 
                         src={property.images && property.images.length > 0 ? property.images[0] : "/prop-modern.png"} 
-                        alt={property.title} fill style={{ objectFit: 'cover' }}
+                        alt={property.title} fill style={{ objectFit: 'cover', transition: 'transform 0.5s ease' }}
+                        className="hover-zoom"
                       />
+                      
+                      {/* Floating Glassmorphic Price */}
+                      <div style={{ 
+                        position: 'absolute', bottom: '10px', left: '10px', zIndex: 10,
+                        background: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
+                        padding: '0.4rem 0.75rem', borderRadius: '12px', fontWeight: 800, color: 'var(--color-primary)',
+                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)', fontSize: '1rem'
+                      }}>
+                        {property.price.split('/')[0]}
+                      </div>
                       {(property.status === 'SOLD' || property.status === 'RENTED') && (
                         <div style={{ position: 'absolute', top: '0', left: '0', width: '100%', height: '100%', backgroundColor: 'rgba(0, 0, 0, 0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1 }}>
                           <div style={{ backgroundColor: '#ef4444', color: 'white', border: '2px solid white', padding: '0.75rem 2rem', fontSize: '1.5rem', fontWeight: 900, transform: 'rotate(-15deg)', letterSpacing: '2px', boxShadow: '0 4px 12px rgba(0,0,0,0.3)', whiteSpace: 'nowrap', textTransform: 'uppercase' }}>
@@ -280,9 +291,7 @@ export default function PropertiesPage() {
                     </div>
                   
                   <div style={{ padding: '1.25rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                      <span style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--color-primary)' }}>{property.price.split('/')[0]}</span>
-                    </div>
+                    {/* Price moved to image overlay, title moves up */}
                     <h3 style={{ fontSize: '1rem', fontWeight: 700, color: 'var(--color-navy)', marginBottom: '0.25rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{property.title}</h3>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                       <p style={{ color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem', fontSize: '0.8rem', margin: 0 }}>
@@ -293,10 +302,24 @@ export default function PropertiesPage() {
                         <DirectionsButton latitude={property.latitude} longitude={property.longitude} />
                       )}
                     </div>
-                    <div style={{ display: 'flex', gap: '1rem', fontSize: '0.875rem', color: 'var(--color-text-main)', marginTop: 'auto', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
-                      {property.beds > 0 && <span><strong>{property.beds}</strong> bd</span>}
-                      <span><strong>{property.baths}</strong> ba</span>
-                      {property.type && <span style={{ textTransform: 'capitalize' }}>{property.type.toLowerCase().replace('_', ' ')}</span>}
+                    <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.75rem', marginTop: 'auto', borderTop: '1px solid var(--color-border)', paddingTop: '1rem', flexWrap: 'wrap' }}>
+                      {property.beds > 0 && (
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: '#D1FAE5', color: '#065F46', padding: '0.25rem 0.75rem', borderRadius: '999px', fontWeight: 600 }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4v16"></path><path d="M2 8h18a2 2 0 0 1 2 2v10"></path><path d="M2 17h20"></path></svg> 
+                          {property.beds} Beds
+                        </span>
+                      )}
+                      {property.baths > 0 && (
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: '#E0F2FE', color: '#0369A1', padding: '0.25rem 0.75rem', borderRadius: '999px', fontWeight: 600 }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 22h6"></path><path d="M12 18v4"></path><path d="M3 18h18v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4z"></path></svg> 
+                          {property.baths} Baths
+                        </span>
+                      )}
+                      {property.type && (
+                        <span style={{ display: 'flex', alignItems: 'center', background: '#F3F4F6', color: '#4B5563', padding: '0.25rem 0.75rem', borderRadius: '999px', fontWeight: 600, textTransform: 'capitalize' }}>
+                          {property.type.toLowerCase().replace('_', ' ')}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </Link>

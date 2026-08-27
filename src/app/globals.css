@@ -122,6 +122,10 @@ button {
   box-shadow: var(--shadow-lg);
 }
 
+.card:hover .hover-zoom {
+  transform: scale(1.05);
+}
+
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
   font-weight: 600;
