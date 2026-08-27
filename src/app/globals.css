@@ -466,4 +466,34 @@ h1, h2, h3, h4, h5, h6 {
   .table-container table {
     min-width: 600px; /* Ensures table doesn't compress too much on mobile */
   }
+  }
+}
+
+/* Auto-Scrolling Carousel Marquee */
+.carousel-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  padding: 1rem 0 2rem 0;
+}
+
+.carousel-track {
+  display: flex;
+  width: max-content;
+  gap: 2rem;
+  animation: scroll-marquee 40s linear infinite;
+}
+
+.carousel-track:hover {
+  animation-play-state: paused;
+}
+
+.carousel-item {
+  width: 320px;
+  flex-shrink: 0;
+}
+
+@keyframes scroll-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-33.333% - 0.66rem)); }
 }
