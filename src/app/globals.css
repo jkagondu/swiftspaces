@@ -470,7 +470,6 @@ h1, h2, h3, h4, h5, h6 {
   .table-container table {
     min-width: 600px; /* Ensures table doesn't compress too much on mobile */
   }
-  }
 }
 
 /* Auto-Scrolling Carousel Marquee */
