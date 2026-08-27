@@ -264,12 +264,13 @@ export default function PropertiesPage() {
                         className="hover-zoom"
                       />
                       
-                      {/* Floating Glassmorphic Price */}
+                      {/* Solid Branded Price Tag */}
                       <div style={{ 
                         position: 'absolute', bottom: '10px', left: '10px', zIndex: 10,
-                        background: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(8px)', WebkitBackdropFilter: 'blur(8px)',
-                        padding: '0.4rem 0.75rem', borderRadius: '12px', fontWeight: 800, color: 'var(--color-primary)',
-                        boxShadow: '0 4px 6px rgba(0,0,0,0.1)', fontSize: '1rem'
+                        backgroundColor: 'var(--color-primary)', 
+                        padding: '0.4rem 0.75rem', borderRadius: '12px', fontWeight: 800, color: 'white',
+                        boxShadow: '0 4px 6px rgba(16, 185, 129, 0.3)', fontSize: '1rem',
+                        border: '1px solid rgba(255, 255, 255, 0.2)'
                       }}>
                         {property.price.split('/')[0]}
                       </div>
@@ -304,19 +305,19 @@ export default function PropertiesPage() {
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem', fontSize: '0.75rem', marginTop: 'auto', borderTop: '1px solid var(--color-border)', paddingTop: '1rem', flexWrap: 'wrap' }}>
                       {property.beds > 0 && (
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: '#D1FAE5', color: '#065F46', padding: '0.25rem 0.75rem', borderRadius: '999px', fontWeight: 600 }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--color-primary-light)', color: '#065F46', padding: '0.25rem 0.75rem', borderRadius: '999px', fontWeight: 600 }}>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M2 4v16"></path><path d="M2 8h18a2 2 0 0 1 2 2v10"></path><path d="M2 17h20"></path></svg> 
                           {property.beds} Beds
                         </span>
                       )}
                       {property.baths > 0 && (
-                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: '#E0F2FE', color: '#0369A1', padding: '0.25rem 0.75rem', borderRadius: '999px', fontWeight: 600 }}>
+                        <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', background: 'var(--color-primary-light)', color: '#065F46', padding: '0.25rem 0.75rem', borderRadius: '999px', fontWeight: 600 }}>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M9 22h6"></path><path d="M12 18v4"></path><path d="M3 18h18v-4a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v4z"></path></svg> 
                           {property.baths} Baths
                         </span>
                       )}
                       {property.type && (
-                        <span style={{ display: 'flex', alignItems: 'center', background: '#F3F4F6', color: '#4B5563', padding: '0.25rem 0.75rem', borderRadius: '999px', fontWeight: 600, textTransform: 'capitalize' }}>
+                        <span style={{ display: 'flex', alignItems: 'center', background: 'var(--color-primary-light)', color: '#065F46', padding: '0.25rem 0.75rem', borderRadius: '999px', fontWeight: 600, textTransform: 'capitalize' }}>
                           {property.type.toLowerCase().replace('_', ' ')}
                         </span>
                       )}
