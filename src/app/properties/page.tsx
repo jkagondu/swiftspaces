@@ -162,11 +162,11 @@ export default function PropertiesPage() {
         </div>
       </nav>
 
-      {/* Global Filters Subheader (Visible on Mobile and Desktop) */}
-      <div style={{ background: '#0F172A', padding: '1rem 2rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <div className="hide-on-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1rem' }}>
-          <h1 className="heading-2" style={{ fontSize: '2rem', margin: 0, color: 'white' }}>Discover Properties</h1>
-          <p style={{ color: '#94a3b8' }}>Find exactly what you're looking for with our interactive map and filters.</p>
+      {/* Global Filters Subheader (Glassmorphic Light) */}
+      <div style={{ background: 'rgba(255, 255, 255, 0.85)', backdropFilter: 'blur(12px)', WebkitBackdropFilter: 'blur(12px)', padding: '1rem 2rem', borderBottom: '1px solid var(--color-border)', position: 'relative', zIndex: 40 }}>
+        <div className="hide-on-mobile" style={{ display: 'flex', flexDirection: 'column', gap: '0.25rem', marginBottom: '1rem' }}>
+          <h1 className="heading-2" style={{ fontSize: '1.75rem', margin: 0, color: 'var(--color-navy)' }}>Discover Properties</h1>
+          <p style={{ color: 'var(--color-text-muted)' }}>Find exactly what you're looking for with our interactive map and filters.</p>
         </div>
 
         {/* Filters inline with horizontal scroll on mobile */}
@@ -176,12 +176,12 @@ export default function PropertiesPage() {
             placeholder="Search location..." 
             value={locationQuery}
             onChange={(e) => setLocationQuery(e.target.value)}
-            style={{ flex: '0 0 160px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+            style={{ flex: '0 0 160px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-border)', outline: 'none', background: 'var(--color-surface)', color: 'var(--color-text-main)' }}
           />
           <select 
             value={propertyType}
             onChange={(e) => setPropertyType(e.target.value)}
-            style={{ flex: '0 0 140px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', cursor: 'pointer', background: 'rgba(255,255,255,0.1)', color: 'white' }}>
+            style={{ flex: '0 0 140px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-border)', outline: 'none', cursor: 'pointer', background: 'var(--color-surface)', color: 'var(--color-text-main)' }}>
             <option value="all" style={{ color: 'black' }}>All Types</option>
             <option value="house" style={{ color: 'black' }}>House</option>
             <option value="apartment" style={{ color: 'black' }}>Apartment</option>
@@ -195,14 +195,14 @@ export default function PropertiesPage() {
             placeholder="Min Price" 
             value={minPrice}
             onChange={(e) => setMinPrice(e.target.value)}
-            style={{ flex: '0 0 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+            style={{ flex: '0 0 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-border)', outline: 'none', background: 'var(--color-surface)', color: 'var(--color-text-main)' }}
           />
           <input 
             type="number" 
             placeholder="Max Price" 
             value={maxPrice}
             onChange={(e) => setMaxPrice(e.target.value)}
-            style={{ flex: '0 0 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid rgba(255,255,255,0.2)', outline: 'none', background: 'rgba(255,255,255,0.1)', color: 'white' }}
+            style={{ flex: '0 0 120px', padding: '0.75rem 1rem', borderRadius: '10px', border: '1px solid var(--color-border)', outline: 'none', background: 'var(--color-surface)', color: 'var(--color-text-main)' }}
           />
           <button 
             onClick={handleFindNearMe}
@@ -228,7 +228,7 @@ export default function PropertiesPage() {
             {isLoading ? "Searching properties..." : `${filteredProperties.length} Properties Found`}
           </div>
 
-          <div style={{ padding: '1.5rem 2rem 4rem 2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '1.5rem' }}>
+          <div style={{ padding: '1.5rem 2rem 4rem 2rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '2rem' }}>
             {isLoading ? (
               Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="card" style={{ display: 'flex', flexDirection: 'column', height: '380px', background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: '16px', overflow: 'hidden' }}>
@@ -237,10 +237,10 @@ export default function PropertiesPage() {
                     <div className="skeleton" style={{ height: '28px', width: '40%' }}></div>
                     <div className="skeleton" style={{ height: '20px', width: '85%' }}></div>
                     <div className="skeleton" style={{ height: '16px', width: '60%' }}></div>
-                    <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
-                      <div className="skeleton" style={{ height: '16px', width: '20%' }}></div>
-                      <div className="skeleton" style={{ height: '16px', width: '20%' }}></div>
-                      <div className="skeleton" style={{ height: '16px', width: '30%' }}></div>
+                    <div style={{ display: 'flex', gap: '0.5rem', marginTop: 'auto', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
+                      <div className="skeleton" style={{ height: '24px', width: '30%', borderRadius: '999px' }}></div>
+                      <div className="skeleton" style={{ height: '24px', width: '30%', borderRadius: '999px' }}></div>
+                      <div className="skeleton" style={{ height: '24px', width: '30%', borderRadius: '999px' }}></div>
                     </div>
                   </div>
                 </div>
