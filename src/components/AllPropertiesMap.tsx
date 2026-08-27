@@ -52,29 +52,17 @@ export default function AllPropertiesMap({ properties, externalHoveredId, userLo
   }, [properties]);
 
   const getMarkerStyle = (type: string, status: string, isSelected: boolean, isHovered: boolean) => {
-    if (status === 'SOLD' || status === 'RENTED') return { color: '#9ca3af', icon: '🔒' };
-    if (isSelected || isHovered) return { color: 'var(--color-navy)', icon: getIconForType(type) };
+    if (status === 'SOLD' || status === 'RENTED') return { color: '#9ca3af' };
+    if (isSelected || isHovered) return { color: 'var(--color-navy)' };
     
     switch (type) {
-      case 'APARTMENT': return { color: 'var(--color-primary)', icon: '🏢' };
-      case 'HOUSE': return { color: '#3b82f6', icon: '🏠' }; // Blue
-      case 'BEDSITTER': return { color: '#8b5cf6', icon: '🛏️' }; // Purple
-      case 'SINGLE_ROOM': return { color: '#d946ef', icon: '🚪' }; // Fuchsia
-      case 'AIRBNB': return { color: '#f59e0b', icon: '✈️' }; // Orange
-      case 'LAND': return { color: '#84cc16', icon: '🌳' }; // Lime
-      default: return { color: 'var(--color-primary)', icon: '📍' };
-    }
-  };
-
-  const getIconForType = (type: string) => {
-    switch (type) {
-      case 'APARTMENT': return '🏢';
-      case 'HOUSE': return '🏠';
-      case 'BEDSITTER': return '🛏️';
-      case 'SINGLE_ROOM': return '🚪';
-      case 'AIRBNB': return '✈️';
-      case 'LAND': return '🌳';
-      default: return '📍';
+      case 'APARTMENT': return { color: 'var(--color-primary)' }; // Emerald
+      case 'HOUSE': return { color: '#3b82f6' }; // Blue
+      case 'BEDSITTER': return { color: '#8b5cf6' }; // Purple
+      case 'SINGLE_ROOM': return { color: '#d946ef' }; // Fuchsia
+      case 'AIRBNB': return { color: '#f59e0b' }; // Orange
+      case 'LAND': return { color: '#84cc16' }; // Lime
+      default: return { color: 'var(--color-primary)' };
     }
   };
 
@@ -140,12 +128,9 @@ export default function AllPropertiesMap({ properties, externalHoveredId, userLo
                   border: '2px solid white',
                   transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
                   transform: isSelected || isHovered ? 'scale(1.1) translateY(-4px)' : 'scale(1) translateY(0)',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.25rem'
+                  display: 'inline-block'
                 }}
               >
-                <span>{getMarkerStyle(property.type, property.status, isSelected, isHovered).icon}</span>
                 {property.price.split('/')[0]}
               </div>
             </Marker>
