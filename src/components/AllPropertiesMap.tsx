@@ -51,12 +51,31 @@ export default function AllPropertiesMap({ properties, externalHoveredId, userLo
     });
   }, [properties]);
 
-  const getMarkerColor = (status: string, isSelected: boolean, isHovered: boolean) => {
-    if (isSelected || isHovered) return 'var(--color-navy)';
-    if (status === 'FOR_SALE') return '#10b981'; // Green
-    if (status === 'SHORT_TERM' || status === 'AIRBNB') return '#f59e0b'; // Orange
-    if (status === 'SOLD' || status === 'RENTED') return '#9ca3af'; // Gray
-    return 'var(--color-primary)'; // Default Blue
+  const getMarkerStyle = (type: string, status: string, isSelected: boolean, isHovered: boolean) => {
+    if (status === 'SOLD' || status === 'RENTED') return { color: '#9ca3af', icon: '🔒' };
+    if (isSelected || isHovered) return { color: 'var(--color-navy)', icon: getIconForType(type) };
+    
+    switch (type) {
+      case 'APARTMENT': return { color: 'var(--color-primary)', icon: '🏢' };
+      case 'HOUSE': return { color: '#3b82f6', icon: '🏠' }; // Blue
+      case 'BEDSITTER': return { color: '#8b5cf6', icon: '🛏️' }; // Purple
+      case 'SINGLE_ROOM': return { color: '#d946ef', icon: '🚪' }; // Fuchsia
+      case 'AIRBNB': return { color: '#f59e0b', icon: '✈️' }; // Orange
+      case 'LAND': return { color: '#84cc16', icon: '🌳' }; // Lime
+      default: return { color: 'var(--color-primary)', icon: '📍' };
+    }
+  };
+
+  const getIconForType = (type: string) => {
+    switch (type) {
+      case 'APARTMENT': return '🏢';
+      case 'HOUSE': return '🏠';
+      case 'BEDSITTER': return '🛏️';
+      case 'SINGLE_ROOM': return '🚪';
+      case 'AIRBNB': return '✈️';
+      case 'LAND': return '🌳';
+      default: return '📍';
+    }
   };
 
   // Automatically fly to user location when they click "Near Me"
@@ -110,7 +129,7 @@ export default function AllPropertiesMap({ properties, externalHoveredId, userLo
                 onMouseEnter={() => setLocalHoveredId(property.id)}
                 onMouseLeave={() => setLocalHoveredId(null)}
                 style={{ 
-                  background: getMarkerColor(property.status, isSelected, isHovered), 
+                  background: getMarkerStyle(property.type, property.status, isSelected, isHovered).color, 
                   color: 'white', 
                   padding: isSelected || isHovered ? '0.35rem 0.6rem' : '0.25rem 0.5rem', 
                   borderRadius: '12px', 
@@ -120,10 +139,14 @@ export default function AllPropertiesMap({ properties, externalHoveredId, userLo
                   boxShadow: isSelected || isHovered ? '0 4px 12px rgba(0,0,0,0.4)' : '0 2px 4px rgba(0,0,0,0.3)',
                   border: '2px solid white',
                   transition: 'all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-                  transform: isSelected || isHovered ? 'scale(1.1) translateY(-4px)' : 'scale(1) translateY(0)'
+                  transform: isSelected || isHovered ? 'scale(1.1) translateY(-4px)' : 'scale(1) translateY(0)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.25rem'
                 }}
               >
-                {property.price.split('/')[0]} {/* Show short price */}
+                <span>{getMarkerStyle(property.type, property.status, isSelected, isHovered).icon}</span>
+                {property.price.split('/')[0]}
               </div>
             </Marker>
           );
